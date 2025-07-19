@@ -43,7 +43,7 @@ app.get("/stats/language", async (c) => {
         } catch (error) {
           console.error("Background cache generation failed:", error);
         }
-      })()
+      })(),
     );
   }
 
@@ -56,12 +56,12 @@ app.get("/stats/language", async (c) => {
   return c.json(
     {
       error: "Stats are being generated. Please try again in a few seconds.",
-      retry_after: 5
+      retry_after: 5,
     },
     503,
     {
       "Retry-After": "5",
-    }
+    },
   );
 });
 
