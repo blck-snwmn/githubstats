@@ -2,6 +2,32 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Project Overview
+
+GitHub language statistics generator that creates SVG badges showing programming language usage across repositories. Built with Cloudflare Workers and Hono framework for blazing-fast performance at the edge.
+
+## Project Structure
+
+```
+.
+├── src/
+│   ├── index.ts                 # Main Cloudflare Worker entry point
+│   ├── components/              # React components for SVG generation
+│   │   ├── Card.tsx            # Base card component
+│   │   ├── CompactLanguageStats.tsx  # Compact language stats display
+│   │   └── LanguageStats.tsx   # Full language stats display
+│   └── lib/                     # Core libraries
+│       ├── github-api.ts        # GitHub GraphQL API client
+│       ├── language-stats-svg.ts # SVG generation using Satori
+│       └── svg-generator.ts     # SVG generator utilities
+├── worker-configuration.d.ts    # Cloudflare Worker types
+├── wrangler.jsonc              # Wrangler configuration
+├── biome.json                  # Code formatter configuration
+├── oxlintrc.json              # Linter configuration
+├── package.json               # Project dependencies
+└── tsconfig.json              # TypeScript configuration
+```
+
 ## Package Manager
 
 This project uses **pnpm** as the package manager. Use `pnpm` instead of `npm` for all dependency management.
@@ -23,9 +49,11 @@ pnpm run cf-typegen
 
 # Lint code with OxLint
 pnpm run lint
+pnpm run lint:fix    # Auto-fix linting issues
 
 # Format code with Biome
-pnpm run format
+pnpm run format      # Check formatting
+pnpm run format:fix  # Auto-format code
 ```
 
 ## Architecture Overview
@@ -60,14 +88,16 @@ This is a Cloudflare Workers application built with Hono framework that generate
 
 - **Required Secrets**: `GITHUB_TOKEN` (must be set via `wrangler secret put`)
 - **Environment Variables**: `GITHUB_USERNAME` (configured in wrangler.jsonc)
-- **Type Safety**: Use `CloudflareBindings` interface after running `npm run cf-typegen`
+- **Type Safety**: Use `CloudflareBindings` interface after running `pnpm run cf-typegen`
 
 ### Caching Strategy
 
-Cache headers are defined in `src/lib/cache.ts`:
-- Success responses: 5-minute cache with 1-hour stale-while-revalidate
-- Error responses: 1-minute cache with 5-minute stale-while-revalidate
-- CDN cache: 1-hour cache with 24-hour stale-while-revalidate for successful responses
+Caching is implemented directly in `src/index.ts` with the following behavior:
+- Uses Cloudflare Workers Cache API
+- Cache revalidation threshold: 1 hour
+- Stale-while-revalidate strategy: serves cached content while fetching fresh data in the background
+- Cache key based on request URL
+- Cached responses include `X-Cached-At` header for age tracking
 
 ## Development Notes
 
@@ -76,9 +106,139 @@ Cache headers are defined in `src/lib/cache.ts`:
 - Authentication errors return 401 with specific error messages
 - All language statistics are fetched in a single GraphQL query to minimize API calls
 
-## Code Quality
+## Development Workflow
 
-When making changes to the codebase:
-- Run `pnpm run lint` to check for code quality issues with OxLint
-- Run `pnpm run format` to automatically format code with Biome
-- These commands should be run before committing changes to ensure code consistency
+### Local Development
+
+1. **Setup Environment**:
+   ```bash
+   # Clone repository
+   git clone https://github.com/blck-snwmn/githubstats.git
+   cd githubstats
+   
+   # Install dependencies
+   pnpm install
+   
+   # Set up GitHub token
+   wrangler secret put GITHUB_TOKEN
+   # Enter your GitHub personal access token when prompted
+   ```
+
+2. **Start Development Server**:
+   ```bash
+   pnpm run dev
+   # Server starts at http://localhost:8787
+   # Access stats at: http://localhost:8787/stats/language
+   ```
+
+3. **Debug Tips**:
+   - Check console logs in the terminal running `wrangler dev`
+   - Use browser DevTools to inspect SVG output
+   - Test with different GitHub usernames by modifying `wrangler.jsonc`
+
+### Code Quality
+
+Before committing changes:
+1. **Lint your code**: `pnpm run lint` (or `pnpm run lint:fix` to auto-fix)
+2. **Format your code**: `pnpm run format:fix`
+3. **Generate types**: `pnpm run cf-typegen` (if you modified bindings)
+
+### Deployment
+
+1. **Test locally** with `pnpm run dev`
+2. **Deploy to production**:
+   ```bash
+   pnpm run deploy
+   ```
+3. The deployed worker will be available at your configured Cloudflare Workers domain
+
+## Error Handling
+
+The application handles various error scenarios:
+- **Missing GitHub Token**: Returns 401 with "GitHub token not configured"
+- **Invalid Token**: Returns 401 with "Invalid authentication credentials"
+- **API Errors**: Gracefully handles GitHub API errors
+- **Cache Failures**: Falls back to fetching fresh data if cache operations fail
+
+## Performance Considerations
+
+- **Single GraphQL Query**: All repository data is fetched in one request to minimize API calls
+- **Pagination Support**: Handles users with many repositories (up to 100 per page)
+- **Font Caching**: Inter font is fetched from CDN and should be cached by browsers
+- **SVG Generation**: Satori provides efficient React-to-SVG conversion
+
+## API Usage
+
+### Endpoint
+
+```
+GET /stats/language
+```
+
+Returns an SVG image (400x200px) showing language statistics for the configured GitHub user.
+
+### Example Usage
+
+```html
+<!-- In README.md -->
+![Language Stats](https://your-worker.workers.dev/stats/language)
+
+<!-- In HTML -->
+<img src="https://your-worker.workers.dev/stats/language" alt="Language Stats" />
+```
+
+### Response Headers
+
+- `Content-Type: image/svg+xml`
+- `Cache-Control: public, max-age=300` (5 minutes)
+- `X-Cached-At: [timestamp]` (when serving from cache)
+
+## Customization
+
+### Modifying Visual Design
+
+1. **Colors**: Edit language colors in `src/components/CompactLanguageStats.tsx` (languageColors object)
+2. **Layout**: Modify grid layout and spacing in the component's JSX
+3. **Size**: Change dimensions in `src/lib/language-stats-svg.ts` (width/height parameters)
+4. **Font**: Update font URL in `src/lib/language-stats-svg.ts`
+
+### Adding New Languages
+
+To add support for a new programming language:
+1. Add the language and its color to the `languageColors` object in `CompactLanguageStats.tsx`
+2. The GitHub API will automatically include it if present in your repositories
+
+### Changing Data Source
+
+To fetch data for a different user:
+1. Update `GITHUB_USERNAME` in `wrangler.jsonc`
+2. Ensure the GitHub token has access to the target user's repositories
+
+## Troubleshooting
+
+### Common Issues
+
+1. **"GitHub token not configured" error**:
+   - Ensure `GITHUB_TOKEN` is set via `wrangler secret put GITHUB_TOKEN`
+   - Token needs `public_repo` scope for public repositories
+
+2. **Blank or broken SVG**:
+   - Check browser console for errors
+   - Verify font is loading from CDN
+   - Ensure all dependencies are installed
+
+3. **Development server not starting**:
+   - Check if port 8787 is already in use
+   - Ensure `wrangler` is properly installed
+   - Try `pnpm install` to reinstall dependencies
+
+4. **Languages not showing up**:
+   - Verify the language exists in your GitHub repositories
+   - Check if the repository is not a fork (forks are excluded)
+   - Ensure the language has a color defined in `languageColors`
+
+## Security Notes
+
+- **GitHub Token**: Never commit your GitHub token to the repository
+- **Rate Limiting**: GitHub API has rate limits; caching helps mitigate this
+- **CORS**: SVGs are served with appropriate headers for embedding in web pages
