@@ -1,21 +1,33 @@
-```txt
-npm install
-npm run dev
+# readmewk
+
+Cloudflare Workers app that returns GitHub stats as SVG images
+
+## Setup
+
+```bash
+pnpm install
 ```
 
-```txt
-npm run deploy
+### Environment Variables
+
+- `GITHUB_USERNAME`: Set in wrangler.jsonc
+- `GITHUB_TOKEN`: 
+  - Local development: Add to `.dev.vars`
+  - Production: `pnpm wrangler secret put GITHUB_TOKEN`
+
+```bash
+pnpm run dev      # Development server
+pnpm run deploy   # Deploy
 ```
 
-[For generating/synchronizing types based on your Worker configuration run](https://developers.cloudflare.com/workers/wrangler/commands/#types):
+## Usage
 
-```txt
-npm run cf-typegen
-```
+### Endpoints
 
-Pass the `CloudflareBindings` as generics when instantiation `Hono`:
+- `GET /stats/language` - Language statistics (400x200px SVG)
 
-```ts
-// src/index.ts
-const app = new Hono<{ Bindings: CloudflareBindings }>()
+### Embedding
+
+```markdown
+![Language Stats](https://your-worker.workers.dev/stats/language)
 ```
