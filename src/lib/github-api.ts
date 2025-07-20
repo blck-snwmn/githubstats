@@ -2,7 +2,143 @@ interface LanguageStats {
   [language: string]: number;
 }
 
+interface RepositoryNode {
+  name: string;
+  isFork: boolean;
+  languages: {
+    edges: Array<{
+      size: number;
+      node: {
+        name: string;
+        color: string | null;
+      };
+    }>;
+  };
+}
+
+interface GraphQLResponse<T> {
+  errors?: Array<{ message: string }>;
+  data?: T;
+}
+
 const GITHUB_GRAPHQL_API = "https://api.github.com/graphql";
+
+const USER_LANGUAGE_QUERY = `
+  query($username: String!, $cursor: String) {
+    user(login: $username) {
+      repositories(first: 100, after: $cursor, ownerAffiliations: OWNER, orderBy: {field: UPDATED_AT, direction: DESC}) {
+        edges {
+          node {
+            name
+            isFork
+            languages(first: 10, orderBy: {field: SIZE, direction: DESC}) {
+              edges {
+                size
+                node {
+                  name
+                  color
+                }
+              }
+            }
+          }
+        }
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+      }
+    }
+  }
+`;
+
+const RECENT_LANGUAGE_QUERY = `
+  query($username: String!, $repoLimit: Int!) {
+    user(login: $username) {
+      repositories(first: $repoLimit, ownerAffiliations: OWNER, orderBy: {field: PUSHED_AT, direction: DESC}) {
+        edges {
+          node {
+            name
+            isFork
+            languages(first: 10, orderBy: {field: SIZE, direction: DESC}) {
+              edges {
+                size
+                node {
+                  name
+                  color
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+async function executeGraphQLQuery<T>(
+  query: string,
+  variables: Record<string, unknown>,
+  githubToken: string,
+): Promise<T> {
+  const response = await fetch(GITHUB_GRAPHQL_API, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${githubToken}`,
+      "User-Agent": "readmewk-svg-generator",
+    },
+    body: JSON.stringify({
+      query,
+      variables,
+    }),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`GitHub API error: ${response.status} - ${errorText}`);
+  }
+
+  const data = (await response.json()) as GraphQLResponse<T>;
+
+  if (data.errors) {
+    throw new Error(`GraphQL errors: ${JSON.stringify(data.errors)}`);
+  }
+
+  if (!data.data) {
+    throw new Error("No data returned from GraphQL");
+  }
+
+  return data.data;
+}
+
+function processLanguageData(repositories: RepositoryNode[]): LanguageStats {
+  const languageBytes: LanguageStats = {};
+
+  for (const repo of repositories) {
+    if (!repo.isFork) {
+      const languages = repo.languages.edges;
+      for (const langEdge of languages) {
+        const language = langEdge.node.name;
+        const size = langEdge.size;
+        languageBytes[language] = (languageBytes[language] || 0) + size;
+      }
+    }
+  }
+
+  return languageBytes;
+}
+
+interface UserRepositoriesData {
+  user: {
+    repositories: {
+      edges: Array<{ node: RepositoryNode }>;
+      pageInfo: {
+        hasNextPage: boolean;
+        endCursor: string | null;
+      };
+    };
+  };
+}
 
 export async function fetchUserLanguageStats(
   username: string,
@@ -12,117 +148,38 @@ export async function fetchUserLanguageStats(
     throw new Error("GitHub token is required for API access");
   }
 
-  const query = `
-    query($username: String!, $cursor: String) {
-      user(login: $username) {
-        repositories(first: 100, after: $cursor, ownerAffiliations: OWNER, orderBy: {field: UPDATED_AT, direction: DESC}) {
-          edges {
-            node {
-              name
-              isFork
-              languages(first: 10, orderBy: {field: SIZE, direction: DESC}) {
-                edges {
-                  size
-                  node {
-                    name
-                    color
-                  }
-                }
-              }
-            }
-          }
-          pageInfo {
-            hasNextPage
-            endCursor
-          }
-        }
-      }
-    }
-  `;
-
-  const languageBytes: LanguageStats = {};
+  const allLanguageBytes: LanguageStats = {};
   let hasNextPage = true;
   let cursor: string | null = null;
 
   try {
     while (hasNextPage) {
       // eslint-disable-next-line no-await-in-loop
-      const response = await fetch(GITHUB_GRAPHQL_API, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${githubToken}`,
-          "User-Agent": "readmewk-svg-generator",
-        },
-        body: JSON.stringify({
-          query,
-          variables: { username, cursor },
-        }),
-      });
+      const response: UserRepositoriesData = await executeGraphQLQuery<UserRepositoriesData>(
+        USER_LANGUAGE_QUERY,
+        { username, cursor },
+        githubToken,
+      );
 
-      if (!response.ok) {
-        // eslint-disable-next-line no-await-in-loop
-        const errorText = await response.text();
-        throw new Error(`GitHub API error: ${response.status} - ${errorText}`);
-      }
-
-      // eslint-disable-next-line no-await-in-loop
-      const data = (await response.json()) as {
-        errors?: Array<{ message: string }>;
-        data?: {
-          user: {
-            repositories: {
-              edges: Array<{
-                node: {
-                  name: string;
-                  isFork: boolean;
-                  languages: {
-                    edges: Array<{
-                      size: number;
-                      node: {
-                        name: string;
-                        color: string | null;
-                      };
-                    }>;
-                  };
-                };
-              }>;
-              pageInfo: {
-                hasNextPage: boolean;
-                endCursor: string | null;
-              };
-            };
-          };
-        };
-      };
-
-      if (data.errors) {
-        throw new Error(`GraphQL errors: ${JSON.stringify(data.errors)}`);
-      }
-
-      const repositories = data.data?.user?.repositories;
-
+      const repositories = response.user.repositories;
       if (!repositories) {
         throw new Error("User not found or no repositories");
       }
 
-      // Process language data
-      for (const edge of repositories.edges) {
-        if (!edge.node.isFork) {
-          const languages = edge.node.languages.edges;
-          for (const langEdge of languages) {
-            const language = langEdge.node.name;
-            const size = langEdge.size;
-            languageBytes[language] = (languageBytes[language] || 0) + size;
-          }
-        }
+      // Process and merge language data
+      const pageLanguageBytes = processLanguageData(
+        repositories.edges.map((edge: { node: RepositoryNode }) => edge.node),
+      );
+
+      for (const [language, bytes] of Object.entries(pageLanguageBytes)) {
+        allLanguageBytes[language] = (allLanguageBytes[language] || 0) + bytes;
       }
 
       hasNextPage = repositories.pageInfo.hasNextPage;
       cursor = repositories.pageInfo.endCursor;
     }
 
-    return languageBytes;
+    return allLanguageBytes;
   } catch (error) {
     console.error("Error fetching GitHub data:", error);
     throw error;
@@ -157,6 +214,42 @@ export interface RecentRepository {
   } | null;
 }
 
+const RECENT_REPOSITORIES_QUERY = `
+  query($username: String!, $limit: Int!) {
+    user(login: $username) {
+      repositories(first: $limit, ownerAffiliations: OWNER, orderBy: {field: PUSHED_AT, direction: DESC}) {
+        edges {
+          node {
+            name
+            pushedAt
+            primaryLanguage {
+              name
+              color
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+interface RecentRepositoriesQueryData {
+  user: {
+    repositories: {
+      edges: Array<{
+        node: {
+          name: string;
+          pushedAt: string;
+          primaryLanguage: {
+            name: string;
+            color: string | null;
+          } | null;
+        };
+      }>;
+    };
+  };
+}
+
 export async function fetchRecentRepositories(
   username: string,
   githubToken?: string,
@@ -166,73 +259,17 @@ export async function fetchRecentRepositories(
     throw new Error("GitHub token is required for API access");
   }
 
-  const query = `
-    query($username: String!, $limit: Int!) {
-      user(login: $username) {
-        repositories(first: $limit, ownerAffiliations: OWNER, orderBy: {field: PUSHED_AT, direction: DESC}) {
-          edges {
-            node {
-              name
-              pushedAt
-              primaryLanguage {
-                name
-                color
-              }
-            }
-          }
-        }
-      }
-    }
-  `;
-
   try {
-    const response = await fetch(GITHUB_GRAPHQL_API, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${githubToken}`,
-        "User-Agent": "readmewk-svg-generator",
-      },
-      body: JSON.stringify({
-        query,
-        variables: { username, limit },
-      }),
-    });
+    const data = await executeGraphQLQuery<RecentRepositoriesQueryData>(
+      RECENT_REPOSITORIES_QUERY,
+      { username, limit },
+      githubToken,
+    );
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`GitHub API error: ${response.status} - ${errorText}`);
-    }
-
-    const data = (await response.json()) as {
-      errors?: Array<{ message: string }>;
-      data?: {
-        user: {
-          repositories: {
-            edges: Array<{
-              node: {
-                name: string;
-                pushedAt: string;
-                primaryLanguage: {
-                  name: string;
-                  color: string | null;
-                } | null;
-              };
-            }>;
-          };
-        };
-      };
-    };
-
-    if (data.errors) {
-      throw new Error(`GraphQL errors: ${JSON.stringify(data.errors)}`);
-    }
-
-    const repositories = data.data?.user?.repositories;
-
-    if (!repositories) {
+    if (!data.user?.repositories) {
       throw new Error("User not found or no repositories");
     }
+    const repositories = data.user.repositories;
 
     return repositories.edges.map((edge) => ({
       name: edge.node.name,
@@ -245,6 +282,14 @@ export async function fetchRecentRepositories(
   }
 }
 
+interface RecentRepositoriesData {
+  user: {
+    repositories: {
+      edges: Array<{ node: RepositoryNode }>;
+    };
+  };
+}
+
 export async function fetchRecentLanguageStats(
   username: string,
   githubToken?: string,
@@ -254,99 +299,20 @@ export async function fetchRecentLanguageStats(
     throw new Error("GitHub token is required for API access");
   }
 
-  const query = `
-    query($username: String!, $repoLimit: Int!) {
-      user(login: $username) {
-        repositories(first: $repoLimit, ownerAffiliations: OWNER, orderBy: {field: PUSHED_AT, direction: DESC}) {
-          edges {
-            node {
-              name
-              isFork
-              languages(first: 10, orderBy: {field: SIZE, direction: DESC}) {
-                edges {
-                  size
-                  node {
-                    name
-                    color
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  `;
-
-  const languageBytes: LanguageStats = {};
-
   try {
-    const response = await fetch(GITHUB_GRAPHQL_API, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${githubToken}`,
-        "User-Agent": "readmewk-svg-generator",
-      },
-      body: JSON.stringify({
-        query,
-        variables: { username, repoLimit },
-      }),
-    });
+    const data = await executeGraphQLQuery<RecentRepositoriesData>(
+      RECENT_LANGUAGE_QUERY,
+      { username, repoLimit },
+      githubToken,
+    );
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`GitHub API error: ${response.status} - ${errorText}`);
-    }
-
-    const data = (await response.json()) as {
-      errors?: Array<{ message: string }>;
-      data?: {
-        user: {
-          repositories: {
-            edges: Array<{
-              node: {
-                name: string;
-                isFork: boolean;
-                languages: {
-                  edges: Array<{
-                    size: number;
-                    node: {
-                      name: string;
-                      color: string | null;
-                    };
-                  }>;
-                };
-              };
-            }>;
-          };
-        };
-      };
-    };
-
-    if (data.errors) {
-      throw new Error(`GraphQL errors: ${JSON.stringify(data.errors)}`);
-    }
-
-    const repositories = data.data?.user?.repositories;
-
-    if (!repositories) {
+    if (!data.user?.repositories) {
       throw new Error("User not found or no repositories");
     }
+    const repositories = data.user.repositories;
 
-    // Process language data
-    for (const edge of repositories.edges) {
-      if (!edge.node.isFork) {
-        const languages = edge.node.languages.edges;
-        for (const langEdge of languages) {
-          const language = langEdge.node.name;
-          const size = langEdge.size;
-          languageBytes[language] = (languageBytes[language] || 0) + size;
-        }
-      }
-    }
-
-    return languageBytes;
+    // Process language data from recent repositories
+    return processLanguageData(repositories.edges.map((edge) => edge.node));
   } catch (error) {
     console.error("Error fetching recent language stats:", error);
     throw error;
