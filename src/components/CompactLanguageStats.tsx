@@ -1,4 +1,5 @@
 import type { CSSProperties } from "hono/jsx";
+import { languageColors } from "../lib/language-colors";
 
 interface LanguageData {
   language: string;
@@ -11,48 +12,23 @@ interface CompactLanguageStatsProps {
   languages: LanguageData[];
 }
 
-// Language colors based on GitHub's language colors
-const languageColors: Record<string, string> = {
-  JavaScript: "#f1e05a",
-  TypeScript: "#3178c6",
-  Python: "#3572A5",
-  Java: "#b07219",
-  Go: "#00ADD8",
-  Rust: "#dea584",
-  Ruby: "#701516",
-  PHP: "#4F5D95",
-  "C++": "#f34b7d",
-  C: "#555555",
-  "C#": "#178600",
-  Swift: "#FA7343",
-  Kotlin: "#A97BFF",
-  Dart: "#00B4AB",
-  Shell: "#89e051",
-  HTML: "#e34c26",
-  CSS: "#563d7c",
-  Vue: "#41b883",
-  React: "#61dafb",
-  Svelte: "#ff3e00",
-  Dockerfile: "#2496ED",
-  Makefile: "#427819",
-  Vim: "#019733",
-};
-
 export const CompactLanguageStats = ({ languages }: CompactLanguageStatsProps) => {
   const containerStyle: CSSProperties = {
     width: "100%",
     height: "100%",
     display: "flex",
     flexDirection: "column",
-    padding: "20px",
+    padding: "8px 16px 12px",
     backgroundColor: "#0d1117",
     color: "#c9d1d9",
   };
 
   const titleStyle: CSSProperties = {
-    fontSize: "18px",
-    fontWeight: "700",
-    marginBottom: "16px",
+    fontSize: "16px",
+    fontWeight: "600",
+    margin: 0,
+    marginBottom: "8px",
+    color: "#58a6ff",
   };
 
   // Progress bar container
@@ -77,7 +53,7 @@ export const CompactLanguageStats = ({ languages }: CompactLanguageStatsProps) =
   const languageItemStyle: CSSProperties = {
     display: "flex",
     alignItems: "center",
-    gap: "6px",
+    gap: "8px",
     width: "48%",
     padding: "4px",
   };
