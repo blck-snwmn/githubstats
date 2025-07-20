@@ -1,5 +1,5 @@
 {
-	"name": "readmewk",
+	"name": "githubstats",
 	"type": "module",
 	"packageManager": "pnpm@9.14.1",
 	"scripts": {
