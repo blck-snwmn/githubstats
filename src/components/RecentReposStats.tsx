@@ -1,6 +1,13 @@
 import type { JSX } from "hono/jsx";
 import type { RecentRepository } from "../lib/github-api";
 import { languageColors } from "../lib/language-colors";
+import {
+  cardContainerStyle,
+  titleStyle,
+  colorDotStyle,
+  secondaryTextStyle,
+  colors,
+} from "../lib/common-styles";
 
 interface RecentReposStatsProps {
   repositories: RecentRepository[];
@@ -35,28 +42,12 @@ export function RecentReposStats({ repositories }: RecentReposStatsProps): JSX.E
   return (
     <div
       style={{
+        ...cardContainerStyle,
         width: "400px",
         height: "200px",
-        backgroundColor: "#0d1117",
-        borderRadius: "8px",
-        padding: "8px 16px 12px",
-        fontFamily: "Inter, sans-serif",
-        color: "#c9d1d9",
-        display: "flex",
-        flexDirection: "column",
       }}
     >
-      <h2
-        style={{
-          fontSize: "16px",
-          fontWeight: "600",
-          margin: 0,
-          marginBottom: "8px",
-          color: "#58a6ff",
-        }}
-      >
-        Recently Updated
-      </h2>
+      <h2 style={titleStyle}>Recently Updated</h2>
       <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
         {repositories.map((repo, index) => (
           <div
@@ -84,23 +75,20 @@ export function RecentReposStats({ repositories }: RecentReposStatsProps): JSX.E
               {repo.primaryLanguage && (
                 <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
                   <div
-                    style={{
-                      width: "8px",
-                      height: "8px",
-                      borderRadius: "50%",
-                      backgroundColor:
-                        languageColors[repo.primaryLanguage.name] ||
+                    style={colorDotStyle(
+                      8,
+                      languageColors[repo.primaryLanguage.name] ||
                         repo.primaryLanguage.color ||
-                        "#586069",
-                    }}
+                        colors.language.default,
+                    )}
                   />
-                  <span style={{ fontSize: "12px", color: "#8b949e" }}>
+                  <span style={{ ...secondaryTextStyle, fontSize: "12px" }}>
                     {repo.primaryLanguage.name}
                   </span>
                 </div>
               )}
             </div>
-            <span style={{ fontSize: "12px", color: "#8b949e", flexShrink: 0 }}>
+            <span style={{ ...secondaryTextStyle, fontSize: "12px", flexShrink: 0 }}>
               {formatDate(repo.pushedAt)}
             </span>
           </div>

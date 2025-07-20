@@ -1,5 +1,14 @@
 import type { CSSProperties } from "hono/jsx";
 import { languageColors } from "../lib/language-colors";
+import {
+  cardContainerStyle,
+  titleStyle,
+  colorDotStyle,
+  progressBarBackgroundStyle,
+  secondaryTextStyle,
+  languageItemStyle,
+  colors,
+} from "../lib/common-styles";
 
 interface LanguageData {
   language: string;
@@ -14,30 +23,17 @@ interface CompactLanguageStatsProps {
 
 export const CompactLanguageStats = ({ languages }: CompactLanguageStatsProps) => {
   const containerStyle: CSSProperties = {
+    ...cardContainerStyle,
     width: "100%",
     height: "100%",
-    display: "flex",
-    flexDirection: "column",
-    padding: "8px 16px 12px",
-    backgroundColor: "#0d1117",
-    color: "#c9d1d9",
-  };
-
-  const titleStyle: CSSProperties = {
-    fontSize: "16px",
-    fontWeight: "600",
-    margin: 0,
-    marginBottom: "8px",
-    color: "#58a6ff",
   };
 
   // Progress bar container
   const progressBarContainerStyle: CSSProperties = {
+    ...progressBarBackgroundStyle,
     width: "100%",
     height: "8px",
-    backgroundColor: "#161b22",
     borderRadius: "4px",
-    overflow: "hidden",
     display: "flex",
     marginBottom: "20px",
   };
@@ -49,22 +45,12 @@ export const CompactLanguageStats = ({ languages }: CompactLanguageStatsProps) =
     gap: "8px",
   };
 
-  // Individual language item
-  const languageItemStyle: CSSProperties = {
-    display: "flex",
-    alignItems: "center",
-    gap: "8px",
+  // Individual language item (extends base style)
+  const languageListItemStyle: CSSProperties = {
+    ...languageItemStyle,
     width: "48%",
     padding: "4px",
   };
-
-  const colorDotStyle = (color: string): CSSProperties => ({
-    width: "10px",
-    height: "10px",
-    borderRadius: "50%",
-    backgroundColor: color,
-    flexShrink: 0,
-  });
 
   const languageNameStyle: CSSProperties = {
     fontSize: "12px",
@@ -73,8 +59,8 @@ export const CompactLanguageStats = ({ languages }: CompactLanguageStatsProps) =
   };
 
   const percentageStyle: CSSProperties = {
+    ...secondaryTextStyle,
     fontSize: "12px",
-    color: "#8b949e",
   };
 
   // Take only top 6 languages
@@ -90,7 +76,7 @@ export const CompactLanguageStats = ({ languages }: CompactLanguageStatsProps) =
           const segmentStyle: CSSProperties = {
             width: `${lang.percentage}%`,
             height: "100%",
-            backgroundColor: languageColors[lang.language] || "#586069",
+            backgroundColor: languageColors[lang.language] || colors.language.default,
             // Add small gap between segments except for the first one
             marginLeft: index > 0 ? "1px" : "0",
           };
@@ -101,8 +87,10 @@ export const CompactLanguageStats = ({ languages }: CompactLanguageStatsProps) =
       {/* Grid of language items */}
       <div style={gridContainerStyle}>
         {topLanguages.map((lang) => (
-          <div key={lang.language} style={languageItemStyle}>
-            <div style={colorDotStyle(languageColors[lang.language] || "#586069")} />
+          <div key={lang.language} style={languageListItemStyle}>
+            <div
+              style={colorDotStyle(10, languageColors[lang.language] || colors.language.default)}
+            />
             <span style={languageNameStyle}>{lang.language}</span>
             <span style={percentageStyle}>{lang.percentage.toFixed(1)}%</span>
           </div>

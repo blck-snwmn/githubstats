@@ -41,7 +41,7 @@ export function RecentLanguageStats({ languages }: RecentLanguageStatsProps): JS
                     width: "12px",
                     height: "12px",
                     borderRadius: "50%",
-                    backgroundColor: languageColors[lang.language] || "#586069",
+                    backgroundColor: languageColors[lang.language] || colors.language.default,
                   }}
                 />
                 <span style={{ fontSize: "14px", fontWeight: "500" }}>{lang.language}</span>
@@ -64,7 +64,7 @@ export function RecentLanguageStats({ languages }: RecentLanguageStatsProps): JS
                 style={{
                   width: `${lang.percentage}%`,
                   height: "100%",
-                  backgroundColor: languageColors[lang.language] || "#586069",
+                  backgroundColor: languageColors[lang.language] || colors.language.default,
                   borderRadius: "3px",
                 }}
               />
