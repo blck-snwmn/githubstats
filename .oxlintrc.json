@@ -1,13 +1,64 @@
 {
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": [
+    "promise",
+    "import",
+    "react",
+    "typescript",
+    "unicorn",
+    "node"
+  ],
   "categories": {
-    "correctness": "warn"
+    "correctness": "error",
+    "suspicious": "warn",
+    "perf": "warn"
   },
   "rules": {
-    "import/no-cycle": "error",
-    "import/no-self-import": "error",
-    "no-console": "warn",
-    "eqeqeq": ["error", "always"],
-    "prefer-const": "error"
-  }
+    "no-console": [
+      "warn",
+      {
+        "allow": [
+          "warn",
+          "error",
+          "info"
+        ]
+      }
+    ],
+    "typescript/no-explicit-any": "warn",
+    "typescript/no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_"
+      }
+    ],
+    "react/jsx-no-target-blank": "error",
+    "react/react-in-jsx-scope": "off",
+    "import/no-duplicates": "error",
+    "eslint/max-lines-per-function": [
+      "error",
+      {
+        "max": 100
+      }
+    ],
+    "eslint/max-nested-callbacks": [
+      "error",
+      {
+        "max": 20
+      }
+    ],
+    "eslint/max-depth": [
+      "warn",
+      {
+        "max": 10
+      }
+    ]
+  },
+  "ignorePatterns": [
+    "node_modules",
+    "dist",
+    "build",
+    "coverage",
+    "*.min.js",
+    "*.d.ts"
+  ]
 }

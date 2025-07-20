@@ -9,41 +9,41 @@ interface RecentReposStatsProps {
   repositories: RecentRepository[];
 }
 
+const formatDate = (dateString: string): string => {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffTime = Math.abs(now.getTime() - date.getTime());
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+  if (diffDays === 0) {
+    const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
+    if (diffHours === 0) {
+      const diffMinutes = Math.floor(diffTime / (1000 * 60));
+      return `${diffMinutes}m ago`;
+    }
+    return `${diffHours}h ago`;
+  }
+  if (diffDays < 7) {
+    return `${diffDays}d ago`;
+  }
+  if (diffDays < 30) {
+    const weeks = Math.floor(diffDays / 7);
+    return `${weeks}w ago`;
+  }
+  const months = Math.floor(diffDays / 30);
+  return `${months}mo ago`;
+};
+
+// Language color dot
+const colorDotStyle = (size: number, color: string): CSSProperties => ({
+  width: `${size}px`,
+  height: `${size}px`,
+  borderRadius: "50%",
+  backgroundColor: color,
+  flexShrink: 0,
+});
+
 export function RecentReposStats({ repositories }: RecentReposStatsProps) {
-  const formatDate = (dateString: string): string => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffTime = Math.abs(now.getTime() - date.getTime());
-    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-
-    if (diffDays === 0) {
-      const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
-      if (diffHours === 0) {
-        const diffMinutes = Math.floor(diffTime / (1000 * 60));
-        return `${diffMinutes}m ago`;
-      }
-      return `${diffHours}h ago`;
-    }
-    if (diffDays < 7) {
-      return `${diffDays}d ago`;
-    }
-    if (diffDays < 30) {
-      const weeks = Math.floor(diffDays / 7);
-      return `${weeks}w ago`;
-    }
-    const months = Math.floor(diffDays / 30);
-    return `${months}mo ago`;
-  };
-
-  // Language color dot
-  const colorDotStyle = (size: number, color: string): CSSProperties => ({
-    width: `${size}px`,
-    height: `${size}px`,
-    borderRadius: "50%",
-    backgroundColor: color,
-    flexShrink: 0,
-  });
-
   const repoItemStyle: CSSProperties = {
     display: "flex",
     alignItems: "center",
@@ -80,8 +80,8 @@ export function RecentReposStats({ repositories }: RecentReposStatsProps) {
   return (
     <Card title="Recently Updated" width={400} height={200}>
       <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-        {repositories.map((repo, index) => (
-          <div key={index} style={repoItemStyle}>
+        {repositories.map((repo) => (
+          <div key={repo.name} style={repoItemStyle}>
             <div style={{ display: "flex", alignItems: "center", gap: "8px", flex: 1 }}>
               <span style={repoNameStyle}>{repo.name}</span>
               {repo.primaryLanguage && (

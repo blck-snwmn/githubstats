@@ -15,6 +15,15 @@ interface CompactLanguageStatsProps {
   languages: LanguageData[];
 }
 
+// Language color dot
+const colorDotStyle = (size: number, color: string): CSSProperties => ({
+  width: `${size}px`,
+  height: `${size}px`,
+  borderRadius: "50%",
+  backgroundColor: color,
+  flexShrink: 0,
+});
+
 export const CompactLanguageStats = ({ languages }: CompactLanguageStatsProps) => {
   // Progress bar container
   const progressBarContainerStyle: CSSProperties = {
@@ -42,15 +51,6 @@ export const CompactLanguageStats = ({ languages }: CompactLanguageStatsProps) =
     width: "48%",
     padding: "4px",
   };
-
-  // Language color dot
-  const colorDotStyle = (size: number, color: string): CSSProperties => ({
-    width: `${size}px`,
-    height: `${size}px`,
-    borderRadius: "50%",
-    backgroundColor: color,
-    flexShrink: 0,
-  });
 
   const languageNameStyle: CSSProperties = {
     fontSize: fonts.size.small,

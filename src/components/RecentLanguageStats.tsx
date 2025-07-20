@@ -8,16 +8,23 @@ interface RecentLanguageStatsProps {
   languages: Array<{ language: string; bytes: number; percentage: number }>;
 }
 
-export function RecentLanguageStats({ languages }: RecentLanguageStatsProps) {
-  // Language color dot
-  const colorDotStyle = (size: number, color: string): CSSProperties => ({
-    width: `${size}px`,
-    height: `${size}px`,
-    borderRadius: "50%",
-    backgroundColor: color,
-    flexShrink: 0,
-  });
+// Language color dot
+const colorDotStyle = (size: number, color: string): CSSProperties => ({
+  width: `${size}px`,
+  height: `${size}px`,
+  borderRadius: "50%",
+  backgroundColor: color,
+  flexShrink: 0,
+});
 
+const progressBarStyle = (percentage: number, color: string): CSSProperties => ({
+  width: `${percentage}%`,
+  height: "100%",
+  backgroundColor: color,
+  borderRadius: "3px",
+});
+
+export function RecentLanguageStats({ languages }: RecentLanguageStatsProps) {
   const languageItemStyle: CSSProperties = {
     display: "flex",
     alignItems: "center",
@@ -49,20 +56,16 @@ export function RecentLanguageStats({ languages }: RecentLanguageStatsProps) {
     display: "flex",
   };
 
-  const progressBarStyle = (percentage: number, color: string): CSSProperties => ({
-    width: `${percentage}%`,
-    height: "100%",
-    backgroundColor: color,
-    borderRadius: "3px",
-  });
-
   return (
     <Card title="Recently Used Languages" width={400} height={150}>
       <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-        {languages.map((lang, index) => {
+        {languages.map((lang) => {
           const color = languageColors[lang.language] || colors.language.default;
           return (
-            <div key={index} style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
+            <div
+              key={lang.language}
+              style={{ display: "flex", flexDirection: "column", gap: "3px" }}
+            >
               <div style={languageItemStyle}>
                 <div style={languageNameContainerStyle}>
                   <div style={colorDotStyle(12, color)} />

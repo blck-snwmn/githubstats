@@ -46,6 +46,7 @@ export async function fetchUserLanguageStats(
 
   try {
     while (hasNextPage) {
+      // eslint-disable-next-line no-await-in-loop
       const response = await fetch(GITHUB_GRAPHQL_API, {
         method: "POST",
         headers: {
@@ -60,10 +61,12 @@ export async function fetchUserLanguageStats(
       });
 
       if (!response.ok) {
+        // eslint-disable-next-line no-await-in-loop
         const errorText = await response.text();
         throw new Error(`GitHub API error: ${response.status} - ${errorText}`);
       }
 
+      // eslint-disable-next-line no-await-in-loop
       const data = (await response.json()) as {
         errors?: Array<{ message: string }>;
         data?: {

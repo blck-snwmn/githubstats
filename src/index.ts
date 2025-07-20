@@ -27,7 +27,7 @@ app.get("/stats/language", async (c) => {
     c.executionCtx.waitUntil(
       (async () => {
         try {
-          console.log("Generating language stats SVG for:", username);
+          console.info("Generating language stats SVG for:", username);
           const svg = await generateLanguageStatsSVG({
             username,
             githubToken: c.env.GITHUB_TOKEN,
@@ -86,7 +86,7 @@ app.get("/stats/recent-repos", async (c) => {
     c.executionCtx.waitUntil(
       (async () => {
         try {
-          console.log("Generating recent repos SVG for:", username);
+          console.info("Generating recent repos SVG for:", username);
           const svg = await generateRecentReposSVG({
             username,
             githubToken: c.env.GITHUB_TOKEN,
@@ -145,7 +145,7 @@ app.get("/stats/recent-languages", async (c) => {
     c.executionCtx.waitUntil(
       (async () => {
         try {
-          console.log("Generating recent languages SVG for:", username);
+          console.info("Generating recent languages SVG for:", username);
           const svg = await generateRecentLanguagesSVG({
             username,
             githubToken: c.env.GITHUB_TOKEN,
