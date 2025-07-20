@@ -11,7 +11,8 @@
 		"lint:fix": "oxlint --fix",
 		"format": "biome format .",
 		"format:fix": "biome format --write .",
-		"format:check": "biome format ."
+		"format:check": "biome format .",
+		"typecheck": "tsc --noEmit"
 	},
 	"dependencies": {
 		"hono": "^4.8.5",
@@ -20,6 +21,7 @@
 	"devDependencies": {
 		"@biomejs/biome": "^2.1.2",
 		"oxlint": "^1.7.0",
+		"typescript": "^5.8.3",
 		"wrangler": "^4.24.4"
 	}
 }

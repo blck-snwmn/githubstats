@@ -1,9 +1,12 @@
 // Font loader with caching for Satori SVG generation
 
+// Satori font weight type
+type FontWeight = 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900;
+
 interface FontData {
   name: string;
   data: ArrayBuffer;
-  weight: number;
+  weight: FontWeight;
   style: "normal" | "italic";
 }
 

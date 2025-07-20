@@ -1,4 +1,3 @@
-import type { JSX } from "hono/jsx";
 import type { RecentRepository } from "../lib/github-api";
 import { languageColors } from "../lib/language-colors";
 import {
@@ -13,7 +12,7 @@ interface RecentReposStatsProps {
   repositories: RecentRepository[];
 }
 
-export function RecentReposStats({ repositories }: RecentReposStatsProps): JSX.Element {
+export function RecentReposStats({ repositories }: RecentReposStatsProps) {
   const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
     const now = new Date();

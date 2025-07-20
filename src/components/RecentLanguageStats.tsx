@@ -1,11 +1,11 @@
-import type { JSX } from "hono/jsx";
 import { languageColors } from "../lib/language-colors";
+import { colors } from "../lib/common-styles";
 
 interface RecentLanguageStatsProps {
   languages: Array<{ language: string; bytes: number; percentage: number }>;
 }
 
-export function RecentLanguageStats({ languages }: RecentLanguageStatsProps): JSX.Element {
+export function RecentLanguageStats({ languages }: RecentLanguageStatsProps) {
   return (
     <div
       style={{
