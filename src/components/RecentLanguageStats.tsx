@@ -1,77 +1,82 @@
+import type { CSSProperties } from "hono/jsx";
 import { languageColors } from "../lib/language-colors";
-import { colors } from "../lib/common-styles";
+import { colors } from "../lib/colors";
+import { fonts } from "../lib/fonts";
+import { Card } from "./Card";
 
 interface RecentLanguageStatsProps {
   languages: Array<{ language: string; bytes: number; percentage: number }>;
 }
 
 export function RecentLanguageStats({ languages }: RecentLanguageStatsProps) {
+  // Language color dot
+  const colorDotStyle = (size: number, color: string): CSSProperties => ({
+    width: `${size}px`,
+    height: `${size}px`,
+    borderRadius: "50%",
+    backgroundColor: color,
+    flexShrink: 0,
+  });
+
+  const languageItemStyle: CSSProperties = {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+  };
+
+  const languageNameContainerStyle: CSSProperties = {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+  };
+
+  const languageNameStyle: CSSProperties = {
+    fontSize: fonts.size.body,
+    fontWeight: fonts.weight.medium,
+  };
+
+  const percentageStyle: CSSProperties = {
+    fontSize: fonts.size.body,
+    color: colors.text.secondary,
+  };
+
+  const progressBarContainerStyle: CSSProperties = {
+    width: "100%",
+    height: "6px",
+    backgroundColor: colors.background.secondary,
+    borderRadius: "3px",
+    overflow: "hidden",
+    display: "flex",
+  };
+
+  const progressBarStyle = (percentage: number, color: string): CSSProperties => ({
+    width: `${percentage}%`,
+    height: "100%",
+    backgroundColor: color,
+    borderRadius: "3px",
+  });
+
   return (
-    <div
-      style={{
-        width: "400px",
-        height: "150px",
-        backgroundColor: "#0d1117",
-        borderRadius: "8px",
-        padding: "8px 16px 12px",
-        fontFamily: "Inter, sans-serif",
-        color: "#c9d1d9",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      <h2
-        style={{
-          fontSize: "16px",
-          fontWeight: "600",
-          margin: 0,
-          marginBottom: "8px",
-          color: "#58a6ff",
-        }}
-      >
-        Recently Used Languages
-      </h2>
+    <Card title="Recently Used Languages" width={400} height={150}>
       <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-        {languages.map((lang, index) => (
-          <div key={index} style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                <div
-                  style={{
-                    width: "12px",
-                    height: "12px",
-                    borderRadius: "50%",
-                    backgroundColor: languageColors[lang.language] || colors.language.default,
-                  }}
-                />
-                <span style={{ fontSize: "14px", fontWeight: "500" }}>{lang.language}</span>
+        {languages.map((lang, index) => {
+          const color = languageColors[lang.language] || colors.language.default;
+          return (
+            <div key={index} style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
+              <div style={languageItemStyle}>
+                <div style={languageNameContainerStyle}>
+                  <div style={colorDotStyle(12, color)} />
+                  <span style={languageNameStyle}>{lang.language}</span>
+                </div>
+                <span style={percentageStyle}>{lang.percentage.toFixed(1)}%</span>
               </div>
-              <span style={{ fontSize: "14px", color: "#8b949e" }}>
-                {lang.percentage.toFixed(1)}%
-              </span>
+              <div style={progressBarContainerStyle}>
+                <div style={progressBarStyle(lang.percentage, color)} />
+              </div>
             </div>
-            <div
-              style={{
-                width: "100%",
-                height: "6px",
-                backgroundColor: "#161b22",
-                borderRadius: "3px",
-                overflow: "hidden",
-                display: "flex",
-              }}
-            >
-              <div
-                style={{
-                  width: `${lang.percentage}%`,
-                  height: "100%",
-                  backgroundColor: languageColors[lang.language] || colors.language.default,
-                  borderRadius: "3px",
-                }}
-              />
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
-    </div>
+    </Card>
   );
 }

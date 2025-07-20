@@ -1,12 +1,9 @@
+import type { CSSProperties } from "hono/jsx";
 import type { RecentRepository } from "../lib/github-api";
 import { languageColors } from "../lib/language-colors";
-import {
-  cardContainerStyle,
-  titleStyle,
-  colorDotStyle,
-  secondaryTextStyle,
-  colors,
-} from "../lib/common-styles";
+import { colors } from "../lib/colors";
+import { fonts } from "../lib/fonts";
+import { Card } from "./Card";
 
 interface RecentReposStatsProps {
   repositories: RecentRepository[];
@@ -38,41 +35,57 @@ export function RecentReposStats({ repositories }: RecentReposStatsProps) {
     return `${months}mo ago`;
   };
 
+  // Language color dot
+  const colorDotStyle = (size: number, color: string): CSSProperties => ({
+    width: `${size}px`,
+    height: `${size}px`,
+    borderRadius: "50%",
+    backgroundColor: color,
+    flexShrink: 0,
+  });
+
+  const repoItemStyle: CSSProperties = {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    fontSize: fonts.size.body,
+  };
+
+  const repoNameStyle: CSSProperties = {
+    fontWeight: fonts.weight.medium,
+    color: colors.text.primary,
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+    maxWidth: "200px",
+  };
+
+  const languageContainerStyle: CSSProperties = {
+    display: "flex",
+    alignItems: "center",
+    gap: "4px",
+  };
+
+  const languageNameStyle: CSSProperties = {
+    color: colors.text.secondary,
+    fontSize: fonts.size.small,
+  };
+
+  const timeStyle: CSSProperties = {
+    color: colors.text.secondary,
+    fontSize: fonts.size.small,
+    flexShrink: 0,
+  };
+
   return (
-    <div
-      style={{
-        ...cardContainerStyle,
-        width: "400px",
-        height: "200px",
-      }}
-    >
-      <h2 style={titleStyle}>Recently Updated</h2>
+    <Card title="Recently Updated" width={400} height={200}>
       <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
         {repositories.map((repo, index) => (
-          <div
-            key={index}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              fontSize: "14px",
-            }}
-          >
+          <div key={index} style={repoItemStyle}>
             <div style={{ display: "flex", alignItems: "center", gap: "8px", flex: 1 }}>
-              <span
-                style={{
-                  fontWeight: "500",
-                  color: "#c9d1d9",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-                  maxWidth: "200px",
-                }}
-              >
-                {repo.name}
-              </span>
+              <span style={repoNameStyle}>{repo.name}</span>
               {repo.primaryLanguage && (
-                <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+                <div style={languageContainerStyle}>
                   <div
                     style={colorDotStyle(
                       8,
@@ -81,18 +94,14 @@ export function RecentReposStats({ repositories }: RecentReposStatsProps) {
                         colors.language.default,
                     )}
                   />
-                  <span style={{ ...secondaryTextStyle, fontSize: "12px" }}>
-                    {repo.primaryLanguage.name}
-                  </span>
+                  <span style={languageNameStyle}>{repo.primaryLanguage.name}</span>
                 </div>
               )}
             </div>
-            <span style={{ ...secondaryTextStyle, fontSize: "12px", flexShrink: 0 }}>
-              {formatDate(repo.pushedAt)}
-            </span>
+            <span style={timeStyle}>{formatDate(repo.pushedAt)}</span>
           </div>
         ))}
       </div>
-    </div>
+    </Card>
   );
 }

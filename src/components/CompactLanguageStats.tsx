@@ -1,14 +1,8 @@
 import type { CSSProperties } from "hono/jsx";
 import { languageColors } from "../lib/language-colors";
-import {
-  cardContainerStyle,
-  titleStyle,
-  colorDotStyle,
-  progressBarBackgroundStyle,
-  secondaryTextStyle,
-  languageItemStyle,
-  colors,
-} from "../lib/common-styles";
+import { colors } from "../lib/colors";
+import { fonts } from "../lib/fonts";
+import { Card } from "./Card";
 
 interface LanguageData {
   language: string;
@@ -22,20 +16,15 @@ interface CompactLanguageStatsProps {
 }
 
 export const CompactLanguageStats = ({ languages }: CompactLanguageStatsProps) => {
-  const containerStyle: CSSProperties = {
-    ...cardContainerStyle,
-    width: "100%",
-    height: "100%",
-  };
-
   // Progress bar container
   const progressBarContainerStyle: CSSProperties = {
-    ...progressBarBackgroundStyle,
+    backgroundColor: colors.background.secondary,
     width: "100%",
     height: "8px",
     borderRadius: "4px",
     display: "flex",
     marginBottom: "20px",
+    overflow: "hidden",
   };
 
   // Grid container for language items
@@ -45,31 +34,40 @@ export const CompactLanguageStats = ({ languages }: CompactLanguageStatsProps) =
     gap: "8px",
   };
 
-  // Individual language item (extends base style)
+  // Individual language item
   const languageListItemStyle: CSSProperties = {
-    ...languageItemStyle,
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
     width: "48%",
     padding: "4px",
   };
 
+  // Language color dot
+  const colorDotStyle = (size: number, color: string): CSSProperties => ({
+    width: `${size}px`,
+    height: `${size}px`,
+    borderRadius: "50%",
+    backgroundColor: color,
+    flexShrink: 0,
+  });
+
   const languageNameStyle: CSSProperties = {
-    fontSize: "12px",
-    fontWeight: "500",
+    fontSize: fonts.size.small,
+    fontWeight: fonts.weight.medium,
     flexGrow: 1,
   };
 
   const percentageStyle: CSSProperties = {
-    ...secondaryTextStyle,
-    fontSize: "12px",
+    color: colors.text.secondary,
+    fontSize: fonts.size.small,
   };
 
   // Take only top 6 languages
   const topLanguages = languages.slice(0, 6);
 
   return (
-    <div style={containerStyle}>
-      <h2 style={titleStyle}>Most Used Languages</h2>
-
+    <Card title="Most Used Languages">
       {/* Progress bar showing all languages */}
       <div style={progressBarContainerStyle}>
         {topLanguages.map((lang, index) => {
@@ -96,6 +94,6 @@ export const CompactLanguageStats = ({ languages }: CompactLanguageStatsProps) =
           </div>
         ))}
       </div>
-    </div>
+    </Card>
   );
 };
