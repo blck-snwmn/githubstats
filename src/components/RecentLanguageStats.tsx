@@ -1,21 +1,12 @@
 import type { CSSProperties } from "hono/jsx";
-import { languageColors } from "../lib/language-colors";
 import { colors } from "../lib/colors";
 import { fonts } from "../lib/fonts";
 import { Card } from "./Card";
+import { languageColors, colorDotStyle } from "../lib/language-colors";
 
 interface RecentLanguageStatsProps {
   languages: Array<{ language: string; bytes: number; percentage: number }>;
 }
-
-// Language color dot
-const colorDotStyle = (size: number, color: string): CSSProperties => ({
-  width: `${size}px`,
-  height: `${size}px`,
-  borderRadius: "50%",
-  backgroundColor: color,
-  flexShrink: 0,
-});
 
 const progressBarStyle = (percentage: number, color: string): CSSProperties => ({
   width: `${percentage}%`,

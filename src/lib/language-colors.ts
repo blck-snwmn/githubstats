@@ -1,3 +1,5 @@
+import type { CSSProperties } from "hono/jsx";
+
 // Language colors based on GitHub's language colors
 export const languageColors: Record<string, string> = {
   JavaScript: "#f1e05a",
@@ -38,3 +40,17 @@ export const languageColors: Record<string, string> = {
   Jupyter: "#DA5B0B",
   MATLAB: "#e16737",
 };
+
+/**
+ * Creates a circular color dot style for language indicators
+ * @param size - The size of the dot in pixels
+ * @param color - The background color of the dot
+ * @returns CSS properties for a circular colored dot
+ */
+export const colorDotStyle = (size: number, color: string): CSSProperties => ({
+  width: `${size}px`,
+  height: `${size}px`,
+  borderRadius: "50%",
+  backgroundColor: color,
+  flexShrink: 0,
+});

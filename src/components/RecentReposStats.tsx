@@ -1,9 +1,9 @@
 import type { CSSProperties } from "hono/jsx";
 import type { RecentRepository } from "../lib/github-api";
-import { languageColors } from "../lib/language-colors";
 import { colors } from "../lib/colors";
 import { fonts } from "../lib/fonts";
 import { Card } from "./Card";
+import { languageColors, colorDotStyle } from "../lib/language-colors";
 
 interface RecentReposStatsProps {
   repositories: RecentRepository[];
@@ -33,15 +33,6 @@ const formatDate = (dateString: string): string => {
   const months = Math.floor(diffDays / 30);
   return `${months}mo ago`;
 };
-
-// Language color dot
-const colorDotStyle = (size: number, color: string): CSSProperties => ({
-  width: `${size}px`,
-  height: `${size}px`,
-  borderRadius: "50%",
-  backgroundColor: color,
-  flexShrink: 0,
-});
 
 export function RecentReposStats({ repositories }: RecentReposStatsProps) {
   const repoItemStyle: CSSProperties = {
