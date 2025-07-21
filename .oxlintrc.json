@@ -34,12 +34,7 @@
     "react/jsx-no-target-blank": "error",
     "react/react-in-jsx-scope": "off",
     "import/no-duplicates": "error",
-    "eslint/max-lines-per-function": [
-      "error",
-      {
-        "max": 100
-      }
-    ],
+    "eslint/max-lines-per-function": "off",
     "eslint/max-nested-callbacks": [
       "error",
       {
