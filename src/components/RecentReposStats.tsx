@@ -3,7 +3,7 @@ import type { RecentRepository } from "../lib/github-api";
 import { colors } from "../lib/colors";
 import { fonts } from "../lib/fonts";
 import { Card } from "./Card";
-import { languageColors, colorDotStyle } from "../lib/language-colors";
+import { colorDotStyle, getLanguageColor } from "../lib/language-colors";
 
 interface RecentReposStatsProps {
   repositories: RecentRepository[];
@@ -77,14 +77,7 @@ export function RecentReposStats({ repositories }: RecentReposStatsProps) {
               <span style={repoNameStyle}>{repo.name}</span>
               {repo.primaryLanguage && (
                 <div style={languageContainerStyle}>
-                  <div
-                    style={colorDotStyle(
-                      8,
-                      languageColors[repo.primaryLanguage.name] ||
-                        repo.primaryLanguage.color ||
-                        colors.language.default,
-                    )}
-                  />
+                  <div style={colorDotStyle(8, getLanguageColor(repo.primaryLanguage))} />
                   <span style={languageNameStyle}>{repo.primaryLanguage.name}</span>
                 </div>
               )}

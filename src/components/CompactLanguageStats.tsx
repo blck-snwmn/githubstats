@@ -3,7 +3,7 @@ import type { LanguageData } from "../types/language";
 import { colors } from "../lib/colors";
 import { fonts } from "../lib/fonts";
 import { Card } from "./Card";
-import { languageColors, colorDotStyle } from "../lib/language-colors";
+import { colorDotStyle, getLanguageColor } from "../lib/language-colors";
 
 interface CompactLanguageStatsProps {
   username: string;
@@ -60,7 +60,7 @@ export const CompactLanguageStats = ({ languages }: CompactLanguageStatsProps) =
           const segmentStyle: CSSProperties = {
             width: `${lang.percentage}%`,
             height: "100%",
-            backgroundColor: languageColors[lang.language] || colors.language.default,
+            backgroundColor: getLanguageColor(lang.language),
             // Add small gap between segments except for the first one
             marginLeft: index > 0 ? "1px" : "0",
           };
@@ -72,9 +72,7 @@ export const CompactLanguageStats = ({ languages }: CompactLanguageStatsProps) =
       <div style={gridContainerStyle}>
         {topLanguages.map((lang) => (
           <div key={lang.language} style={languageListItemStyle}>
-            <div
-              style={colorDotStyle(10, languageColors[lang.language] || colors.language.default)}
-            />
+            <div style={colorDotStyle(10, getLanguageColor(lang.language))} />
             <span style={languageNameStyle}>{lang.language}</span>
             <span style={percentageStyle}>{lang.percentage.toFixed(1)}%</span>
           </div>

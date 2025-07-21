@@ -1,4 +1,5 @@
 import type { CSSProperties } from "hono/jsx";
+import { colors } from "./colors";
 
 // Language colors based on GitHub's language colors
 export const languageColors: Record<string, string> = {
@@ -54,3 +55,19 @@ export const colorDotStyle = (size: number, color: string): CSSProperties => ({
   backgroundColor: color,
   flexShrink: 0,
 });
+
+/**
+ * Get color for a programming language
+ * @param language - Language name as string or object with name and optional color
+ * @returns Hex color code for the language
+ */
+export function getLanguageColor(language: string): string;
+export function getLanguageColor(language: { name: string; color?: string | null }): string;
+export function getLanguageColor(
+  language: string | { name: string; color?: string | null },
+): string {
+  if (typeof language === "string") {
+    return languageColors[language] || colors.language.default;
+  }
+  return languageColors[language.name] || language.color || colors.language.default;
+}

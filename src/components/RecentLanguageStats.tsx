@@ -3,7 +3,7 @@ import type { LanguageData } from "../types/language";
 import { colors } from "../lib/colors";
 import { fonts } from "../lib/fonts";
 import { Card } from "./Card";
-import { languageColors, colorDotStyle } from "../lib/language-colors";
+import { colorDotStyle, getLanguageColor } from "../lib/language-colors";
 
 interface RecentLanguageStatsProps {
   languages: LanguageData[];
@@ -52,7 +52,7 @@ export function RecentLanguageStats({ languages }: RecentLanguageStatsProps) {
     <Card title="Recently Used Languages" width={400} height={150}>
       <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
         {languages.map((lang) => {
-          const color = languageColors[lang.language] || colors.language.default;
+          const color = getLanguageColor(lang.language);
           return (
             <div
               key={lang.language}
