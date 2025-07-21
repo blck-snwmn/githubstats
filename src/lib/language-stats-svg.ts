@@ -1,21 +1,15 @@
 import satori from "satori";
+import type { SVGOptionsWithDimensions } from "../types/svg-options";
 import { CompactLanguageStats } from "../components/CompactLanguageStats";
 import { fetchUserLanguageStats, getTopLanguages } from "./github-api";
 import { loadInterFonts } from "./font-loader";
-
-interface GenerateLanguageStatsSVGOptions {
-  username: string;
-  githubToken?: string;
-  width?: number;
-  height?: number;
-}
 
 export async function generateLanguageStatsSVG({
   username,
   githubToken,
   width = 400,
   height = 200,
-}: GenerateLanguageStatsSVGOptions): Promise<string> {
+}: SVGOptionsWithDimensions): Promise<string> {
   // Fetch language statistics and fonts in parallel
   const [languageStats, fonts] = await Promise.all([
     fetchUserLanguageStats(username, githubToken),

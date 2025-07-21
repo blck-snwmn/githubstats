@@ -1,17 +1,13 @@
 import satori from "satori";
+import type { BaseSVGOptions } from "../types/svg-options";
 import { fetchRecentLanguageStats, getTopLanguages } from "./github-api";
 import { RecentLanguageStats } from "../components/RecentLanguageStats";
 import { loadInterRegular } from "./font-loader";
 
-interface GenerateRecentLanguagesSVGOptions {
-  username: string;
-  githubToken?: string;
-}
-
 export async function generateRecentLanguagesSVG({
   username,
   githubToken,
-}: GenerateRecentLanguagesSVGOptions): Promise<string> {
+}: BaseSVGOptions): Promise<string> {
   // Fetch font and language stats in parallel
   const [font, languageStats] = await Promise.all([
     loadInterRegular(),

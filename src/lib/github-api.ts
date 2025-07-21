@@ -1,6 +1,4 @@
-interface LanguageStats {
-  [language: string]: number;
-}
+import type { LanguageStats } from "../types/language";
 
 interface RepositoryNode {
   name: string;

@@ -1,14 +1,9 @@
 import type { CSSProperties } from "hono/jsx";
+import type { LanguageData } from "../types/language";
 import { colors } from "../lib/colors";
 import { fonts } from "../lib/fonts";
 import { Card } from "./Card";
 import { languageColors, colorDotStyle } from "../lib/language-colors";
-
-interface LanguageData {
-  language: string;
-  bytes: number;
-  percentage: number;
-}
 
 interface CompactLanguageStatsProps {
   username: string;
