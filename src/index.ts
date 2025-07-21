@@ -11,7 +11,7 @@ function createSVGEndpoint(
   app: Hono<{ Bindings: CloudflareBindings }>,
   path: string,
   generator: (opts: BaseSVGOptions) => Promise<string>,
-  name: string
+  name: string,
 ) {
   app.get(path, async (c) => {
     return handleCachedRequest(c, {
@@ -27,6 +27,11 @@ function createSVGEndpoint(
 
 createSVGEndpoint(app, "/stats/language", generateLanguageStatsSVG, "language stats SVG");
 createSVGEndpoint(app, "/stats/recent-repos", generateRecentReposSVG, "recent repos SVG");
-createSVGEndpoint(app, "/stats/recent-languages", generateRecentLanguagesSVG, "recent languages SVG");
+createSVGEndpoint(
+  app,
+  "/stats/recent-languages",
+  generateRecentLanguagesSVG,
+  "recent languages SVG",
+);
 
 export default app;
