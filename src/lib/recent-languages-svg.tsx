@@ -1,8 +1,8 @@
-import satori from "satori";
 import type { BaseSVGOptions } from "../types/svg-options";
 import { fetchRecentLanguageStats, getTopLanguages } from "./github-api";
 import { RecentLanguageStats } from "../components/RecentLanguageStats";
 import { loadInterRegular } from "./font-loader";
+import { generateSVG } from "./svg-generator";
 
 export async function generateRecentLanguagesSVG({
   username,
@@ -16,11 +16,11 @@ export async function generateRecentLanguagesSVG({
 
   const topLanguages = getTopLanguages(languageStats, 3);
 
-  // Generate SVG using Satori
-  const svg = await satori(<RecentLanguageStats languages={topLanguages} />, {
+  // Generate SVG using shared generator
+  const svg = await generateSVG(<RecentLanguageStats languages={topLanguages} />, {
     width: 400,
     height: 150,
-    fonts: [font],
+    fonts: font,
   });
 
   return svg;

@@ -1,8 +1,8 @@
-import satori from "satori";
 import type { SVGOptionsWithDimensions } from "../types/svg-options";
 import { CompactLanguageStats } from "../components/CompactLanguageStats";
 import { fetchUserLanguageStats, getTopLanguages } from "./github-api";
 import { loadInterFonts } from "./font-loader";
+import { generateSVG } from "./svg-generator";
 
 export async function generateLanguageStatsSVG({
   username,
@@ -18,7 +18,7 @@ export async function generateLanguageStatsSVG({
 
   const topLanguages = getTopLanguages(languageStats, 6);
 
-  const svg = await satori(CompactLanguageStats({ username, languages: topLanguages }), {
+  const svg = await generateSVG(CompactLanguageStats({ username, languages: topLanguages }), {
     width,
     height,
     fonts,

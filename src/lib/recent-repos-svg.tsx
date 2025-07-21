@@ -1,8 +1,8 @@
-import satori from "satori";
 import type { BaseSVGOptions } from "../types/svg-options";
 import { fetchRecentRepositories } from "./github-api";
 import { RecentReposStats } from "../components/RecentReposStats";
 import { loadInterRegular } from "./font-loader";
+import { generateSVG } from "./svg-generator";
 
 export async function generateRecentReposSVG({
   username,
@@ -14,11 +14,11 @@ export async function generateRecentReposSVG({
     fetchRecentRepositories(username, githubToken),
   ]);
 
-  // Generate SVG using Satori
-  const svg = await satori(<RecentReposStats repositories={repositories} />, {
+  // Generate SVG using shared generator
+  const svg = await generateSVG(<RecentReposStats repositories={repositories} />, {
     width: 400,
     height: 200,
-    fonts: [font],
+    fonts: font,
   });
 
   return svg;
