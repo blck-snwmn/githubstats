@@ -4,17 +4,11 @@ import { colors } from "../lib/colors";
 import { fonts } from "../lib/fonts";
 import { Card } from "./Card";
 import { colorDotStyle, getLanguageColor } from "../lib/language-colors";
+import { ProgressBar } from "./ProgressBar";
 
 interface RecentLanguageStatsProps {
   languages: LanguageData[];
 }
-
-const progressBarStyle = (percentage: number, color: string): CSSProperties => ({
-  width: `${percentage}%`,
-  height: "100%",
-  backgroundColor: color,
-  borderRadius: "3px",
-});
 
 export function RecentLanguageStats({ languages }: RecentLanguageStatsProps) {
   const languageItemStyle: CSSProperties = {
@@ -39,15 +33,6 @@ export function RecentLanguageStats({ languages }: RecentLanguageStatsProps) {
     color: colors.text.secondary,
   };
 
-  const progressBarContainerStyle: CSSProperties = {
-    width: "100%",
-    height: "6px",
-    backgroundColor: colors.background.secondary,
-    borderRadius: "3px",
-    overflow: "hidden",
-    display: "flex",
-  };
-
   return (
     <Card title="Recently Used Languages" width={400} height={150}>
       <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
@@ -65,9 +50,7 @@ export function RecentLanguageStats({ languages }: RecentLanguageStatsProps) {
                 </div>
                 <span style={percentageStyle}>{lang.percentage.toFixed(1)}%</span>
               </div>
-              <div style={progressBarContainerStyle}>
-                <div style={progressBarStyle(lang.percentage, color)} />
-              </div>
+              <ProgressBar percentage={lang.percentage} color={color} height={6} borderRadius={3} />
             </div>
           );
         })}

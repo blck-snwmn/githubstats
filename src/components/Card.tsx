@@ -32,7 +32,7 @@ export function Card({ title, width = "100%", height = "100%", children }: CardP
   return (
     <div style={containerStyle}>
       <h2 style={titleStyle}>{title}</h2>
-      {children}
+      <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>{children}</div>
     </div>
   );
 }

@@ -4,23 +4,13 @@ import { colors } from "../lib/colors";
 import { fonts } from "../lib/fonts";
 import { Card } from "./Card";
 import { colorDotStyle, getLanguageColor } from "../lib/language-colors";
+import { ProgressBar } from "./ProgressBar";
 
 interface CompactLanguageStatsProps {
   languages: LanguageData[];
 }
 
 export const CompactLanguageStats = ({ languages }: CompactLanguageStatsProps) => {
-  // Progress bar container
-  const progressBarContainerStyle: CSSProperties = {
-    backgroundColor: colors.background.secondary,
-    width: "100%",
-    height: "8px",
-    borderRadius: "4px",
-    display: "flex",
-    marginBottom: "20px",
-    overflow: "hidden",
-  };
-
   // Grid container for language items
   const gridContainerStyle: CSSProperties = {
     display: "flex",
@@ -50,25 +40,21 @@ export const CompactLanguageStats = ({ languages }: CompactLanguageStatsProps) =
 
   // Take only top 6 languages
   const topLanguages = languages.slice(0, 6);
+  const percentages = topLanguages.map((lang) => lang.percentage);
+  const languageColors = topLanguages.map((lang) => getLanguageColor(lang.language));
 
   return (
     <Card title="Most Used Languages">
-      {/* Progress bar showing all languages */}
-      <div style={progressBarContainerStyle}>
-        {topLanguages.map((lang, index) => {
-          const segmentStyle: CSSProperties = {
-            width: `${lang.percentage}%`,
-            height: "100%",
-            backgroundColor: getLanguageColor(lang.language),
-            // Add small gap between segments except for the first one
-            marginLeft: index > 0 ? "1px" : "0",
-          };
-          return <div key={lang.language} style={segmentStyle} />;
-        })}
-      </div>
+      <ProgressBar
+        percentage={percentages}
+        color={languageColors}
+        height={8}
+        borderRadius={4}
+        multiSegment={true}
+        segmentGap={1}
+      />
 
-      {/* Grid of language items */}
-      <div style={gridContainerStyle}>
+      <div style={{ ...gridContainerStyle, marginTop: "20px" }}>
         {topLanguages.map((lang) => (
           <div key={lang.language} style={languageListItemStyle}>
             <div style={colorDotStyle(10, getLanguageColor(lang.language))} />
