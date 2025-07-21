@@ -6,7 +6,6 @@ import { Card } from "./Card";
 import { colorDotStyle, getLanguageColor } from "../lib/language-colors";
 
 interface CompactLanguageStatsProps {
-  username: string;
   languages: LanguageData[];
 }
 
