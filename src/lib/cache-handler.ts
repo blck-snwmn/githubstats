@@ -46,6 +46,7 @@ export async function handleCachedRequest(
             headers: {
               "Content-Type": contentType,
               "X-Cached-At": new Date().toISOString(),
+              "Cache-Control": "public, max-age=300, s-maxage=86400", // 5 min browser, 24 hours CDN cache
             },
           });
 
