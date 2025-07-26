@@ -34,7 +34,7 @@ export function RecentLanguageStats({ languages }: RecentLanguageStatsProps) {
   };
 
   return (
-    <Card title="Recently Used Languages" width={400} height={150}>
+    <Card title="Recently Used Languages">
       <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
         {languages.map((lang) => {
           const color = getLanguageColor(lang.language);

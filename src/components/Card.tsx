@@ -14,7 +14,7 @@ export function Card({ title, width = "100%", height = "100%", children }: CardP
     height: typeof height === "number" ? `${height}px` : height,
     backgroundColor: colors.background.primary,
     borderRadius: "8px",
-    padding: "8px 16px 12px",
+    padding: "16px 20px",
     fontFamily: fonts.family,
     color: colors.text.primary,
     display: "flex",
@@ -32,7 +32,7 @@ export function Card({ title, width = "100%", height = "100%", children }: CardP
   return (
     <div style={containerStyle}>
       <h2 style={titleStyle}>{title}</h2>
-      <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>{children}</div>
+      <div style={{ display: "flex", flexDirection: "column" }}>{children}</div>
     </div>
   );
 }

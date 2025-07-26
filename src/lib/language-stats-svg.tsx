@@ -18,7 +18,7 @@ export async function generateLanguageStatsSVG({
 
   const topLanguages = getTopLanguages(languageStats, 6);
 
-  const svg = await generateSVG(CompactLanguageStats({ languages: topLanguages }), {
+  const svg = await generateSVG(<CompactLanguageStats languages={topLanguages} />, {
     width,
     height,
     fonts,

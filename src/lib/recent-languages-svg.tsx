@@ -19,7 +19,7 @@ export async function generateRecentLanguagesSVG({
   // Generate SVG using shared generator
   const svg = await generateSVG(<RecentLanguageStats languages={topLanguages} />, {
     width: 400,
-    height: 150,
+    height: 200,
     fonts: font,
   });
 

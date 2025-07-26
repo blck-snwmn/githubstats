@@ -69,7 +69,7 @@ export function RecentReposStats({ repositories }: RecentReposStatsProps) {
   };
 
   return (
-    <Card title="Recently Updated" width={400} height={200}>
+    <Card title="Recently Updated">
       <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
         {repositories.map((repo) => (
           <div key={repo.name} style={repoItemStyle}>
