@@ -1,16 +1,16 @@
 import type { BaseSVGOptions } from "../types/svg-options";
 import { fetchRecentLanguageStats, getTopLanguages } from "./github-api";
 import { RecentLanguageStats } from "../components/RecentLanguageStats";
-import { loadInterRegular } from "./font-loader";
+import { loadInterFonts } from "./font-loader";
 import { generateSVG } from "./svg-generator";
 
 export async function generateRecentLanguagesSVG({
   username,
   githubToken,
 }: BaseSVGOptions): Promise<string> {
-  // Fetch font and language stats in parallel
-  const [font, languageStats] = await Promise.all([
-    loadInterRegular(),
+  // Fetch fonts and language stats in parallel
+  const [fonts, languageStats] = await Promise.all([
+    loadInterFonts(),
     fetchRecentLanguageStats(username, githubToken),
   ]);
 
@@ -20,7 +20,7 @@ export async function generateRecentLanguagesSVG({
   const svg = await generateSVG(<RecentLanguageStats languages={topLanguages} />, {
     width: 400,
     height: 200,
-    fonts: font,
+    fonts: fonts,
   });
 
   return svg;
