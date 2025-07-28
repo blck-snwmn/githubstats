@@ -1,7 +1,7 @@
 import type { Context } from "hono";
 
-// Cache revalidation threshold (1 hour)
-const REVALIDATE_AFTER_MS = 60 * 60 * 1000;
+// Cache revalidation threshold (1 week)
+const REVALIDATE_AFTER_MS = 7 * 24 * 60 * 60 * 1000;
 
 interface CacheHandlerOptions {
   generateContent: () => Promise<string>;
