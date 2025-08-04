@@ -1,7 +1,7 @@
 import type { Context } from "hono";
 
-// Cache revalidation threshold (1 week)
-const REVALIDATE_AFTER_MS = 7 * 24 * 60 * 60 * 1000;
+// Cache revalidation threshold (1 hour)
+const REVALIDATE_AFTER_MS = 60 * 60 * 1000;
 
 interface CacheHandlerOptions {
   generateContent: () => Promise<string>;
@@ -46,7 +46,7 @@ export async function handleCachedRequest(
             headers: {
               "Content-Type": contentType,
               "X-Cached-At": new Date().toISOString(),
-              "Cache-Control": "public, max-age=300, s-maxage=86400", // 5 min browser, 24 hours CDN cache
+              "Cache-Control": "public, max-age=300, s-maxage=604800", // 5 min browser, 1 week CDN cache
             },
           });
 
