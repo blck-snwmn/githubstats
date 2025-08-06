@@ -1,33 +1,70 @@
-# readmewk
+# GitHubStats
 
-Cloudflare Workers app that returns GitHub stats as SVG images
+GitHub language statistics SVG generator built with Cloudflare Workers.
 
-## Setup
+## Features
+
+- 📊 Three statistics views: language usage, recent repos, recent languages
+- ⚡ xfetch caching algorithm prevents stampeding
+- 🎨 SVG generation with React + Satori
+- 🚀 Edge deployment on Cloudflare Workers
+
+## Quick Start
 
 ```bash
+# Install
 pnpm install
+
+# Setup environment
+echo "GITHUB_TOKEN=your_token" > .dev.vars
+
+# Development
+pnpm run dev
+
+# Deploy
+pnpm run deploy
 ```
 
-### Environment Variables
+## Endpoints
 
-- `GITHUB_USERNAME`: Set in wrangler.jsonc
-- `GITHUB_TOKEN`: 
-  - Local development: Add to `.dev.vars`
-  - Production: `pnpm wrangler secret put GITHUB_TOKEN`
-
-```bash
-pnpm run dev      # Development server
-pnpm run deploy   # Deploy
-```
+- `/stats/language` - Overall language statistics
+- `/stats/recent-repos` - Recently updated repositories  
+- `/stats/recent-languages` - Recent language usage
 
 ## Usage
 
-### Endpoints
-
-- `GET /stats/language` - Language statistics (400x200px SVG)
-
-### Embedding
-
 ```markdown
 ![Language Stats](https://your-worker.workers.dev/stats/language)
+![Recent Repos](https://your-worker.workers.dev/stats/recent-repos)
+![Recent Languages](https://your-worker.workers.dev/stats/recent-languages)
 ```
+
+## Development
+
+```bash
+# Quality checks
+pnpm run typecheck     # Type checking
+pnpm run lint:fix      # Lint
+pnpm run format:fix    # Format
+
+# Testing
+pnpm run test          # Run tests
+
+# Clear KV cache (local)
+pnpm wrangler kv key list --local --namespace-id <preview-namespace-id> | jq -r '.[].name' | \
+  xargs -I {} pnpm wrangler kv key delete "{}" --local --namespace-id <preview-namespace-id>
+```
+
+## Configuration
+
+- **GitHub Username**: Set in `wrangler.jsonc`
+- **GitHub Token**: 
+  - Dev: `.dev.vars` file
+  - Prod: `wrangler secret put GITHUB_TOKEN`
+
+## Tech Stack
+
+- Cloudflare Workers + KV
+- Hono + TypeScript
+- React + Satori for SVG
+- Vitest + OxLint + Biome
