@@ -35,6 +35,7 @@ export async function handleCachedRequest(
 
   // Always trigger background update if cache is stale or missing
   if (!cachedResponse || age >= REVALIDATE_AFTER_MS) {
+    console.info("Cache miss or stale - generating new content");
     c.executionCtx.waitUntil(
       (async () => {
         try {
