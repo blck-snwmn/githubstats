@@ -14,6 +14,8 @@ export function Card({ title, width = "100%", height = "100%", children }: CardP
     height: typeof height === "number" ? `${height}px` : height,
     backgroundColor: colors.background.primary,
     borderRadius: "8px",
+    border: "1px solid rgba(255, 255, 255, 0.25)",
+    boxSizing: "border-box",
     padding: "16px 20px",
     fontFamily: fonts.family,
     color: colors.text.primary,
