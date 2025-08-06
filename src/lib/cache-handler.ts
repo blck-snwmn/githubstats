@@ -9,6 +9,12 @@ interface CacheHandlerOptions {
   name: string;
 }
 
+interface CachedData {
+  content: string;
+  cachedAt: string;
+  contentType: string;
+}
+
 /**
  * Handles cached requests with stale-while-revalidate pattern
  * @param c - Hono context
@@ -22,21 +28,19 @@ export async function handleCachedRequest(
   const { generateContent, contentType, name } = options;
   const username = c.env.GITHUB_USERNAME;
 
-  // Build cache key
-  const cacheKey = new Request(c.req.url);
-  const cache = caches.default;
+  // Build cache key from URL
+  const url = new URL(c.req.url);
+  const cacheKey = `svg:${url.pathname}`;
+  const kv = c.env.SVG_CACHE;
 
-  // Try to get from cache
-  const cachedResponse = await cache.match(cacheKey);
+  // Try to get from KV cache
+  const cachedData = await kv.get<CachedData>(cacheKey, "json");
 
   // Check cache age (even if no cache exists)
-  const cachedAt = cachedResponse?.headers.get("X-Cached-At");
-  const age = cachedAt ? Date.now() - new Date(cachedAt).getTime() : Infinity;
-
-  console.info(`Cache age: ${age}ms`);
+  const age = cachedData ? Date.now() - new Date(cachedData.cachedAt).getTime() : Infinity;
 
   // Always trigger background update if cache is stale or missing
-  if (!cachedResponse || age >= REVALIDATE_AFTER_MS) {
+  if (!cachedData || age >= REVALIDATE_AFTER_MS) {
     console.info("Cache miss or stale - generating new content");
     c.executionCtx.waitUntil(
       (async () => {
@@ -44,16 +48,14 @@ export async function handleCachedRequest(
           console.info(`Generating ${name} for:`, username);
           const content = await generateContent();
 
-          const response = new Response(content, {
-            status: 200,
-            headers: {
-              "Content-Type": contentType,
-              "X-Cached-At": new Date().toISOString(),
-              "Cache-Control": "public, max-age=300, s-maxage=604800", // 5 min browser, 1 week CDN cache
-            },
-          });
+          const dataToCache: CachedData = {
+            content,
+            cachedAt: new Date().toISOString(),
+            contentType,
+          };
 
-          await cache.put(cacheKey, response);
+          // Store in KV without TTL (permanent cache)
+          await kv.put(cacheKey, JSON.stringify(dataToCache));
         } catch (error) {
           console.error("Background cache generation failed:", error);
         }
@@ -62,9 +64,16 @@ export async function handleCachedRequest(
   }
 
   // If we have cache, return it
-  if (cachedResponse) {
+  if (cachedData) {
     console.info("cache hit - returning cached content");
-    return cachedResponse;
+    return new Response(cachedData.content, {
+      status: 200,
+      headers: {
+        "Content-Type": cachedData.contentType,
+        "X-Cached-At": cachedData.cachedAt,
+        "Cache-Control": "public, max-age=300", // 5 min browser cache
+      },
+    });
   }
 
   // No cache available - return error
