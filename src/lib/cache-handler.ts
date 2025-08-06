@@ -61,6 +61,7 @@ export async function handleCachedRequest(
 
   // If we have cache, return it
   if (cachedResponse) {
+    console.info("cache hit - returning cached content");
     return cachedResponse;
   }
 
