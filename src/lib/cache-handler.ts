@@ -33,6 +33,8 @@ export async function handleCachedRequest(
   const cachedAt = cachedResponse?.headers.get("X-Cached-At");
   const age = cachedAt ? Date.now() - new Date(cachedAt).getTime() : Infinity;
 
+  console.info(`Cache age: ${age}ms`);
+
   // Always trigger background update if cache is stale or missing
   if (!cachedResponse || age >= REVALIDATE_AFTER_MS) {
     console.info("Cache miss or stale - generating new content");
