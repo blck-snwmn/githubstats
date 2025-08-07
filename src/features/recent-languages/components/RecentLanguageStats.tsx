@@ -1,10 +1,10 @@
 import type { CSSProperties } from "hono/jsx";
-import type { LanguageData } from "../types/language";
-import { colors } from "../lib/colors";
-import { fonts } from "../lib/fonts";
-import { Card } from "./Card";
-import { colorDotStyle, getLanguageColor } from "../lib/language-colors";
-import { ProgressBar } from "./ProgressBar";
+import type { LanguageData } from "../../../types/language";
+import { colors } from "../../../shared/lib/colors";
+import { fonts } from "../../../shared/lib/fonts";
+import { Card } from "../../../shared/components/Card/Card";
+import { colorDotStyle, getLanguageColor } from "../../../shared/lib/language-colors";
+import { ProgressBar } from "../../../shared/components/ProgressBar/ProgressBar";
 
 interface RecentLanguageStatsProps {
   languages: LanguageData[];

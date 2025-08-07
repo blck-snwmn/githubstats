@@ -1,8 +1,8 @@
-import type { SVGOptionsWithDimensions } from "../types/svg-options";
-import { CompactLanguageStats } from "../components/CompactLanguageStats";
-import { fetchUserLanguageStats, getTopLanguages } from "./github-api";
-import { loadInterFonts } from "./font-loader";
-import { generateSVG } from "./svg-generator";
+import type { SVGOptionsWithDimensions } from "../../types/svg-options";
+import { CompactLanguageStats } from "./components/CompactLanguageStats";
+import { fetchUserLanguageStats, getTopLanguages } from "./api";
+import { loadInterFonts } from "../../shared/lib/font-loader";
+import { generateSVG } from "../../shared/lib/svg-generator";
 
 export async function generateLanguageStatsSVG({
   username,

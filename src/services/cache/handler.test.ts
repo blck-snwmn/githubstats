@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { shouldUpdateCache } from "./cache-handler";
+import { shouldUpdateCache } from "./handler";
 
 describe("shouldUpdateCache", () => {
   const TTL = 7 * 24 * 60 * 60 * 1000; // 7 days

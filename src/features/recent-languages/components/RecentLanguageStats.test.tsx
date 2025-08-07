@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeAll } from "vitest";
 import satori from "satori";
 import { RecentLanguageStats } from "./RecentLanguageStats";
-import type { LanguageData } from "../types/language";
-import { getTestFontData } from "../test-utils/font-helper";
+import type { LanguageData } from "../../../types/language";
+import { getTestFontData } from "../../../test-utils/font-helper";
 
 describe("RecentLanguageStats Component", () => {
   let fontData: ArrayBuffer;

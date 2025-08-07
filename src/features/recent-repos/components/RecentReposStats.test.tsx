@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeAll } from "vitest";
 import satori from "satori";
 import { RecentReposStats } from "./RecentReposStats";
-import { getTestFontData } from "../test-utils/font-helper";
+import { getTestFontData } from "../../../test-utils/font-helper";
 
 describe("RecentReposStats Component", () => {
   let fontData: ArrayBuffer;
@@ -21,8 +21,9 @@ describe("RecentReposStats Component", () => {
   const testRepos = [
     {
       name: "awesome-project",
-      url: "https://github.com/user/awesome-project",
       description: "An awesome project for testing",
+      stargazerCount: 15,
+      forkCount: 3,
       pushedAt: "2025-01-20T10:00:00Z",
       primaryLanguage: {
         name: "TypeScript",
@@ -31,8 +32,9 @@ describe("RecentReposStats Component", () => {
     },
     {
       name: "cool-app",
-      url: "https://github.com/user/cool-app",
       description: "A cool application",
+      stargazerCount: 8,
+      forkCount: 1,
       pushedAt: "2025-01-19T15:30:00Z",
       primaryLanguage: {
         name: "Go",
@@ -41,8 +43,9 @@ describe("RecentReposStats Component", () => {
     },
     {
       name: "test-repo",
-      url: "https://github.com/user/test-repo",
       description: null,
+      stargazerCount: 0,
+      forkCount: 0,
       pushedAt: "2025-01-18T08:00:00Z",
       primaryLanguage: null,
     },
@@ -68,8 +71,9 @@ describe("RecentReposStats Component", () => {
   it("should limit to top 5 repositories", async () => {
     const manyRepos = Array.from({ length: 10 }, (_, i) => ({
       name: `repo-${i + 1}`,
-      url: `https://github.com/user/repo-${i + 1}`,
       description: `Repository ${i + 1}`,
+      stargazerCount: i + 1,
+      forkCount: i,
       pushedAt: new Date(Date.now() - i * 86400000).toISOString(),
       primaryLanguage: {
         name: "JavaScript",
@@ -88,8 +92,9 @@ describe("RecentReposStats Component", () => {
     const reposWithoutLang = [
       {
         name: "no-lang-repo",
-        url: "https://github.com/user/no-lang-repo",
         description: "Repository without language",
+        stargazerCount: 2,
+        forkCount: 0,
         pushedAt: "2025-01-20T10:00:00Z",
         primaryLanguage: null,
       },
@@ -105,8 +110,9 @@ describe("RecentReposStats Component", () => {
     const reposWithoutDesc = [
       {
         name: "no-desc-repo",
-        url: "https://github.com/user/no-desc-repo",
         description: null,
+        stargazerCount: 5,
+        forkCount: 1,
         pushedAt: "2025-01-20T10:00:00Z",
         primaryLanguage: {
           name: "Python",
@@ -127,8 +133,9 @@ describe("RecentReposStats Component", () => {
     const differentRepos = [
       {
         name: "different-repo",
-        url: "https://github.com/user/different-repo",
         description: "A different repository",
+        stargazerCount: 12,
+        forkCount: 4,
         pushedAt: "2025-01-21T12:00:00Z",
         primaryLanguage: {
           name: "Rust",

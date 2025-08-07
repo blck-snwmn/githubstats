@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeAll } from "vitest";
 import satori from "satori";
 import { Card } from "./Card";
-import { getTestFontData } from "../test-utils/font-helper";
+import { getTestFontData } from "../../../test-utils/font-helper";
 
 describe("Card Component", () => {
   let fontData: ArrayBuffer;

@@ -1,6 +1,6 @@
 import type { CSSProperties, PropsWithChildren } from "hono/jsx";
-import { colors } from "../lib/colors";
-import { fonts } from "../lib/fonts";
+import { colors } from "../../lib/colors";
+import { fonts } from "../../lib/fonts";
 
 type CardProps = PropsWithChildren<{
   title: string;

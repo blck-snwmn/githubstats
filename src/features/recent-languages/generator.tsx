@@ -1,8 +1,8 @@
-import type { BaseSVGOptions } from "../types/svg-options";
-import { fetchRecentLanguageStats, getTopLanguages } from "./github-api";
-import { RecentLanguageStats } from "../components/RecentLanguageStats";
-import { loadInterFonts } from "./font-loader";
-import { generateSVG } from "./svg-generator";
+import type { BaseSVGOptions } from "../../types/svg-options";
+import { fetchRecentLanguageStats, getTopLanguages } from "./api";
+import { RecentLanguageStats } from "./components/RecentLanguageStats";
+import { loadInterFonts } from "../../shared/lib/font-loader";
+import { generateSVG } from "../../shared/lib/svg-generator";
 
 export async function generateRecentLanguagesSVG({
   username,

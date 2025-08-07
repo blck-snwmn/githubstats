@@ -1,8 +1,8 @@
 import { Hono } from "hono";
-import { generateLanguageStatsSVG } from "./lib/language-stats-svg";
-import { generateRecentReposSVG } from "./lib/recent-repos-svg";
-import { generateRecentLanguagesSVG } from "./lib/recent-languages-svg";
-import { handleCachedRequest } from "./lib/cache-handler";
+import { generateLanguageStatsSVG } from "./features/language-stats/generator";
+import { generateRecentReposSVG } from "./features/recent-repos/generator";
+import { generateRecentLanguagesSVG } from "./features/recent-languages/generator";
+import { handleCachedRequest } from "./services/cache/handler";
 import type { BaseSVGOptions } from "./types/svg-options";
 
 const app = new Hono<{ Bindings: CloudflareBindings }>();

@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeAll } from "vitest";
 import satori from "satori";
 import { ProgressBar } from "./ProgressBar";
-import { getTestFontData } from "../test-utils/font-helper";
+import { getTestFontData } from "../../../test-utils/font-helper";
 
 describe("ProgressBar SVG Output", () => {
   let fontData: ArrayBuffer;

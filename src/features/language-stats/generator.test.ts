@@ -1,9 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { generateLanguageStatsSVG } from "./language-stats-svg";
-import type { LanguageStats } from "../types/language";
+import { generateLanguageStatsSVG } from "./generator";
+import type { LanguageStats } from "../../types/language";
 
 // GitHub APIのみモック（外部APIなので）
-vi.mock("./github-api", () => ({
+vi.mock("./api", () => ({
   fetchUserLanguageStats: vi.fn(),
   getTopLanguages: vi.fn((stats: LanguageStats, limit: number) => {
     const entries = Object.entries(stats)
@@ -18,7 +18,7 @@ vi.mock("./github-api", () => ({
   }),
 }));
 
-import { fetchUserLanguageStats } from "./github-api";
+import { fetchUserLanguageStats } from "./api";
 
 describe("generateLanguageStatsSVG Integration", () => {
   const testUsername = "testuser";

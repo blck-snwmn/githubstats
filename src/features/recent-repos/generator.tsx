@@ -1,8 +1,8 @@
-import type { BaseSVGOptions } from "../types/svg-options";
-import { fetchRecentRepositories } from "./github-api";
-import { RecentReposStats } from "../components/RecentReposStats";
-import { loadInterFonts } from "./font-loader";
-import { generateSVG } from "./svg-generator";
+import type { BaseSVGOptions } from "../../types/svg-options";
+import { fetchRecentRepositories } from "./api";
+import { RecentReposStats } from "./components/RecentReposStats";
+import { loadInterFonts } from "../../shared/lib/font-loader";
+import { generateSVG } from "../../shared/lib/svg-generator";
 
 export async function generateRecentReposSVG({
   username,

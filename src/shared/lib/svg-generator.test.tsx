@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeAll } from "vitest";
 import { generateSVG } from "./svg-generator";
 import type { SatoriSVGOptions } from "./svg-generator";
-import { getTestFontData } from "../test-utils/font-helper";
+import { getTestFontData } from "../../test-utils/font-helper";
 
 const createTestComponent = (content: string) => (
   <div
