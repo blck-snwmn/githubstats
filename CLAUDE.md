@@ -21,7 +21,7 @@ pnpm run format:fix    # Format with Biome
 # Testing
 pnpm run test          # Run all tests
 pnpm run test:watch    # Watch mode for development
-pnpm run test src/lib/cache-handler.test.ts  # Run single test file
+pnpm run test src/services/cache/handler.test.ts  # Run single test file
 
 # Deployment
 pnpm run deploy        # Deploy to Cloudflare Workers
@@ -41,13 +41,13 @@ pnpm wrangler kv key list --local --namespace-id <preview_id> | jq -r '.[].name'
 
 ### Request Flow
 1. **Entry** (`src/index.ts`): Hono router receives request at `/stats/*`
-2. **Cache Check** (`src/lib/cache-handler.ts`): 
+2. **Cache Check** (`src/services/cache/handler.ts`): 
    - Checks KV storage for cached SVG
    - If cache miss: returns 503, triggers background generation
    - If cache hit: applies xfetch algorithm to decide if update needed
    - Returns cached content immediately, updates in background if needed
-3. **Data Fetching** (`src/lib/github-api.ts`): GraphQL queries to GitHub API
-4. **SVG Generation** (`src/lib/svg-generator.ts`): React → Satori → SVG conversion
+3. **Data Fetching** (`src/services/github/client.ts`): GraphQL queries to GitHub API
+4. **SVG Generation** (`src/shared/lib/svg-generator.ts`): React → Satori → SVG conversion
 5. **Storage**: SVG stored in KV (no TTL expiration set on KV itself)
 
 ### xfetch Caching Algorithm
@@ -55,16 +55,57 @@ The cache handler implements Facebook's "Optimal Probabilistic Cache Stampede Pr
 - **Purpose**: Prevents thundering herd when cache expires
 - **Formula**: `shouldUpdate = (age + delta * beta * -log(random())) >= TTL`
 - **Behavior**: Probabilistically updates cache before expiry based on age
-- **Implementation**: See `shouldUpdateCache()` in `cache-handler.ts`
+- **Implementation**: See `shouldUpdateCache()` in `services/cache/handler.ts`
+
+### Directory Structure (Feature-based)
+```
+src/
+├── features/                # Feature modules
+│   ├── language-stats/      # Overall language statistics
+│   │   ├── api.ts          # GitHub API queries
+│   │   ├── generator.tsx   # SVG generation logic
+│   │   └── components/     # React components
+│   │       └── CompactLanguageStats.tsx
+│   ├── recent-languages/    # Recent language usage
+│   │   ├── api.ts
+│   │   ├── generator.tsx
+│   │   └── components/
+│   │       └── RecentLanguageStats.tsx
+│   └── recent-repos/        # Recently updated repos
+│       ├── api.ts
+│       ├── generator.tsx
+│       └── components/
+│           └── RecentReposStats.tsx
+├── services/                # External services
+│   ├── cache/               # KV cache management
+│   │   └── handler.ts      # xfetch algorithm
+│   └── github/              # GitHub API client
+│       ├── client.ts       # GraphQL client
+│       ├── queries.ts      # Query definitions
+│       └── types.ts        # TypeScript types
+├── shared/                  # Shared utilities
+│   ├── components/          # Reusable components
+│   │   ├── Card/           # Base card wrapper
+│   │   └── ProgressBar/    # Progress visualization
+│   ├── lib/                 # Core libraries
+│   │   ├── svg-generator.ts # Satori integration
+│   │   ├── font-loader.ts  # Font management
+│   │   └── colors.ts       # Color schemes
+│   └── utils/               # Helper functions
+├── types/                   # Shared TypeScript types
+└── index.ts                 # Entry point (Hono router)
+```
 
 ### Component Architecture
-```
-svg-generator.ts (shared Satori logic)
-    ├── CompactLanguageStats.tsx (language percentages)
-    ├── RecentLanguageStats.tsx (recent usage bars)
-    └── RecentReposStats.tsx (repo list)
-         └── All use Card.tsx (base dark theme wrapper)
-```
+Each feature follows a consistent pattern:
+- **api.ts**: GitHub GraphQL queries specific to the feature
+- **generator.tsx**: SVG generation logic using Satori
+- **components/**: React components for rendering
+
+All components use shared utilities:
+- `Card` component for consistent dark theme wrapper
+- `svg-generator.ts` for Satori rendering logic
+- `font-loader.ts` for Inter font caching
 
 ### GitHub API Integration
 - Uses GraphQL for efficient data fetching
