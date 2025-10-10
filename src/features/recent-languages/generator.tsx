@@ -14,7 +14,7 @@ export async function generateRecentLanguagesSVG({
     fetchRecentLanguageStats(username, githubToken),
   ]);
 
-  const topLanguages = getTopLanguages(languageStats, 3);
+  const topLanguages = getTopLanguages(languageStats, 4);
 
   // Generate SVG using shared generator
   const svg = await generateSVG(<RecentLanguageStats languages={topLanguages} />, {
