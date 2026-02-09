@@ -11,6 +11,7 @@ describe("RecentReposStats Component", () => {
   });
 
   const renderToSVG = async (component: unknown) => {
+    // oxlint-disable-next-line typescript/no-unsafe-type-assertion
     return await satori(component as Parameters<typeof satori>[0], {
       width: 400,
       height: 200,

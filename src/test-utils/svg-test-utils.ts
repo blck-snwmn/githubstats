@@ -33,6 +33,7 @@ export function setupSatoriMock() {
 }
 
 export function setupFetchMock() {
+  // oxlint-disable-next-line typescript/no-unsafe-type-assertion
   globalThis.fetch = vi.fn().mockResolvedValue({
     ok: true,
     arrayBuffer: async () => mockFontArrayBuffer,
