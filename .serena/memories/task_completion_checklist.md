@@ -3,6 +3,7 @@
 When completing any coding task in this project, follow these steps:
 
 ## 1. Code Quality Checks (REQUIRED)
+
 Run these commands in order before considering a task complete:
 
 ```bash
@@ -21,6 +22,7 @@ pnpm run format:fix
 ```
 
 ## 2. Testing (when applicable)
+
 ```bash
 # Run tests if you modified existing functionality
 pnpm run test
@@ -30,12 +32,15 @@ pnpm run test:watch  # During development
 ```
 
 ## 3. Type Generation (if wrangler.jsonc modified)
+
 ```bash
 pnpm run cf-typegen  # Regenerate CloudflareBindings interface
 ```
 
 ## 4. Pre-commit Verification
+
 Before committing any changes:
+
 1. ✅ All TypeScript compilation passes (`pnpm run typecheck`)
 2. ✅ No linting errors (`pnpm run lint`)
 3. ✅ Code is properly formatted (`pnpm run format`)
@@ -43,6 +48,7 @@ Before committing any changes:
 5. ✅ Changes align with project conventions
 
 ## 5. Local Testing
+
 ```bash
 # Test changes locally with Wrangler dev server
 pnpm run dev
@@ -50,6 +56,7 @@ pnpm run dev
 ```
 
 ## Important Notes
+
 - NEVER skip the quality checks
 - Fix all errors before marking task as complete
 - If unable to fix an issue, document it clearly

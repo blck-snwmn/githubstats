@@ -1,61 +1,62 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>GitHub Language Stats</title>
-		<style>
-			body {
-				font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
-				max-width: 800px;
-				margin: 0 auto;
-				padding: 40px 20px;
-				background-color: #f6f8fa;
-			}
-			h1 {
-				color: #24292e;
-				text-align: center;
-				margin-bottom: 40px;
-			}
-			.stats-container {
-				background: white;
-				border-radius: 6px;
-				box-shadow: 0 1px 3px rgba(27,31,35,0.12);
-				padding: 20px;
-				text-align: center;
-			}
-			.loading {
-				color: #586069;
-				margin: 40px 0;
-			}
-			.error {
-				color: #d73a49;
-				margin: 40px 0;
-			}
-		</style>
-	</head>
-	<body>
-		<h1>GitHub Language Statistics</h1>
-		<div class="stats-container">
-			<div id="loading" class="loading">Loading GitHub stats...</div>
-			<div id="stats"></div>
-		</div>
-		<script>
-			fetch('/github-stats')
-				.then((resp) => {
-					if (!resp.ok) {
-						throw new Error(`HTTP error! status: ${resp.status}`);
-					}
-					return resp.text();
-				})
-				.then((svg) => {
-					document.getElementById('loading').style.display = 'none';
-					document.getElementById('stats').innerHTML = svg;
-				})
-				.catch((error) => {
-					document.getElementById('loading').style.display = 'none';
-					document.getElementById('stats').innerHTML = `<div class="error">Error loading stats: ${error.message}</div>`;
-				});
-		</script>
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GitHub Language Stats</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 40px 20px;
+        background-color: #f6f8fa;
+      }
+      h1 {
+        color: #24292e;
+        text-align: center;
+        margin-bottom: 40px;
+      }
+      .stats-container {
+        background: white;
+        border-radius: 6px;
+        box-shadow: 0 1px 3px rgba(27, 31, 35, 0.12);
+        padding: 20px;
+        text-align: center;
+      }
+      .loading {
+        color: #586069;
+        margin: 40px 0;
+      }
+      .error {
+        color: #d73a49;
+        margin: 40px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>GitHub Language Statistics</h1>
+    <div class="stats-container">
+      <div id="loading" class="loading">Loading GitHub stats...</div>
+      <div id="stats"></div>
+    </div>
+    <script>
+      fetch("/github-stats")
+        .then((resp) => {
+          if (!resp.ok) {
+            throw new Error(`HTTP error! status: ${resp.status}`);
+          }
+          return resp.text();
+        })
+        .then((svg) => {
+          document.getElementById("loading").style.display = "none";
+          document.getElementById("stats").innerHTML = svg;
+        })
+        .catch((error) => {
+          document.getElementById("loading").style.display = "none";
+          document.getElementById("stats").innerHTML =
+            `<div class="error">Error loading stats: ${error.message}</div>`;
+        });
+    </script>
+  </body>
 </html>

@@ -28,7 +28,7 @@ pnpm run deploy
 ## Endpoints
 
 - `/stats/language` - Overall language statistics
-- `/stats/recent-repos` - Recently updated repositories  
+- `/stats/recent-repos` - Recently updated repositories
 - `/stats/recent-languages` - Recent language usage
 
 ## Usage
@@ -58,7 +58,7 @@ pnpm wrangler kv key list --local --namespace-id <preview-namespace-id> | jq -r 
 ## Configuration
 
 - **GitHub Username**: Set in `wrangler.jsonc`
-- **GitHub Token**: 
+- **GitHub Token**:
   - Dev: `.dev.vars` file
   - Prod: `wrangler secret put GITHUB_TOKEN`
 

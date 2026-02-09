@@ -1,34 +1,34 @@
 {
-	"name": "githubstats",
-	"type": "module",
-	"packageManager": "pnpm@9.14.1",
-	"scripts": {
-		"preinstall": "npx only-allow pnpm",
-		"dev": "wrangler dev",
-		"deploy": "wrangler deploy --minify",
-		"cf-typegen": "wrangler types --env-interface CloudflareBindings",
-		"lint": "oxlint",
-		"lint:fix": "oxlint --fix",
-		"format": "biome format .",
-		"format:fix": "biome format --write .",
-		"format:check": "biome format .",
-		"typecheck": "tsc --noEmit",
-		"test": "vitest run",
-		"test:watch": "vitest watch",
-		"test:coverage": "vitest run --coverage"
-	},
-	"dependencies": {
-		"hono": "^4.8.5",
-		"satori": "^0.15.2"
-	},
-	"devDependencies": {
-		"@biomejs/biome": "^2.1.2",
-		"@testing-library/react": "^16.3.0",
-		"@vitest/ui": "^3.2.4",
-		"jsdom": "^26.1.0",
-		"oxlint": "^1.7.0",
-		"typescript": "^5.8.3",
-		"vitest": "^3.2.4",
-		"wrangler": "^4.24.4"
-	}
+  "name": "githubstats",
+  "type": "module",
+  "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy --minify",
+    "cf-typegen": "wrangler types --env-interface CloudflareBindings",
+    "fmt": "oxfmt . --write",
+    "fmt:check": "oxfmt . --check",
+    "lint": "oxlint --type-aware --type-check --deny-warnings .",
+    "lint:fix": "oxlint --type-aware --type-check --deny-warnings . --fix",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest watch",
+    "test:coverage": "vitest run --coverage"
+  },
+  "dependencies": {
+    "hono": "^4.8.5",
+    "satori": "^0.15.2"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^16.3.0",
+    "@vitest/ui": "^3.2.4",
+    "jsdom": "^26.1.0",
+    "oxfmt": "0.26.0",
+    "oxlint": "1.41.0",
+    "oxlint-tsgolint": "0.11.2",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4",
+    "wrangler": "^4.24.4"
+  },
+  "packageManager": "pnpm@9.14.1"
 }

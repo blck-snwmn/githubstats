@@ -1,12 +1,5 @@
 {
-  "plugins": [
-    "promise",
-    "import",
-    "react",
-    "typescript",
-    "unicorn",
-    "node"
-  ],
+  "plugins": ["promise", "import", "react", "typescript", "unicorn", "node"],
   "categories": {
     "correctness": "error",
     "suspicious": "warn",
@@ -16,11 +9,7 @@
     "no-console": [
       "warn",
       {
-        "allow": [
-          "warn",
-          "error",
-          "info"
-        ]
+        "allow": ["warn", "error", "info"]
       }
     ],
     "typescript/no-explicit-any": "warn",
@@ -48,12 +37,5 @@
       }
     ]
   },
-  "ignorePatterns": [
-    "node_modules",
-    "dist",
-    "build",
-    "coverage",
-    "*.min.js",
-    "*.d.ts"
-  ]
+  "ignorePatterns": ["node_modules", "dist", "build", "coverage", "*.min.js", "*.d.ts"]
 }
