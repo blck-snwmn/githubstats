@@ -27,7 +27,7 @@
 		"@vitest/ui": "3.2.4",
 		"jsdom": "26.1.0",
 		"oxlint": "1.61.0",
-		"typescript": "5.8.3",
+		"typescript": "5.9.3",
 		"vitest": "3.2.4",
 		"wrangler": "4.59.3"
 	}
