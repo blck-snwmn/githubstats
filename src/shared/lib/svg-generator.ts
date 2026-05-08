@@ -35,7 +35,7 @@ export async function generateSVG(
   try {
     // Satori expects ReactNode, but works with Hono's JSX in practice
     // Type assertion is necessary due to different JSX implementations
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Intentional due to JSX type mismatch between Hono and React
+    // oxlint-disable-next-line typescript/no-explicit-any, typescript/no-unsafe-type-assertion -- Intentional due to JSX type mismatch between Hono and React
     const svg = await satori(component as any, {
       width,
       height,

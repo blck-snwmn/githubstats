@@ -27,6 +27,7 @@ export async function executeGraphQLQuery<T>(
     throw new Error(`GitHub API error: ${response.status} - ${errorText}`);
   }
 
+  // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- response.json() returns unknown; narrow to GraphQL envelope
   const data = (await response.json()) as GraphQLResponse<T>;
 
   if (data.errors) {
