@@ -15,8 +15,10 @@ pnpm run dev           # Start local server at http://localhost:8787
 
 # Quality checks (run before committing)
 pnpm run typecheck     # TypeScript type checking
-pnpm run lint:fix      # Lint and fix with OxLint
-pnpm run format:fix    # Format with Biome
+pnpm run lint          # Lint with oxlint (type-aware via .oxlintrc.json)
+pnpm run lint:fix      # Lint and auto-fix
+pnpm run fmt:check     # Format check with oxfmt
+pnpm run fmt           # Apply oxfmt formatting
 
 # Testing
 pnpm run test          # Run all tests
