@@ -45,6 +45,6 @@ export async function generateSVG(
     return svg;
   } catch (error) {
     console.error("Failed to generate SVG:", error);
-    throw new Error("SVG generation failed");
+    throw new Error("SVG generation failed", { cause: error });
   }
 }
