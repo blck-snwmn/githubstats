@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeAll } from "vitest";
-import satori from "satori";
 import { RecentLanguageStats } from "./RecentLanguageStats";
 import type { LanguageData } from "../../../types/language";
+import { generateSVG } from "../../../shared/lib/svg-generator";
 import { getTestFontData } from "../../../test-utils/font-helper";
 
 describe("RecentLanguageStats Component", () => {
@@ -11,14 +11,12 @@ describe("RecentLanguageStats Component", () => {
     fontData = await getTestFontData();
   });
 
-  const renderToSVG = async (component: unknown) => {
-    // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- satori has a wide JSX type; tests narrow from unknown
-    return await satori(component as Parameters<typeof satori>[0], {
+  const renderToSVG = (component: Parameters<typeof generateSVG>[0]) =>
+    generateSVG(component, {
       width: 400,
       height: 200,
       fonts: [{ name: "Inter", data: fontData, weight: 400, style: "normal" }],
     });
-  };
 
   const testLanguages: LanguageData[] = [
     { language: "TypeScript", bytes: 25000, percentage: 50 },
