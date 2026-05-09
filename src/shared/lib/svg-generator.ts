@@ -33,10 +33,7 @@ export async function generateSVG(
   const fontArray = Array.isArray(fonts) ? fonts : [fonts];
 
   try {
-    // Satori expects ReactNode, but works with Hono's JSX in practice
-    // Type assertion is necessary due to different JSX implementations
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Intentional due to JSX type mismatch between Hono and React
-    const svg = await satori(component as any, {
+    const svg = await satori(toSatoriNode(component), {
       width,
       height,
       fonts: fontArray,
@@ -45,6 +42,17 @@ export async function generateSVG(
     return svg;
   } catch (error) {
     console.error("Failed to generate SVG:", error);
-    throw new Error("SVG generation failed");
+    throw new Error("SVG generation failed", { cause: error });
   }
+}
+
+/**
+ * Interop boundary between Hono's JSX runtime and Satori, which expects
+ * React-shaped nodes. The two trees are structurally compatible at runtime,
+ * but the type systems do not know that, so this is the single place that
+ * bridges them. Encapsulating the cast keeps call sites type-safe.
+ */
+function toSatoriNode(node: JSXNode | ReturnType<FC>): Parameters<typeof satori>[0] {
+  // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- Hono JSX nodes are structurally compatible with Satori's expected input
+  return node as unknown as Parameters<typeof satori>[0];
 }

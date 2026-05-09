@@ -4,6 +4,10 @@ import type { GraphQLResponse } from "./types";
 
 const GITHUB_GRAPHQL_API = "https://api.github.com/graphql";
 
+function isGraphQLResponse<T>(value: unknown): value is GraphQLResponse<T> {
+  return typeof value === "object" && value !== null && ("data" in value || "errors" in value);
+}
+
 export async function executeGraphQLQuery<T>(
   query: string,
   variables: Record<string, unknown>,
@@ -27,15 +31,18 @@ export async function executeGraphQLQuery<T>(
     throw new Error(`GitHub API error: ${response.status} - ${errorText}`);
   }
 
-  const data = (await response.json()) as GraphQLResponse<T>;
-
-  if (data.errors) {
-    throw new Error(`GraphQL errors: ${JSON.stringify(data.errors)}`);
+  const payload = await response.json();
+  if (!isGraphQLResponse<T>(payload)) {
+    throw new Error(`Unexpected GraphQL response: ${JSON.stringify(payload)}`);
   }
 
-  if (!data.data) {
+  if (payload.errors) {
+    throw new Error(`GraphQL errors: ${JSON.stringify(payload.errors)}`);
+  }
+
+  if (!payload.data) {
     throw new Error("No data returned from GraphQL");
   }
 
-  return data.data;
+  return payload.data;
 }

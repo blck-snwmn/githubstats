@@ -8,12 +8,12 @@ import type { BaseSVGOptions } from "./types/svg-options";
 const app = new Hono<{ Bindings: CloudflareBindings }>();
 
 function createSVGEndpoint(
-  app: Hono<{ Bindings: CloudflareBindings }>,
+  router: Hono<{ Bindings: CloudflareBindings }>,
   path: string,
   generator: (opts: BaseSVGOptions) => Promise<string>,
   name: string,
 ) {
-  app.get(path, async (c) => {
+  router.get(path, async (c) => {
     return handleCachedRequest(c, {
       generateContent: async () => {
         const username = c.env.GITHUB_USERNAME;

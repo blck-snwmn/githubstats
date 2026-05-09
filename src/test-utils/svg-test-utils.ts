@@ -33,8 +33,5 @@ export function setupSatoriMock() {
 }
 
 export function setupFetchMock() {
-  globalThis.fetch = vi.fn().mockResolvedValue({
-    ok: true,
-    arrayBuffer: async () => mockFontArrayBuffer,
-  } as Response);
+  globalThis.fetch = vi.fn().mockResolvedValue(new Response(mockFontArrayBuffer));
 }

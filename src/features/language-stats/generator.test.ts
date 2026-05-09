@@ -7,7 +7,7 @@ vi.mock("./api", () => ({
   fetchUserLanguageStats: vi.fn(),
   getTopLanguages: vi.fn((stats: LanguageStats, limit: number) => {
     const entries = Object.entries(stats)
-      .sort(([, a], [, b]) => b - a)
+      .toSorted(([, a], [, b]) => b - a)
       .slice(0, limit);
     const totalBytes = entries.reduce((sum, [, bytes]) => sum + bytes, 0);
     return entries.map(([language, bytes]) => ({

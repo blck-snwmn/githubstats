@@ -40,7 +40,7 @@ jobs:
       run: pnpm install --frozen-lockfile
 
     - name: Check format
-      run: pnpm run format:check
+      run: pnpm run fmt:check
 
   typecheck:
     runs-on: ubuntu-latest

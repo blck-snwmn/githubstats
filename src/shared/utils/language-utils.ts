@@ -26,7 +26,7 @@ export function getTopLanguages(
 ): Array<{ language: string; bytes: number; percentage: number }> {
   // First get the top languages
   const topLanguages = Object.entries(languageStats)
-    .sort(([, a], [, b]) => b - a)
+    .toSorted(([, a], [, b]) => b - a)
     .slice(0, limit);
 
   // Calculate total bytes only from top languages for percentage

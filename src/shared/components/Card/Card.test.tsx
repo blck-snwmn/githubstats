@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeAll } from "vitest";
-import satori from "satori";
 import { Card } from "./Card";
+import { generateSVG } from "../../lib/svg-generator";
 import { getTestFontData } from "../../../test-utils/font-helper";
 
 describe("Card Component", () => {
@@ -10,13 +10,12 @@ describe("Card Component", () => {
     fontData = await getTestFontData();
   });
 
-  const renderToSVG = async (component: unknown) => {
-    return await satori(component as Parameters<typeof satori>[0], {
+  const renderToSVG = (component: Parameters<typeof generateSVG>[0]) =>
+    generateSVG(component, {
       width: 400,
       height: 200,
       fonts: [{ name: "Inter", data: fontData, weight: 400, style: "normal" }],
     });
-  };
 
   it("should render card with title and children", async () => {
     const svg = await renderToSVG(
