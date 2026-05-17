@@ -25,13 +25,13 @@ importers:
         specifier: 26.1.0
         version: 26.1.0
       oxfmt:
-        specifier: ^0.48.0
+        specifier: 0.48.0
         version: 0.48.0
       oxlint:
         specifier: 1.63.0
         version: 1.63.0(oxlint-tsgolint@0.22.1)
       oxlint-tsgolint:
-        specifier: ^0.22.1
+        specifier: 0.22.1
         version: 0.22.1
       typescript:
         specifier: 5.8.3
