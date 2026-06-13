@@ -62,13 +62,6 @@ pnpm wrangler kv key list --local --namespace-id <preview-namespace-id> | jq -r 
   - Dev: `.dev.vars` file
   - Prod: `wrangler secret put GITHUB_TOKEN`
 
-## Tech Stack
-
-- Cloudflare Workers + KV
-- Hono + TypeScript
-- React + Satori for SVG
-- Vitest + OxLint + Biome
-
 ## Tooling
 
 CLI tools (`lefthook`) are managed by [aqua](https://aquaproj.github.io/) with versions pinned in [aqua.yaml](aqua.yaml).
