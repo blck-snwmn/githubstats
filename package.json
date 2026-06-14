@@ -2,6 +2,9 @@
 	"name": "githubstats",
 	"type": "module",
 	"packageManager": "pnpm@11.5.3",
+	"engines": {
+		"node": "24"
+	},
 	"scripts": {
 		"preinstall": "npx only-allow pnpm",
 		"dev": "wrangler dev",
