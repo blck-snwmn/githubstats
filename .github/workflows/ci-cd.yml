@@ -34,7 +34,7 @@ jobs:
         cache: pnpm
 
     - name: Install dependencies
-      run: pnpm --dangerously-allow-all-builds install --frozen-lockfile
+      run: pnpm install --frozen-lockfile
 
     - name: Run lint
       run: pnpm run lint
@@ -54,7 +54,7 @@ jobs:
         cache: pnpm
 
     - name: Install dependencies
-      run: pnpm --dangerously-allow-all-builds install --frozen-lockfile
+      run: pnpm install --frozen-lockfile
 
     - name: Check format
       run: pnpm run fmt:check
@@ -74,7 +74,7 @@ jobs:
         cache: pnpm
 
     - name: Install dependencies
-      run: pnpm --dangerously-allow-all-builds install --frozen-lockfile
+      run: pnpm install --frozen-lockfile
 
     - name: Run typecheck
       run: pnpm run typecheck
@@ -94,7 +94,7 @@ jobs:
         cache: pnpm
 
     - name: Install dependencies
-      run: pnpm --dangerously-allow-all-builds install --frozen-lockfile
+      run: pnpm install --frozen-lockfile
 
     - name: Run tests
       run: pnpm test
@@ -116,7 +116,7 @@ jobs:
           cache: pnpm
       
       - name: Install dependencies
-        run: pnpm --dangerously-allow-all-builds install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
       
       - name: Deploy to Cloudflare Workers
         run: pnpm run deploy
