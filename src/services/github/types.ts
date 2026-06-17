@@ -59,3 +59,32 @@ export interface RecentRepositoriesQueryData {
     };
   };
 }
+
+export interface WeeklyActivityRepositoryNode {
+  name: string;
+  isFork: boolean;
+  defaultBranchRef: {
+    target: {
+      targetType: string;
+      history?: {
+        totalCount: number;
+        nodes: Array<{
+          committedDate: string;
+        }>;
+      };
+    };
+  } | null;
+}
+
+export interface WeeklyActivityQueryData {
+  user: {
+    repositories: {
+      edges: Array<{ node: WeeklyActivityRepositoryNode }>;
+    };
+  };
+}
+
+export interface WeeklyRepositoryActivity {
+  name: string;
+  dailyCounts: number[];
+}

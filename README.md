@@ -4,7 +4,7 @@ GitHub language statistics SVG generator built with Cloudflare Workers.
 
 ## Features
 
-- 📊 Three statistics views: language usage, recent repos, recent languages
+- 📊 Four statistics views: language usage, recent repos, recent languages, weekly activity
 - ⚡ xfetch caching algorithm prevents stampeding
 - 🎨 SVG generation with React + Satori
 - 🚀 Edge deployment on Cloudflare Workers
@@ -28,8 +28,9 @@ pnpm run deploy
 ## Endpoints
 
 - `/stats/language` - Overall language statistics
-- `/stats/recent-repos` - Recently updated repositories  
+- `/stats/recent-repos` - Recently updated repositories
 - `/stats/recent-languages` - Recent language usage
+- `/stats/weekly-activity` - Weekly repository activity
 
 ## Usage
 
@@ -37,6 +38,7 @@ pnpm run deploy
 ![Language Stats](https://your-worker.workers.dev/stats/language)
 ![Recent Repos](https://your-worker.workers.dev/stats/recent-repos)
 ![Recent Languages](https://your-worker.workers.dev/stats/recent-languages)
+![Weekly Activity](https://your-worker.workers.dev/stats/weekly-activity)
 ```
 
 ## Development
@@ -58,7 +60,7 @@ pnpm wrangler kv key list --local --namespace-id <preview-namespace-id> | jq -r 
 ## Configuration
 
 - **GitHub Username**: Set in `wrangler.jsonc`
-- **GitHub Token**: 
+- **GitHub Token**:
   - Dev: `.dev.vars` file
   - Prod: `wrangler secret put GITHUB_TOKEN`
 

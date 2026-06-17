@@ -70,3 +70,31 @@ export const RECENT_REPOSITORIES_QUERY = `
     }
   }
 `;
+
+export const WEEKLY_ACTIVITY_QUERY = `
+  query($username: String!, $repoLimit: Int!, $since: GitTimestamp!, $until: GitTimestamp!) {
+    user(login: $username) {
+      repositories(first: $repoLimit, ownerAffiliations: OWNER, orderBy: {field: PUSHED_AT, direction: DESC}) {
+        edges {
+          node {
+            name
+            isFork
+            defaultBranchRef {
+              target {
+                targetType: __typename
+                ... on Commit {
+                  history(first: 100, since: $since, until: $until) {
+                    totalCount
+                    nodes {
+                      committedDate
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
