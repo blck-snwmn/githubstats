@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll } from "vitest";
-import { RecentReposStats } from "./RecentReposStats";
+import { formatDate, RecentReposStats } from "./RecentReposStats";
 import { generateSVG } from "../../../shared/lib/svg-generator";
 import { getTestFontData } from "../../../test-utils/font-helper";
 
@@ -55,7 +55,12 @@ describe("RecentReposStats Component", () => {
 
     expect(svg).toContain("<svg");
     expect(svg).toContain("</svg>");
+    expect(svg).not.toContain("ago");
     expect(svg.length).toBeGreaterThan(5000);
+  });
+
+  it("should format pushedAt as an absolute UTC timestamp", () => {
+    expect(formatDate("2025-01-20T10:00:00Z")).toBe("2025-01-20 10:00");
   });
 
   it("should handle empty repository list", async () => {
