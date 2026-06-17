@@ -9,29 +9,15 @@ interface RecentReposStatsProps {
   repositories: RecentRepository[];
 }
 
-const formatDate = (dateString: string): string => {
+export const formatDate = (dateString: string): string => {
   const date = new Date(dateString);
-  const now = new Date();
-  const diffTime = Math.abs(now.getTime() - date.getTime());
-  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  const year = date.getUTCFullYear();
+  const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+  const day = String(date.getUTCDate()).padStart(2, "0");
+  const hours = String(date.getUTCHours()).padStart(2, "0");
+  const minutes = String(date.getUTCMinutes()).padStart(2, "0");
 
-  if (diffDays === 0) {
-    const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
-    if (diffHours === 0) {
-      const diffMinutes = Math.floor(diffTime / (1000 * 60));
-      return `${diffMinutes}m ago`;
-    }
-    return `${diffHours}h ago`;
-  }
-  if (diffDays < 7) {
-    return `${diffDays}d ago`;
-  }
-  if (diffDays < 30) {
-    const weeks = Math.floor(diffDays / 7);
-    return `${weeks}w ago`;
-  }
-  const months = Math.floor(diffDays / 30);
-  return `${months}mo ago`;
+  return `${year}-${month}-${day} ${hours}:${minutes}`;
 };
 
 export function RecentReposStats({ repositories }: RecentReposStatsProps) {
@@ -48,7 +34,7 @@ export function RecentReposStats({ repositories }: RecentReposStatsProps) {
     overflow: "hidden",
     textOverflow: "ellipsis",
     whiteSpace: "nowrap",
-    maxWidth: "200px",
+    maxWidth: "160px",
   };
 
   const languageContainerStyle: CSSProperties = {
@@ -65,7 +51,10 @@ export function RecentReposStats({ repositories }: RecentReposStatsProps) {
   const timeStyle: CSSProperties = {
     color: colors.text.secondary,
     fontSize: fonts.size.small,
+    fontVariantNumeric: "tabular-nums",
     flexShrink: 0,
+    width: "116px",
+    textAlign: "right",
   };
 
   return (
