@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { generateLanguageStatsSVG } from "./features/language-stats/generator";
 import { generateRecentReposSVG } from "./features/recent-repos/generator";
 import { generateRecentLanguagesSVG } from "./features/recent-languages/generator";
+import { generateWeeklyActivitySVG } from "./features/weekly-activity/generator";
 import { handleCachedRequest } from "./services/cache/handler";
 import type { BaseSVGOptions } from "./types/svg-options";
 
@@ -33,5 +34,6 @@ createSVGEndpoint(
   generateRecentLanguagesSVG,
   "recent languages SVG",
 );
+createSVGEndpoint(app, "/stats/weekly-activity", generateWeeklyActivitySVG, "weekly activity SVG");
 
 export default app;
