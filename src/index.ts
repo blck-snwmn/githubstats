@@ -1,4 +1,4 @@
-import { Hono } from "hono";
+import { Hono, type Context } from "hono";
 import { generateLanguageStatsSVG } from "./features/language-stats/generator";
 import { generateRecentReposSVG } from "./features/recent-repos/generator";
 import { generateRecentLanguagesSVG } from "./features/recent-languages/generator";
@@ -8,18 +8,39 @@ import type { BaseSVGOptions } from "./types/svg-options";
 
 const app = new Hono<{ Bindings: CloudflareBindings }>();
 
+type SVGGenerator = (opts: BaseSVGOptions) => Promise<string>;
+
+async function generateSVGContent(
+  c: Context<{ Bindings: CloudflareBindings }>,
+  path: string,
+  name: string,
+  generator: SVGGenerator,
+): Promise<string> {
+  const username = c.env.GITHUB_USERNAME;
+  const generate = () => generator({ username, githubToken: c.env.GITHUB_TOKEN });
+  const executionCtx: ExecutionContext & { tracing?: Tracing } = c.executionCtx;
+
+  return (
+    executionCtx.tracing?.enterSpan("githubstats.svg.generate", (span: Span) => {
+      if (span.isTraced) {
+        span.setAttribute("http.route", path);
+        span.setAttribute("githubstats.svg.name", name);
+      }
+
+      return generate();
+    }) ?? generate()
+  );
+}
+
 function createSVGEndpoint(
   router: Hono<{ Bindings: CloudflareBindings }>,
   path: string,
-  generator: (opts: BaseSVGOptions) => Promise<string>,
+  generator: SVGGenerator,
   name: string,
 ) {
   router.get(path, async (c) => {
     return handleCachedRequest(c, {
-      generateContent: async () => {
-        const username = c.env.GITHUB_USERNAME;
-        return generator({ username, githubToken: c.env.GITHUB_TOKEN });
-      },
+      generateContent: () => generateSVGContent(c, path, name, generator),
       contentType: "image/svg+xml",
       name,
     });
