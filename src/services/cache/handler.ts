@@ -51,6 +51,27 @@ interface CachedData {
   contentType: string;
 }
 
+async function getCachedData(
+  c: Context,
+  kv: KVNamespace,
+  cacheKey: string,
+): Promise<CachedData | null> {
+  const executionCtx: ExecutionContext & { tracing?: Tracing } = c.executionCtx;
+  const get = () => kv.get<CachedData>(cacheKey, "json");
+
+  return (
+    executionCtx.tracing?.enterSpan("githubstats.cache.lookup", async (span: Span) => {
+      const data = await get();
+
+      if (span.isTraced) {
+        span.setAttribute("cache.hit", Boolean(data));
+      }
+
+      return data;
+    }) ?? get()
+  );
+}
+
 /**
  * Triggers background cache update
  */
@@ -101,7 +122,7 @@ export async function handleCachedRequest(
   const kv = c.env.SVG_CACHE;
 
   // Try to get from KV cache
-  const cachedData = await kv.get<CachedData>(cacheKey, "json");
+  const cachedData = await getCachedData(c, kv, cacheKey);
 
   // Handle cache miss - early return
   if (!cachedData) {
