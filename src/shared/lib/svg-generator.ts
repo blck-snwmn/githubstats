@@ -49,10 +49,8 @@ export async function generateSVG(
 /**
  * Interop boundary between Hono's JSX runtime and Satori, which expects
  * React-shaped nodes. The two trees are structurally compatible at runtime,
- * but the type systems do not know that, so this is the single place that
- * bridges them. Encapsulating the cast keeps call sites type-safe.
+ * so this is the single place that bridges them.
  */
 function toSatoriNode(node: JSXNode | ReturnType<FC>): Parameters<typeof satori>[0] {
-  // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- Hono JSX nodes are structurally compatible with Satori's expected input
-  return node as unknown as Parameters<typeof satori>[0];
+  return node;
 }
