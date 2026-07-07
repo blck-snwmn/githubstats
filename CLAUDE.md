@@ -40,12 +40,12 @@ pnpm run deploy        # Deploy to Cloudflare Workers
 1. **Entry** (`src/index.ts`): Hono router receives request at `/stats/*`
 2. **Data Fetching** (`src/services/github/client.ts`): GraphQL queries to GitHub API
 3. **SVG Generation** (`src/shared/lib/svg-generator.ts`): React → Satori → SVG conversion
-4. **Response Caching**: `Cache-Control: public, max-age=300, stale-while-revalidate=604800`
+4. **Response Caching**: `Cache-Control: public, max-age=300, stale-while-revalidate=1209600`
 
 ### Workers Cache
 Workers Cache is enabled in `wrangler.jsonc`. SVG endpoints generate a fresh response whenever the Worker runs, and Cloudflare's cache handles freshness and stale-while-revalidate behavior before the Worker is invoked:
 - `max-age=300`: cached SVGs are fresh for 5 minutes
-- `stale-while-revalidate=604800`: stale SVGs can be served for up to 7 days while Cloudflare refreshes them in the background
+- `stale-while-revalidate=1209600`: stale SVGs can be served for up to 14 days while Cloudflare refreshes them in the background
 
 ### Directory Structure (Feature-based)
 ```
@@ -110,7 +110,7 @@ All components use shared utilities:
 
 ### Workers Cache Configuration
 - Enabled in `wrangler.jsonc`
-- SVG responses set `Cache-Control: public, max-age=300, stale-while-revalidate=604800`
+- SVG responses set `Cache-Control: public, max-age=300, stale-while-revalidate=1209600`
 
 ### Type Safety
 - Run `pnpm run cf-typegen` after any `wrangler.jsonc` changes

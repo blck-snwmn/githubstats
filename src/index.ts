@@ -6,7 +6,7 @@ import { generateWeeklyActivitySVG } from "./features/weekly-activity/generator"
 import type { BaseSVGOptions } from "./types/svg-options";
 
 const app = new Hono<{ Bindings: CloudflareBindings }>();
-const SVG_CACHE_CONTROL = "public, max-age=300, stale-while-revalidate=604800";
+const SVG_CACHE_CONTROL = "public, max-age=300, stale-while-revalidate=1209600";
 
 type SVGGenerator = (opts: BaseSVGOptions) => Promise<string>;
 
