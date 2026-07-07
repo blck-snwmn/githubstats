@@ -62,7 +62,7 @@ pnpm run cf-typegen
 - **GitHub Token**:
   - Dev: `.dev.vars` file
   - Prod: `wrangler secret put GITHUB_TOKEN`
-- **Cache**: Enabled in `wrangler.jsonc`; SVG responses use `Cache-Control: public, max-age=300, stale-while-revalidate=604800`
+- **Cache**: Enabled in `wrangler.jsonc`; SVG responses use `Cache-Control: public, max-age=300, stale-while-revalidate=1209600`
 
 ## Tooling
 
