@@ -5,7 +5,7 @@ GitHub language statistics SVG generator built with Cloudflare Workers.
 ## Features
 
 - 📊 Four statistics views: language usage, recent repos, recent languages, weekly activity
-- ⚡ xfetch caching algorithm prevents stampeding
+- ⚡ Cloudflare Workers Cache with stale-while-revalidate
 - 🎨 SVG generation with React + Satori
 - 🚀 Edge deployment on Cloudflare Workers
 
@@ -52,9 +52,8 @@ pnpm run format:fix    # Format
 # Testing
 pnpm run test          # Run tests
 
-# Clear KV cache (local)
-pnpm wrangler kv key list --local --namespace-id <preview-namespace-id> | jq -r '.[].name' | \
-  xargs -I {} pnpm wrangler kv key delete "{}" --local --namespace-id <preview-namespace-id>
+# Regenerate Cloudflare Worker types after changing wrangler.jsonc
+pnpm run cf-typegen
 ```
 
 ## Configuration
@@ -63,6 +62,7 @@ pnpm wrangler kv key list --local --namespace-id <preview-namespace-id> | jq -r 
 - **GitHub Token**:
   - Dev: `.dev.vars` file
   - Prod: `wrangler secret put GITHUB_TOKEN`
+- **Cache**: Enabled in `wrangler.jsonc`; SVG responses use `Cache-Control: public, max-age=300, stale-while-revalidate=604800`
 
 ## Tooling
 

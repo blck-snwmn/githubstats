@@ -3,12 +3,28 @@ import { generateLanguageStatsSVG } from "./features/language-stats/generator";
 import { generateRecentReposSVG } from "./features/recent-repos/generator";
 import { generateRecentLanguagesSVG } from "./features/recent-languages/generator";
 import { generateWeeklyActivitySVG } from "./features/weekly-activity/generator";
-import { handleCachedRequest } from "./services/cache/handler";
 import type { BaseSVGOptions } from "./types/svg-options";
 
 const app = new Hono<{ Bindings: CloudflareBindings }>();
+const SVG_CACHE_CONTROL = "public, max-age=300, stale-while-revalidate=604800";
 
 type SVGGenerator = (opts: BaseSVGOptions) => Promise<string>;
+
+function isTracing(value: unknown): value is Tracing {
+  return typeof value === "object" && value !== null && "enterSpan" in value;
+}
+
+function getTracing(ctx: unknown): Tracing | undefined {
+  if (typeof ctx !== "object" || ctx === null) {
+    return undefined;
+  }
+
+  if (!("tracing" in ctx)) {
+    return undefined;
+  }
+
+  return isTracing(ctx.tracing) ? ctx.tracing : undefined;
+}
 
 async function generateSVGContent(
   c: Context<{ Bindings: CloudflareBindings }>,
@@ -18,10 +34,10 @@ async function generateSVGContent(
 ): Promise<string> {
   const username = c.env.GITHUB_USERNAME;
   const generate = () => generator({ username, githubToken: c.env.GITHUB_TOKEN });
-  const executionCtx: ExecutionContext & { tracing?: Tracing } = c.executionCtx;
+  const tracing = getTracing(c.executionCtx);
 
   return (
-    executionCtx.tracing?.enterSpan("githubstats.svg.generate", (span: Span) => {
+    tracing?.enterSpan("githubstats.svg.generate", (span: Span) => {
       if (span.isTraced) {
         span.setAttribute("http.route", path);
         span.setAttribute("githubstats.svg.name", name);
@@ -39,10 +55,13 @@ function createSVGEndpoint(
   name: string,
 ) {
   router.get(path, async (c) => {
-    return handleCachedRequest(c, {
-      generateContent: () => generateSVGContent(c, path, name, generator),
-      contentType: "image/svg+xml",
-      name,
+    const content = await generateSVGContent(c, path, name, generator);
+
+    return new Response(content, {
+      headers: {
+        "Content-Type": "image/svg+xml",
+        "Cache-Control": SVG_CACHE_CONTROL,
+      },
     });
   });
 }

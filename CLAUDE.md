@@ -23,15 +23,10 @@ pnpm run fmt           # Apply oxfmt formatting
 # Testing
 pnpm run test          # Run all tests
 pnpm run test:watch    # Watch mode for development
-pnpm run test src/services/cache/handler.test.ts  # Run single test file
+pnpm run test src/features/recent-repos/components/RecentReposStats.test.tsx  # Run single test file
 
 # Deployment
 pnpm run deploy        # Deploy to Cloudflare Workers
-
-# Cache management (local development)
-# Get preview_id from wrangler.jsonc, then:
-pnpm wrangler kv key list --local --namespace-id <preview_id> | jq -r '.[].name' | \
-  xargs -I {} pnpm wrangler kv key delete "{}" --local --namespace-id <preview_id>
 ```
 
 ### Environment Setup
@@ -43,21 +38,14 @@ pnpm wrangler kv key list --local --namespace-id <preview_id> | jq -r '.[].name'
 
 ### Request Flow
 1. **Entry** (`src/index.ts`): Hono router receives request at `/stats/*`
-2. **Cache Check** (`src/services/cache/handler.ts`): 
-   - Checks KV storage for cached SVG
-   - If cache miss: returns 503, triggers background generation
-   - If cache hit: applies xfetch algorithm to decide if update needed
-   - Returns cached content immediately, updates in background if needed
-3. **Data Fetching** (`src/services/github/client.ts`): GraphQL queries to GitHub API
-4. **SVG Generation** (`src/shared/lib/svg-generator.ts`): React → Satori → SVG conversion
-5. **Storage**: SVG stored in KV (no TTL expiration set on KV itself)
+2. **Data Fetching** (`src/services/github/client.ts`): GraphQL queries to GitHub API
+3. **SVG Generation** (`src/shared/lib/svg-generator.ts`): React → Satori → SVG conversion
+4. **Response Caching**: `Cache-Control: public, max-age=300, stale-while-revalidate=604800`
 
-### xfetch Caching Algorithm
-The cache handler implements Facebook's "Optimal Probabilistic Cache Stampede Prevention":
-- **Purpose**: Prevents thundering herd when cache expires
-- **Formula**: `shouldUpdate = (age + delta * beta * -log(random())) >= TTL`
-- **Behavior**: Probabilistically updates cache before expiry based on age
-- **Implementation**: See `shouldUpdateCache()` in `services/cache/handler.ts`
+### Workers Cache
+Workers Cache is enabled in `wrangler.jsonc`. SVG endpoints generate a fresh response whenever the Worker runs, and Cloudflare's cache handles freshness and stale-while-revalidate behavior before the Worker is invoked:
+- `max-age=300`: cached SVGs are fresh for 5 minutes
+- `stale-while-revalidate=604800`: stale SVGs can be served for up to 7 days while Cloudflare refreshes them in the background
 
 ### Directory Structure (Feature-based)
 ```
@@ -79,8 +67,6 @@ src/
 │       └── components/
 │           └── RecentReposStats.tsx
 ├── services/                # External services
-│   ├── cache/               # KV cache management
-│   │   └── handler.ts      # xfetch algorithm
 │   └── github/              # GitHub API client
 │       ├── client.ts       # GraphQL client
 │       ├── queries.ts      # Query definitions
@@ -117,16 +103,14 @@ All components use shared utilities:
 
 ### Testing Strategy
 - Component tests use `@testing-library/react` with jsdom
-- Cache handler has dedicated unit tests for xfetch algorithm
 - Test utilities in `src/test-utils/` provide mock data and helpers
 - Run individual tests with: `pnpm run test <file-path>`
 
 ## Important Implementation Details
 
-### KV Namespace Configuration
-- Production ID and Preview ID defined in `wrangler.jsonc`
-- Binding name: `SVG_CACHE`
-- Local development uses preview namespace
+### Workers Cache Configuration
+- Enabled in `wrangler.jsonc`
+- SVG responses set `Cache-Control: public, max-age=300, stale-while-revalidate=604800`
 
 ### Type Safety
 - Run `pnpm run cf-typegen` after any `wrangler.jsonc` changes
@@ -134,13 +118,10 @@ All components use shared utilities:
 - Strict TypeScript mode enabled
 
 ### Error Handling
-- Cache miss: 503 with Retry-After header
 - Missing token: 401 error
-- Background updates never block responses
 - Errors logged but don't crash worker
 
 ### Performance Optimizations
 - Inter font cached in Worker memory (Map) to avoid repeated fetches
-- SVG generation happens only on cache miss/update
-- Background updates via `executionCtx.waitUntil()`
+- Workers Cache serves fresh/stale SVG responses before invoking the Worker
 - GraphQL queries fetch minimal required fields
