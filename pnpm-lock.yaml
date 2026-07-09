@@ -10,7 +10,7 @@ importers:
     dependencies:
       hono:
         specifier: ^4.8.5
-        version: 4.12.27
+        version: 4.12.28
       satori:
         specifier: ^0.26.0
         version: 0.26.0
@@ -1308,8 +1308,8 @@ packages:
     resolution: {integrity: sha512-Ox1pJVrDCyGHMG9CFg1tmrRUMRPRsAWYc/PinY0XzJU4K7y7vjNoLKIQ7BR5UJMCxNN8EM1MNDmHWA/B3aZUuw==}
     engines: {node: '>=6'}
 
-  hono@4.12.27:
-    resolution: {integrity: sha512-1yrb/+w6HWQJrUCLkJ2IF5jNIPvvFkblV5RNOYl6bV+OA6p9GLcMpHFFGTosSvHvcAUibuUukRqhlYI4z32C7Q==}
+  hono@4.12.28:
+    resolution: {integrity: sha512-YwUvVpSF7m1yOblFPrU3Hbo8XhPheBoiyfGuII6z19LnOr6JpDnyyp7LFNrfV56wS8tpvtBFGRISHN02pDdLOA==}
     engines: {node: '>=16.9.0'}
 
   html-encoding-sniffer@6.0.0:
@@ -2550,7 +2550,7 @@ snapshots:
 
   hex-rgb@4.3.0: {}
 
-  hono@4.12.27: {}
+  hono@4.12.28: {}
 
   html-encoding-sniffer@6.0.0:
     dependencies:
