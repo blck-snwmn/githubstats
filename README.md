@@ -45,7 +45,7 @@ pnpm run deploy
 
 ```bash
 # Quality checks
-pnpm run typecheck     # Type checking
+pnpm run lint          # Lint and TypeScript compiler diagnostics
 pnpm run lint:fix      # Lint
 pnpm run format:fix    # Format
 
@@ -78,7 +78,7 @@ aqua install
 
 ### Set up git hooks
 
-[lefthook](lefthook.yml) runs lint, format, and type checks on staged files before each commit. Register the hooks once after cloning:
+[lefthook](lefthook.yml) runs lint (including TypeScript compiler diagnostics) and format checks on staged files before each commit. Register the hooks once after cloning:
 
 ```bash
 lefthook install

@@ -59,7 +59,7 @@ jobs:
     - name: Check format
       run: pnpm run fmt:check
 
-  typecheck:
+  generated-types:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
@@ -81,9 +81,6 @@ jobs:
 
     - name: Check generated Cloudflare types
       run: git diff --exit-code -- worker-configuration.d.ts
-
-    - name: Run typecheck
-      run: pnpm run typecheck
 
   test:
     runs-on: ubuntu-latest

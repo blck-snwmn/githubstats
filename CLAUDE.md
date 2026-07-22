@@ -14,8 +14,7 @@ pnpm run cf-typegen    # Generate types after modifying wrangler.jsonc
 pnpm run dev           # Start local server at http://localhost:8787
 
 # Quality checks (run before committing)
-pnpm run typecheck     # TypeScript type checking
-pnpm run lint          # Lint with oxlint (type-aware via .oxlintrc.json)
+pnpm run lint          # Lint and TypeScript compiler diagnostics with oxlint
 pnpm run lint:fix      # Lint and auto-fix
 pnpm run fmt:check     # Format check with oxfmt
 pnpm run fmt           # Apply oxfmt formatting
