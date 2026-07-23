@@ -14,7 +14,6 @@
 		"lint:fix": "oxlint --deny-warnings . --fix",
 		"fmt": "oxfmt --write src/",
 		"fmt:check": "oxfmt --check src/",
-		"typecheck": "tsc --noEmit",
 		"test": "vitest run",
 		"test:watch": "vitest watch",
 		"test:coverage": "vitest run --coverage"
@@ -29,8 +28,8 @@
 		"@vitest/ui": "4.1.10",
 		"jsdom": "29.1.1",
 		"oxfmt": "0.59.0",
-		"oxlint": "1.74.0",
-		"oxlint-tsgolint": "0.25.0",
+		"oxlint": "1.75.0",
+		"oxlint-tsgolint": "7.0.2001",
 		"typescript": "7.0.2",
 		"vitest": "4.1.10",
 		"wrangler": "4.112.0"
