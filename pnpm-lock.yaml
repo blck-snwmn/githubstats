@@ -12,8 +12,8 @@ importers:
         specifier: 4.12.31
         version: 4.12.31
       satori:
-        specifier: 0.28.1
-        version: 0.28.1
+        specifier: 0.28.2
+        version: 0.28.2
     devDependencies:
       '@testing-library/react':
         specifier: 16.3.2
@@ -1584,8 +1584,8 @@ packages:
     engines: {node: '>=18.0.0', npm: '>=8.0.0'}
     hasBin: true
 
-  satori@0.28.1:
-    resolution: {integrity: sha512-PjF/PhstPlvBHxsBhMi8A8F2z9pgd1VkEI8a7n2ZkFg4cKE1f8rRP/LGiXLv3EFTw7a2gr9wS2pWwgMYdVJKUg==}
+  satori@0.28.2:
+    resolution: {integrity: sha512-AZBuptlBvlMf+EC/WI6Ss5MJwSEstrC6Pf1o5b2keg6h1QbvjStmrnJXUDGWOrfC1KSU0FApyGhF2xnBwmJRgA==}
     engines: {node: '>=16'}
 
   saxes@6.0.0:
@@ -2949,7 +2949,7 @@ snapshots:
       '@rollup/rollup-win32-x64-msvc': 4.62.2
       fsevents: 2.3.3
 
-  satori@0.28.1:
+  satori@0.28.2:
     dependencies:
       '@shuding/opentype.js': 1.4.0-beta.0
       css-background-parser: 0.1.0
