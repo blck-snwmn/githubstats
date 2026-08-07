@@ -27,7 +27,7 @@
 		"@types/node": "24.13.3",
 		"@vitest/ui": "4.1.10",
 		"jsdom": "30.0.1",
-		"oxfmt": "0.61.0",
+		"oxfmt": "0.62.0",
 		"oxlint": "1.77.0",
 		"oxlint-tsgolint": "7.0.2001",
 		"typescript": "7.0.2",
