@@ -19,7 +19,7 @@
 		"test:coverage": "vitest run --coverage"
 	},
 	"dependencies": {
-		"hono": "4.13.0",
+		"hono": "4.13.1",
 		"satori": "0.29.0"
 	},
 	"devDependencies": {
