@@ -25,13 +25,13 @@
 	"devDependencies": {
 		"@testing-library/react": "16.3.2",
 		"@types/node": "24.13.3",
-		"@vitest/ui": "4.1.10",
+		"@vitest/ui": "4.1.11",
 		"jsdom": "30.0.1",
 		"oxfmt": "0.63.0",
 		"oxlint": "1.78.0",
 		"oxlint-tsgolint": "7.0.2001",
 		"typescript": "7.0.2",
-		"vitest": "4.1.10",
+		"vitest": "4.1.11",
 		"wrangler": "4.123.0"
 	}
 }
