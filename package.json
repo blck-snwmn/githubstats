@@ -20,7 +20,7 @@
 	},
 	"dependencies": {
 		"hono": "4.13.4",
-		"satori": "0.33.3"
+		"satori": "0.33.4"
 	},
 	"devDependencies": {
 		"@testing-library/react": "16.3.2",
