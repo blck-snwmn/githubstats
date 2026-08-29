@@ -1,4 +1,5 @@
 import { defineConfig } from 'vitest/config';
+import { resolve } from 'node:path';
 
 export default defineConfig({
 	test: {
@@ -20,6 +21,7 @@ export default defineConfig({
 	resolve: {
 		alias: {
 			'@': '/src',
+			'satori/yoga.wasm': resolve(process.cwd(), 'src/test-utils/yoga-wasm.ts'),
 		},
 	},
 });
