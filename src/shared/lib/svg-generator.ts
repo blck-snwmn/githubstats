@@ -1,6 +1,9 @@
-import satori from "satori";
+import satori, { init } from "satori/standalone";
+import yogaWasm from "satori/yoga.wasm";
 import type { JSXNode, FC } from "hono/jsx";
 import type { FontData } from "./font-loader";
+
+const yogaReady = init(yogaWasm);
 
 /**
  * Options for SVG generation using Satori
@@ -27,6 +30,8 @@ export async function generateSVG(
   component: JSXNode | ReturnType<FC>,
   options: SatoriSVGOptions,
 ): Promise<string> {
+  await yogaReady;
+
   const { width, height, fonts } = options;
 
   // Ensure fonts is always an array for Satori
