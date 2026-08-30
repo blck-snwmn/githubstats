@@ -12,9 +12,11 @@
 		"cf-typegen": "wrangler types --env-interface CloudflareBindings",
 		"lint": "oxlint --deny-warnings .",
 		"lint:fix": "oxlint --deny-warnings . --fix",
-		"fmt": "oxfmt --write src/",
-		"fmt:check": "oxfmt --check src/",
-		"test": "vitest run",
+		"fmt": "oxfmt --write src/ tests/ vitest.workerd.config.ts",
+		"fmt:check": "oxfmt --check src/ tests/ vitest.workerd.config.ts",
+		"test": "pnpm test:unit && pnpm test:workerd",
+		"test:unit": "vitest run",
+		"test:workerd": "vitest run --config vitest.workerd.config.ts",
 		"test:watch": "vitest watch",
 		"test:coverage": "vitest run --coverage"
 	},
@@ -23,6 +25,7 @@
 		"satori": "0.33.4"
 	},
 	"devDependencies": {
+		"@cloudflare/vitest-plugin": "1.1.2",
 		"@testing-library/react": "16.3.2",
 		"@types/node": "24.13.3",
 		"@vitest/ui": "4.1.11",
