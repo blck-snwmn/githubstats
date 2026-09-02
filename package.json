@@ -21,7 +21,7 @@
 		"test:coverage": "vitest run --coverage"
 	},
 	"dependencies": {
-		"harfbuzzjs": "0.10.0",
+		"harfbuzzjs": "0.10.3",
 		"hono": "4.13.5",
 		"satori": "0.33.4"
 	},

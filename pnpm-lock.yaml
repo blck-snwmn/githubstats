@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       harfbuzzjs:
-        specifier: 0.10.0
-        version: 0.10.0
+        specifier: 0.10.3
+        version: 0.10.3
       hono:
         specifier: 4.13.5
         version: 4.13.5
@@ -1489,6 +1489,9 @@ packages:
   harfbuzzjs@0.10.0:
     resolution: {integrity: sha512-SN8LVwCOzvTq3OPNd0+EAghgXugItz56wst567D1vs7LnnKGWprhi3EG58aVOBwhN8HEbQxL4I9NDWkcXUutRw==}
 
+  harfbuzzjs@0.10.3:
+    resolution: {integrity: sha512-GJnLUrgLMadlMYrBGEXwYEimObbysy3prWT4HyPpFQERvgTU/OZ+ReUlEPOum6w4RBtFXzXiCCmECOr4sz3qwQ==}
+
   has-flag@4.0.0:
     resolution: {integrity: sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==}
     engines: {node: '>=8'}
@@ -2878,6 +2881,8 @@ snapshots:
     optional: true
 
   harfbuzzjs@0.10.0: {}
+
+  harfbuzzjs@0.10.3: {}
 
   has-flag@4.0.0: {}
 
