@@ -6,6 +6,13 @@
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "githubstats",
 	"main": "src/index.ts",
+	"alias": {
+		"harfbuzzjs": "./src/shared/lib/harfbuzz-worker.ts"
+	},
+	"define": {
+		"process.versions.node": "undefined",
+		"self.location.href": "\"https://worker.invalid/\""
+	},
 	"compatibility_date": "2025-07-15",
 	"compatibility_flags": ["nodejs_compat"],
 	"assets": {
