@@ -22,8 +22,8 @@ importers:
         specifier: 1.1.2
         version: 1.1.2(@vitest/runner@4.1.11)(@vitest/snapshot@4.1.11)(vitest@4.1.11)
       '@fontsource/inter':
-        specifier: 5.0.8
-        version: 5.0.8
+        specifier: 5.0.21
+        version: 5.0.21
       '@testing-library/react':
         specifier: 16.3.3
         version: 16.3.3(@testing-library/dom@10.4.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -502,8 +502,8 @@ packages:
       '@noble/hashes':
         optional: true
 
-  '@fontsource/inter@5.0.8':
-    resolution: {integrity: sha512-28knWH1BfOiRalfLs90U4sge5mpQ8ZH6FS0PTT+IZMKrZ7wNHDHRuKa1kQJg+uHcc6axBppnxll+HXM4c7zo/Q==}
+  '@fontsource/inter@5.0.21':
+    resolution: {integrity: sha512-Y4Ph0bYD5IfW8r9PSeiNjLvM6D/Bh5+YT9jOKiBqW3YS+AEBlmy8v74TpTNeZAvL3zHmikHCnzaKw7ob8LZiKQ==}
 
   '@img/colour@1.1.0':
     resolution: {integrity: sha512-Td76q7j57o/tLVdgS746cYARfSyxk8iEfRxewL9h4OMzYhbW4TAcppl0mT4eyqXddh6L/jwoM75mo7ixa/pCeQ==}
@@ -2153,7 +2153,7 @@ snapshots:
 
   '@exodus/bytes@1.15.1': {}
 
-  '@fontsource/inter@5.0.8': {}
+  '@fontsource/inter@5.0.21': {}
 
   '@img/colour@1.1.0': {}
 
