@@ -186,8 +186,8 @@ importers:
         specifier: 16.3.3
         version: 16.3.3(@testing-library/dom@10.4.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@types/node':
-        specifier: 24.13.3
-        version: 24.13.3
+        specifier: 24.13.4
+        version: 24.13.4
       '@vitest/ui':
         specifier: 4.1.11
         version: 4.1.11(vitest@4.1.11)
@@ -208,7 +208,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: 4.1.11
-        version: 4.1.11(@types/node@24.13.3)(@vitest/ui@4.1.11)(jsdom@30.0.1)(vite@7.0.5(@types/node@24.13.3))
+        version: 4.1.11(@types/node@24.13.4)(@vitest/ui@4.1.11)(jsdom@30.0.1)(vite@7.0.5(@types/node@24.13.4))
       wrangler:
         specifier: 4.130.0
         version: 4.130.0
@@ -1305,8 +1305,8 @@ packages:
   '@types/estree@1.0.9':
     resolution: {integrity: sha512-GhdPgy1el4/ImP05X05Uw4cw2/M93BCUmnEvWZNStlCzEKME4Fkk+YpoA5OiHNQmoS7Cafb8Xa3Pya8m1Qrzeg==}
 
-  '@types/node@24.13.3':
-    resolution: {integrity: sha512-Dh8vAsV36ig5wa9OX4pXvMc9D3Veibfw2wix0CUwYODLD8nkj9UsLjASr49nPg+2eKzxhBV+v7L8pXvT4e639Q==}
+  '@types/node@24.13.4':
+    resolution: {integrity: sha512-YJ7EqCstVTzIr0fMr7qul/977en+pQHrfmuKIo6Zr9i75Be21dr3MovcfvGtyvi2HAUrRerWps5sMO9I7WaxDw==}
 
   '@typescript/typescript-aix-ppc64@7.0.2':
     resolution: {integrity: sha512-MTKKkWB7p/0E9xi1d1tHtZ5PiLkGEMIq88pK2CubZjOsLtYTLqhgIgi6zepFa+9GHZ6h05NMCkQxGKiPXMxXtQ==}
@@ -2092,7 +2092,7 @@ snapshots:
       cjs-module-lexer: 1.2.3
       esbuild: 0.28.1
       miniflare: 5.20260908.0-alpha
-      vitest: 4.1.11(@types/node@24.13.3)(@vitest/ui@4.1.11)(jsdom@30.0.1)(vite@7.0.5(@types/node@24.13.3))
+      vitest: 4.1.11(@types/node@24.13.4)(@vitest/ui@4.1.11)(jsdom@30.0.1)(vite@7.0.5(@types/node@24.13.4))
       wrangler: 4.130.0
       zod: 4.4.3
     transitivePeerDependencies:
@@ -2688,7 +2688,7 @@ snapshots:
 
   '@types/estree@1.0.9': {}
 
-  '@types/node@24.13.3':
+  '@types/node@24.13.4':
     dependencies:
       undici-types: 7.18.2
 
@@ -2761,13 +2761,13 @@ snapshots:
       chai: 6.2.2
       tinyrainbow: 3.1.0
 
-  '@vitest/mocker@4.1.11(vite@7.0.5(@types/node@24.13.3))':
+  '@vitest/mocker@4.1.11(vite@7.0.5(@types/node@24.13.4))':
     dependencies:
       '@vitest/spy': 4.1.11
       estree-walker: 3.0.3
       magic-string: 0.30.21
     optionalDependencies:
-      vite: 7.0.5(@types/node@24.13.3)
+      vite: 7.0.5(@types/node@24.13.4)
 
   '@vitest/pretty-format@4.1.11':
     dependencies:
@@ -2796,7 +2796,7 @@ snapshots:
       sirv: 3.0.2
       tinyglobby: 0.2.17
       tinyrainbow: 3.1.0
-      vitest: 4.1.11(@types/node@24.13.3)(@vitest/ui@4.1.11)(jsdom@30.0.1)(vite@7.0.5(@types/node@24.13.3))
+      vitest: 4.1.11(@types/node@24.13.4)(@vitest/ui@4.1.11)(jsdom@30.0.1)(vite@7.0.5(@types/node@24.13.4))
 
   '@vitest/utils@4.1.11':
     dependencies:
@@ -3334,7 +3334,7 @@ snapshots:
       pako: 0.2.9
       tiny-inflate: 1.0.3
 
-  vite@7.0.5(@types/node@24.13.3):
+  vite@7.0.5(@types/node@24.13.4):
     dependencies:
       esbuild: 0.25.12
       fdir: 6.5.0(picomatch@4.0.4)
@@ -3343,13 +3343,13 @@ snapshots:
       rollup: 4.62.2
       tinyglobby: 0.2.17
     optionalDependencies:
-      '@types/node': 24.13.3
+      '@types/node': 24.13.4
       fsevents: 2.3.3
 
-  vitest@4.1.11(@types/node@24.13.3)(@vitest/ui@4.1.11)(jsdom@30.0.1)(vite@7.0.5(@types/node@24.13.3)):
+  vitest@4.1.11(@types/node@24.13.4)(@vitest/ui@4.1.11)(jsdom@30.0.1)(vite@7.0.5(@types/node@24.13.4)):
     dependencies:
       '@vitest/expect': 4.1.11
-      '@vitest/mocker': 4.1.11(vite@7.0.5(@types/node@24.13.3))
+      '@vitest/mocker': 4.1.11(vite@7.0.5(@types/node@24.13.4))
       '@vitest/pretty-format': 4.1.11
       '@vitest/runner': 4.1.11
       '@vitest/snapshot': 4.1.11
@@ -3366,10 +3366,10 @@ snapshots:
       tinyexec: 1.2.4
       tinyglobby: 0.2.17
       tinyrainbow: 3.1.0
-      vite: 7.0.5(@types/node@24.13.3)
+      vite: 7.0.5(@types/node@24.13.4)
       why-is-node-running: 2.3.0
     optionalDependencies:
-      '@types/node': 24.13.3
+      '@types/node': 24.13.4
       '@vitest/ui': 4.1.11(vitest@4.1.11)
       jsdom: 30.0.1
     transitivePeerDependencies:
