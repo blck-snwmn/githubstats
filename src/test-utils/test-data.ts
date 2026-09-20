@@ -1,10 +1,10 @@
 import type { LanguageData, LanguageStats } from "../types/language";
 
 export const testLanguageData: LanguageData[] = [
-  { language: "TypeScript", bytes: 45000, percentage: 45.5 },
-  { language: "JavaScript", bytes: 30000, percentage: 30.2 },
-  { language: "Go", bytes: 15000, percentage: 15.1 },
-  { language: "Python", bytes: 10000, percentage: 9.2 },
+  { language: "TypeScript", value: 45000, percentage: 45.5 },
+  { language: "JavaScript", value: 30000, percentage: 30.2 },
+  { language: "Go", value: 15000, percentage: 15.1 },
+  { language: "Python", value: 10000, percentage: 9.2 },
 ];
 
 export const testLanguageStats: LanguageStats = {

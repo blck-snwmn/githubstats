@@ -3,6 +3,7 @@
 import type { GraphQLResponse } from "./types";
 
 const GITHUB_GRAPHQL_API = "https://api.github.com/graphql";
+const GITHUB_REST_API = "https://api.github.com";
 
 function isGraphQLResponse<T>(value: unknown): value is GraphQLResponse<T> {
   return typeof value === "object" && value !== null && ("data" in value || "errors" in value);
@@ -45,4 +46,21 @@ export async function executeGraphQLQuery<T>(
   }
 
   return payload.data;
+}
+
+export async function executeGitHubRestRequest<T>(path: string, githubToken: string): Promise<T> {
+  const response = await fetch(`${GITHUB_REST_API}/${path}`, {
+    headers: {
+      Accept: "application/vnd.github+json",
+      Authorization: `Bearer ${githubToken}`,
+      "User-Agent": "readmewk-svg-generator",
+    },
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`GitHub API error: ${response.status} - ${errorText}`);
+  }
+
+  return response.json<T>();
 }

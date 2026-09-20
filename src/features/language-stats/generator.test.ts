@@ -9,11 +9,11 @@ vi.mock("./api", () => ({
     const entries = Object.entries(stats)
       .toSorted(([, a], [, b]) => b - a)
       .slice(0, limit);
-    const totalBytes = entries.reduce((sum, [, bytes]) => sum + bytes, 0);
-    return entries.map(([language, bytes]) => ({
+    const total = entries.reduce((sum, [, value]) => sum + value, 0);
+    return entries.map(([language, value]) => ({
       language,
-      bytes,
-      percentage: (bytes / totalBytes) * 100,
+      value,
+      percentage: (value / total) * 100,
     }));
   }),
 }));
@@ -25,13 +25,13 @@ describe("generateLanguageStatsSVG Integration", () => {
   const testToken = "test-token";
 
   const mockLanguageStats: LanguageStats = {
-    TypeScript: 45000,
-    JavaScript: 30000,
-    Go: 15000,
-    Python: 10000,
-    Rust: 3000,
-    Java: 2000,
-    "C++": 1000,
+    TypeScript: 45,
+    JavaScript: 30,
+    Go: 15,
+    Python: 10,
+    Rust: 3,
+    Java: 2,
+    "C++": 1,
   };
 
   beforeEach(() => {
@@ -63,7 +63,7 @@ describe("generateLanguageStatsSVG Integration", () => {
     });
 
     // タイトルのテキストがパスとして含まれているはず
-    // "Most Used Languages"というテキストがSVGパスとして描画される
+    // "Primary Languages"というテキストがSVGパスとして描画される
     expect(svg.length).toBeGreaterThan(5000); // 複雑なSVGは大きい
   });
 
