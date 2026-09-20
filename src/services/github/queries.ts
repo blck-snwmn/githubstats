@@ -1,9 +1,15 @@
 // GraphQL queries for GitHub API
 
 export const RECENT_LANGUAGE_QUERY = `
-  query($username: String!) {
+  query($username: String!, $repoLimit: Int!) {
     user(login: $username) {
-      repositories(first: 20, ownerAffiliations: OWNER, orderBy: {field: UPDATED_AT, direction: DESC}) {
+      repositories(
+        first: $repoLimit
+        ownerAffiliations: OWNER
+        isFork: false
+        isArchived: false
+        orderBy: {field: PUSHED_AT, direction: DESC}
+      ) {
         edges {
           node {
             name
