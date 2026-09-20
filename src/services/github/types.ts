@@ -19,16 +19,16 @@ export interface GraphQLResponse<T> {
   data?: T;
 }
 
-export interface UserRepositoriesData {
-  user: {
-    repositories: {
-      edges: Array<{ node: RepositoryNode }>;
-      pageInfo: {
-        hasNextPage: boolean;
-        endCursor: string | null;
-      };
-    };
-  };
+export interface RepositorySearchItem {
+  archived: boolean;
+  fork: boolean;
+  language: string | null;
+}
+
+export interface RepositorySearchResponse {
+  total_count: number;
+  incomplete_results: boolean;
+  items: RepositorySearchItem[];
 }
 
 export interface RecentRepositoriesData {

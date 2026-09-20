@@ -23,18 +23,18 @@ export function processLanguageData(repositories: RepositoryNode[]): LanguageSta
 export function getTopLanguages(
   languageStats: LanguageStats,
   limit = 10,
-): Array<{ language: string; bytes: number; percentage: number }> {
+): Array<{ language: string; value: number; percentage: number }> {
   // First get the top languages
   const topLanguages = Object.entries(languageStats)
     .toSorted(([, a], [, b]) => b - a)
     .slice(0, limit);
 
-  // Calculate total bytes only from top languages for percentage
-  const topLanguagesTotalBytes = topLanguages.reduce((sum, [, bytes]) => sum + bytes, 0);
+  // Calculate the total only from top languages for percentage
+  const topLanguagesTotal = topLanguages.reduce((sum, [, value]) => sum + value, 0);
 
-  return topLanguages.map(([language, bytes]) => ({
+  return topLanguages.map(([language, value]) => ({
     language,
-    bytes,
-    percentage: (bytes / topLanguagesTotalBytes) * 100,
+    value,
+    percentage: (value / topLanguagesTotal) * 100,
   }));
 }

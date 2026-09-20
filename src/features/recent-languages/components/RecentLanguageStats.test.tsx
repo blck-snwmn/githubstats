@@ -19,9 +19,9 @@ describe("RecentLanguageStats Component", () => {
     });
 
   const testLanguages: LanguageData[] = [
-    { language: "TypeScript", bytes: 25000, percentage: 50 },
-    { language: "Go", bytes: 15000, percentage: 30 },
-    { language: "Python", bytes: 10000, percentage: 20 },
+    { language: "TypeScript", value: 25000, percentage: 50 },
+    { language: "Go", value: 15000, percentage: 30 },
+    { language: "Python", value: 10000, percentage: 20 },
   ];
 
   it("should render recent language statistics", async () => {
@@ -51,7 +51,7 @@ describe("RecentLanguageStats Component", () => {
   it("should limit to top 10 languages", async () => {
     const manyLanguages: LanguageData[] = Array.from({ length: 15 }, (_, i) => ({
       language: `Language${i + 1}`,
-      bytes: (15 - i) * 1000,
+      value: (15 - i) * 1000,
       percentage: (15 - i) * 6.67,
     }));
 
@@ -64,7 +64,7 @@ describe("RecentLanguageStats Component", () => {
 
   it("should handle single language with 100%", async () => {
     const singleLanguage: LanguageData[] = [
-      { language: "TypeScript", bytes: 50000, percentage: 100 },
+      { language: "TypeScript", value: 50000, percentage: 100 },
     ];
 
     const svg = await renderToSVG(<RecentLanguageStats languages={singleLanguage} />);
@@ -77,8 +77,8 @@ describe("RecentLanguageStats Component", () => {
     const svg1 = await renderToSVG(<RecentLanguageStats languages={testLanguages} />);
 
     const differentLanguages: LanguageData[] = [
-      { language: "Rust", bytes: 30000, percentage: 60 },
-      { language: "Java", bytes: 20000, percentage: 40 },
+      { language: "Rust", value: 30000, percentage: 60 },
+      { language: "Java", value: 20000, percentage: 40 },
     ];
 
     const svg2 = await renderToSVG(<RecentLanguageStats languages={differentLanguages} />);

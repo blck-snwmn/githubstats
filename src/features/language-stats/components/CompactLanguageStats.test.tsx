@@ -19,10 +19,10 @@ describe("CompactLanguageStats Component", () => {
     });
 
   const testLanguages: LanguageData[] = [
-    { language: "TypeScript", bytes: 45000, percentage: 45.5 },
-    { language: "JavaScript", bytes: 30000, percentage: 30.2 },
-    { language: "Go", bytes: 15000, percentage: 15.1 },
-    { language: "Python", bytes: 10000, percentage: 9.2 },
+    { language: "TypeScript", value: 45000, percentage: 45.5 },
+    { language: "JavaScript", value: 30000, percentage: 30.2 },
+    { language: "Go", value: 15000, percentage: 15.1 },
+    { language: "Python", value: 10000, percentage: 9.2 },
   ];
 
   it("should render language statistics", async () => {
@@ -45,14 +45,14 @@ describe("CompactLanguageStats Component", () => {
 
   it("should limit to top 6 languages", async () => {
     const manyLanguages: LanguageData[] = [
-      { language: "TypeScript", bytes: 45000, percentage: 20 },
-      { language: "JavaScript", bytes: 40000, percentage: 18 },
-      { language: "Go", bytes: 35000, percentage: 16 },
-      { language: "Python", bytes: 30000, percentage: 14 },
-      { language: "Rust", bytes: 25000, percentage: 11 },
-      { language: "Java", bytes: 20000, percentage: 9 },
-      { language: "C++", bytes: 15000, percentage: 7 },
-      { language: "Ruby", bytes: 10000, percentage: 5 },
+      { language: "TypeScript", value: 45000, percentage: 20 },
+      { language: "JavaScript", value: 40000, percentage: 18 },
+      { language: "Go", value: 35000, percentage: 16 },
+      { language: "Python", value: 30000, percentage: 14 },
+      { language: "Rust", value: 25000, percentage: 11 },
+      { language: "Java", value: 20000, percentage: 9 },
+      { language: "C++", value: 15000, percentage: 7 },
+      { language: "Ruby", value: 10000, percentage: 5 },
     ];
 
     const svg = await renderToSVG(<CompactLanguageStats languages={manyLanguages} />);
@@ -71,7 +71,7 @@ describe("CompactLanguageStats Component", () => {
 
   it("should handle single language", async () => {
     const singleLanguage: LanguageData[] = [
-      { language: "TypeScript", bytes: 100000, percentage: 100 },
+      { language: "TypeScript", value: 100000, percentage: 100 },
     ];
 
     const svg = await renderToSVG(<CompactLanguageStats languages={singleLanguage} />);

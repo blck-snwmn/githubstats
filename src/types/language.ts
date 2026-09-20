@@ -1,5 +1,5 @@
 /**
- * Language statistics mapping language names to byte counts
+ * Language statistics mapping language names to metric values
  */
 export interface LanguageStats {
   [language: string]: number;
@@ -10,6 +10,6 @@ export interface LanguageStats {
  */
 export interface LanguageData {
   language: string;
-  bytes: number;
+  value: number;
   percentage: number;
 }
