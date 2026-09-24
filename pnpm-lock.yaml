@@ -167,8 +167,8 @@ importers:
   .:
     dependencies:
       harfbuzzjs:
-        specifier: 0.10.3
-        version: 0.10.3
+        specifier: 1.6.2
+        version: 1.6.2
       hono:
         specifier: 4.13.8
         version: 4.13.8
@@ -1647,8 +1647,8 @@ packages:
   harfbuzzjs@0.10.0:
     resolution: {integrity: sha512-SN8LVwCOzvTq3OPNd0+EAghgXugItz56wst567D1vs7LnnKGWprhi3EG58aVOBwhN8HEbQxL4I9NDWkcXUutRw==}
 
-  harfbuzzjs@0.10.3:
-    resolution: {integrity: sha512-GJnLUrgLMadlMYrBGEXwYEimObbysy3prWT4HyPpFQERvgTU/OZ+ReUlEPOum6w4RBtFXzXiCCmECOr4sz3qwQ==}
+  harfbuzzjs@1.6.2:
+    resolution: {integrity: sha512-95c1vWuzoHjM19d5fQgPbz1wcv1pTa0UM9dZrdPgSMUEVuSwuzeVPkq6UhHHw3jLOkE9AYzzTP8XQkRBpPYpEg==}
 
   has-flag@4.0.0:
     resolution: {integrity: sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==}
@@ -3043,7 +3043,7 @@ snapshots:
 
   harfbuzzjs@0.10.0: {}
 
-  harfbuzzjs@0.10.3: {}
+  harfbuzzjs@1.6.2: {}
 
   has-flag@4.0.0: {}
 
