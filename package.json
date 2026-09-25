@@ -23,7 +23,7 @@
 	"dependencies": {
 		"harfbuzzjs": "0.10.3",
 		"hono": "4.13.8",
-		"satori": "0.33.4"
+		"satori": "0.33.5"
 	},
 	"devDependencies": {
 		"@cloudflare/vitest-plugin": "1.2.3",
