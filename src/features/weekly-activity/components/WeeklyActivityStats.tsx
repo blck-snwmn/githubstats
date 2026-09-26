@@ -26,6 +26,15 @@ function getActivityColor(count: number): string {
   return colors.background.secondary;
 }
 
+const cellStyle = (count: number): CSSProperties => ({
+  width: "12px",
+  height: "12px",
+  borderRadius: "3px",
+  backgroundColor: getActivityColor(count),
+  border: count === 0 ? "1px solid rgba(255, 255, 255, 0.10)" : "1px solid transparent",
+  boxSizing: "border-box",
+});
+
 export function WeeklyActivityStats({ repositories }: WeeklyActivityStatsProps) {
   const repoItemStyle: CSSProperties = {
     display: "flex",
@@ -49,15 +58,6 @@ export function WeeklyActivityStats({ repositories }: WeeklyActivityStatsProps) 
     gap: "5px",
     flexShrink: 0,
   };
-
-  const cellStyle = (count: number): CSSProperties => ({
-    width: "12px",
-    height: "12px",
-    borderRadius: "3px",
-    backgroundColor: getActivityColor(count),
-    border: count === 0 ? "1px solid rgba(255, 255, 255, 0.10)" : "1px solid transparent",
-    boxSizing: "border-box",
-  });
 
   return (
     <Card title="Weekly Activity">
