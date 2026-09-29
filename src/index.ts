@@ -5,7 +5,7 @@ import { generateRecentLanguagesSVG } from "./features/recent-languages/generato
 import { generateWeeklyActivitySVG } from "./features/weekly-activity/generator";
 import type { BaseSVGOptions } from "./types/svg-options";
 
-const app = new Hono<{ Bindings: CloudflareBindings }>();
+const app = new Hono<{ Bindings: Cloudflare.Env }>();
 const SVG_CACHE_CONTROL = "public, max-age=300, stale-while-revalidate=1209600";
 
 type SVGGenerator = (opts: BaseSVGOptions) => Promise<string>;
@@ -27,7 +27,7 @@ function getTracing(ctx: unknown): Tracing | undefined {
 }
 
 async function generateSVGContent(
-  c: Context<{ Bindings: CloudflareBindings }>,
+  c: Context<{ Bindings: Cloudflare.Env }>,
   path: string,
   name: string,
   generator: SVGGenerator,
@@ -49,7 +49,7 @@ async function generateSVGContent(
 }
 
 function createSVGEndpoint(
-  router: Hono<{ Bindings: CloudflareBindings }>,
+  router: Hono<{ Bindings: Cloudflare.Env }>,
   path: string,
   generator: SVGGenerator,
   name: string,

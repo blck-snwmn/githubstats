@@ -14,6 +14,7 @@ GitHub language statistics SVG generator built with Cloudflare Workers.
 ```bash
 # Install
 pnpm install
+pnpm run cf-typegen
 
 # Setup environment
 echo "GITHUB_TOKEN=your_token" > .dev.vars
@@ -45,26 +46,33 @@ pnpm run deploy
 
 ```bash
 # Quality checks
+pnpm run typecheck     # Generate Worker types and check TypeScript
 pnpm run lint          # Lint and TypeScript compiler diagnostics
 pnpm run lint:fix      # Lint
-pnpm run format:fix    # Format
+pnpm run fmt           # Format
 
 # Testing
 pnpm run test          # Run tests
 
-# Regenerate Cloudflare Worker types after changing wrangler.jsonc
+# Regenerate Cloudflare Worker types after changing cloudflare.config.ts
 pnpm run cf-typegen
 ```
 
+Worker types are generated in `.cloudflare/types/index.d.ts`. The `.cloudflare/` directory also contains build output and is generated locally rather than committed.
+
 ## Configuration
 
-- **GitHub Username**: Set in `wrangler.jsonc`
+- **Worker configuration**: `cloudflare.config.ts` defines bindings, compatibility settings, caching, and observability.
+- **Build configuration**: `wrangler.config.ts` defines the WASM alias, build constants, minification, and static asset directory.
+- **GitHub Username**: Set in `cloudflare.config.ts` under `worker.env.GITHUB_USERNAME`
 - **GitHub Token**:
   - Dev: `.dev.vars` file
-  - Prod: `wrangler secret put GITHUB_TOKEN`
-- **Cache**: Enabled in `wrangler.jsonc`; SVG responses use `Cache-Control: public, max-age=300, stale-while-revalidate=1209600`
+  - Prod: Configure `GITHUB_TOKEN` as a Worker secret in the Cloudflare dashboard.
+- **Cache**: Enabled in `cloudflare.config.ts`; SVG responses use `Cache-Control: public, max-age=300, stale-while-revalidate=1209600`
 
 ## Tooling
+
+The project uses `cf@1.0.0-beta.5`. Its `dev` and `build` commands delegate to the local Wrangler bundler.
 
 CLI tools (`lefthook`) are managed by [aqua](https://aquaproj.github.io/) with versions pinned in [aqua.yaml](aqua.yaml).
 

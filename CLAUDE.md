@@ -8,12 +8,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ```bash
 # Install and setup
 pnpm install
-pnpm run cf-typegen    # Generate types after modifying wrangler.jsonc
+pnpm run cf-typegen    # Generate types after modifying cloudflare.config.ts
 
 # Development
 pnpm run dev           # Start local server at http://localhost:8787
 
 # Quality checks (run before committing)
+pnpm run typecheck     # Generate Worker types and check TypeScript
 pnpm run lint          # Lint and TypeScript compiler diagnostics with oxlint
 pnpm run lint:fix      # Lint and auto-fix
 pnpm run fmt:check     # Format check with oxfmt
@@ -30,8 +31,8 @@ pnpm run deploy        # Deploy to Cloudflare Workers
 
 ### Environment Setup
 - **Local**: Create `.dev.vars` with `GITHUB_TOKEN=your_token`
-- **Production**: `wrangler secret put GITHUB_TOKEN`
-- **Username**: Set in `wrangler.jsonc` under `vars.GITHUB_USERNAME`
+- **Production**: Configure `GITHUB_TOKEN` as a Worker secret in the Cloudflare dashboard.
+- **Username**: Set in `cloudflare.config.ts` under `worker.env.GITHUB_USERNAME`
 
 ## Architecture
 
@@ -42,7 +43,7 @@ pnpm run deploy        # Deploy to Cloudflare Workers
 4. **Response Caching**: `Cache-Control: public, max-age=300, stale-while-revalidate=1209600`
 
 ### Workers Cache
-Workers Cache is enabled in `wrangler.jsonc`. SVG endpoints generate a fresh response whenever the Worker runs, and Cloudflare's cache handles freshness and stale-while-revalidate behavior before the Worker is invoked:
+Workers Cache is enabled in `cloudflare.config.ts`. SVG endpoints generate a fresh response whenever the Worker runs, and Cloudflare's cache handles freshness and stale-while-revalidate behavior before the Worker is invoked:
 - `max-age=300`: cached SVGs are fresh for 5 minutes
 - `stale-while-revalidate=1209600`: stale SVGs can be served for up to 14 days while Cloudflare refreshes them in the background
 
@@ -108,12 +109,12 @@ All components use shared utilities:
 ## Important Implementation Details
 
 ### Workers Cache Configuration
-- Enabled in `wrangler.jsonc`
+- Enabled in `cloudflare.config.ts`
 - SVG responses set `Cache-Control: public, max-age=300, stale-while-revalidate=1209600`
 
 ### Type Safety
-- Run `pnpm run cf-typegen` after any `wrangler.jsonc` changes
-- Generates `CloudflareBindings` interface in `worker-configuration.d.ts`
+- Run `pnpm run cf-typegen` after any `cloudflare.config.ts` changes
+- Generates `Cloudflare.Env` and runtime types in `.cloudflare/types/index.d.ts`
 - Strict TypeScript mode enabled
 
 ### Error Handling
