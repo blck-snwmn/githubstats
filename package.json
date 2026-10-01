@@ -9,6 +9,7 @@
 		"preinstall": "npx only-allow pnpm",
 		"dev": "cf dev",
 		"deploy": "cf deploy",
+		"upload": "cf workers versions create",
 		"cf-typegen": "cf workers types",
 		"lint": "oxlint --deny-warnings .",
 		"lint:fix": "oxlint --deny-warnings . --fix",

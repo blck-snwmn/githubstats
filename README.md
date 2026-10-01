@@ -70,6 +70,20 @@ Worker types are generated in `.cloudflare/types/index.d.ts`. The `.cloudflare/`
   - Prod: Configure `GITHUB_TOKEN` as a Worker secret in the Cloudflare dashboard.
 - **Cache**: Enabled in `cloudflare.config.ts`; SVG responses use `Cache-Control: public, max-age=300, stale-while-revalidate=1209600`
 
+### Workers Builds
+
+Configure the connected Worker's build settings in the Cloudflare dashboard:
+
+| Setting | Command |
+| --- | --- |
+| Build command | Leave empty; the upload and deploy commands build the Worker |
+| Deploy command | `pnpm run deploy` |
+| Non-production branch deploy command | `pnpm run upload` |
+
+`pnpm run upload` creates a Worker version without promoting it to production. Both scripts use `cf` to read `cloudflare.config.ts`. The default Wrangler commands require the old configuration format and fail with a missing entry-point error.
+
+To validate the upload locally without publishing a version, run `pnpm run upload --dry-run`.
+
 ## Tooling
 
 The project uses `cf@1.0.0-beta.5`. Its `dev` and `build` commands delegate to the local Wrangler bundler.

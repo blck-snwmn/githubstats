@@ -27,6 +27,7 @@ pnpm run test src/features/recent-repos/components/RecentReposStats.test.tsx  # 
 
 # Deployment
 pnpm run deploy        # Deploy to Cloudflare Workers
+pnpm run upload        # Upload a Worker version without promoting it to production
 ```
 
 ### Environment Setup
