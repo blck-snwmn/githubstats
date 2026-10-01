@@ -14,7 +14,6 @@ GitHub language statistics SVG generator built with Cloudflare Workers.
 ```bash
 # Install
 pnpm install
-pnpm run cf-typegen
 
 # Setup environment
 echo "GITHUB_TOKEN=your_token" > .dev.vars
@@ -58,35 +57,15 @@ pnpm run test          # Run tests
 pnpm run cf-typegen
 ```
 
-Worker types are generated in `.cloudflare/types/index.d.ts`. The `.cloudflare/` directory also contains build output and is generated locally rather than committed.
-
 ## Configuration
 
-- **Worker configuration**: `cloudflare.config.ts` defines bindings, compatibility settings, caching, and observability.
-- **Build configuration**: `wrangler.config.ts` defines the WASM alias, build constants, minification, and static asset directory.
-- **GitHub Username**: Set in `cloudflare.config.ts` under `worker.env.GITHUB_USERNAME`
+- **GitHub Username**: Set in `cloudflare.config.ts`
 - **GitHub Token**:
   - Dev: `.dev.vars` file
-  - Prod: Configure `GITHUB_TOKEN` as a Worker secret in the Cloudflare dashboard.
+  - Prod: Set the `GITHUB_TOKEN` Worker secret in the Cloudflare dashboard.
 - **Cache**: Enabled in `cloudflare.config.ts`; SVG responses use `Cache-Control: public, max-age=300, stale-while-revalidate=1209600`
 
-### Workers Builds
-
-Configure the connected Worker's build settings in the Cloudflare dashboard:
-
-| Setting | Command |
-| --- | --- |
-| Build command | Leave empty; the upload and deploy commands build the Worker |
-| Deploy command | `pnpm run deploy` |
-| Non-production branch deploy command | `pnpm run upload` |
-
-`pnpm run upload` creates a Worker version without promoting it to production. Both scripts use `cf` to read `cloudflare.config.ts`. The default Wrangler commands require the old configuration format and fail with a missing entry-point error.
-
-To validate the upload locally without publishing a version, run `pnpm run upload --dry-run`.
-
 ## Tooling
-
-The project uses `cf@1.0.0-beta.5`. Its `dev` and `build` commands delegate to the local Wrangler bundler.
 
 CLI tools (`lefthook`) are managed by [aqua](https://aquaproj.github.io/) with versions pinned in [aqua.yaml](aqua.yaml).
 
