@@ -1,14 +1,12 @@
 import { cloudflareTest } from "@cloudflare/vitest-plugin";
 import { readFileSync } from "node:fs";
 import { createRequire } from "node:module";
-import { dirname, resolve } from "node:path";
+import { resolve } from "node:path";
 import { defineConfig } from "vitest/config";
-import { unstable_readConfig } from "wrangler";
+import { wranglerConfig } from "./wrangler.config";
 
 process.env.GITHUB_TOKEN ??= "test-token";
 
-const wranglerConfigPath = resolve(process.cwd(), "wrangler.jsonc");
-const wranglerConfig = unstable_readConfig({ config: wranglerConfigPath }, { hideWarnings: true });
 const require = createRequire(import.meta.url);
 const testFont = readFileSync(
   require.resolve("@fontsource/inter/files/inter-latin-400-normal.woff"),
@@ -20,14 +18,14 @@ const alias = Object.entries(wranglerConfig.alias ?? {})
   .filter((entry): entry is [string, string] => typeof entry[1] === "string")
   .map(([name, target]) => ({
     find: new RegExp(`^${name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}$`),
-    replacement: resolve(dirname(wranglerConfigPath), target),
+    replacement: resolve(process.cwd(), target),
   }));
 
 export default defineConfig({
   plugins: [
     cloudflareTest({
-      wrangler: {
-        configPath: "./wrangler.jsonc",
+      experimental: {
+        newConfig: true,
       },
       miniflare: {
         bindings: {
@@ -36,6 +34,7 @@ export default defineConfig({
       },
     }),
   ],
+  define: wranglerConfig.define,
   test: {
     include: ["tests/workers/**/*.workerd.tsx"],
   },

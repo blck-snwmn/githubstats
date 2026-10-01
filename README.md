@@ -14,6 +14,7 @@ GitHub language statistics SVG generator built with Cloudflare Workers.
 ```bash
 # Install
 pnpm install
+pnpm run cf-typegen
 
 # Setup environment
 echo "GITHUB_TOKEN=your_token" > .dev.vars
@@ -52,17 +53,17 @@ pnpm run format:fix    # Format
 # Testing
 pnpm run test          # Run tests
 
-# Regenerate Cloudflare Worker types after changing wrangler.jsonc
+# Regenerate Cloudflare Worker types after changing cloudflare.config.ts
 pnpm run cf-typegen
 ```
 
 ## Configuration
 
-- **GitHub Username**: Set in `wrangler.jsonc`
+- **GitHub Username**: Set in `cloudflare.config.ts`
 - **GitHub Token**:
   - Dev: `.dev.vars` file
-  - Prod: `wrangler secret put GITHUB_TOKEN`
-- **Cache**: Enabled in `wrangler.jsonc`; SVG responses use `Cache-Control: public, max-age=300, stale-while-revalidate=1209600`
+  - Prod: `wrangler secret put GITHUB_TOKEN --name githubstats`
+- **Cache**: Enabled in `cloudflare.config.ts`; SVG responses use `Cache-Control: public, max-age=300, stale-while-revalidate=1209600`
 
 ## Tooling
 
