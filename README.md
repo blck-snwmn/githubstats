@@ -14,6 +14,7 @@ GitHub language statistics SVG generator built with Cloudflare Workers.
 ```bash
 # Install
 pnpm install
+pnpm run cf-typegen
 
 # Setup environment
 echo "GITHUB_TOKEN=your_token" > .dev.vars

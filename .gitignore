@@ -1,7 +1,6 @@
 # prod
 dist/
-.cloudflare/*
-!.cloudflare/types/
+.cloudflare/
 
 # dev
 .yarn/

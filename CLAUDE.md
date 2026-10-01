@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ```bash
 # Install and setup
 pnpm install
-pnpm run cf-typegen    # Generate types after modifying cloudflare.config.ts
+pnpm run cf-typegen    # Generate Worker types
 
 # Development
 pnpm run dev           # Start local server at http://localhost:8787
