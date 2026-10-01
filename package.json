@@ -8,8 +8,7 @@
 	"scripts": {
 		"preinstall": "npx only-allow pnpm",
 		"dev": "cf dev",
-		"deploy": "cf deploy",
-		"upload": "cf workers versions create",
+		"deploy": "cf deploy --mode production",
 		"cf-typegen": "cf workers types",
 		"lint": "oxlint --deny-warnings .",
 		"lint:fix": "oxlint --deny-warnings . --fix",
@@ -19,9 +18,7 @@
 		"test:unit": "vitest run",
 		"test:workerd": "vitest run --config vitest.workerd.config.ts",
 		"test:watch": "vitest watch",
-		"test:coverage": "vitest run --coverage",
-		"build": "cf build",
-		"typecheck": "pnpm run cf-typegen && tsc --noEmit"
+		"test:coverage": "vitest run --coverage"
 	},
 	"dependencies": {
 		"harfbuzzjs": "0.10.3",

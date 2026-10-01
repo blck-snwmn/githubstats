@@ -36,9 +36,6 @@ jobs:
     - name: Install dependencies
       run: pnpm install --frozen-lockfile
 
-    - name: Generate Cloudflare types
-      run: pnpm run cf-typegen
-
     - name: Run lint
       run: pnpm run lint
 
@@ -79,11 +76,11 @@ jobs:
     - name: Install dependencies
       run: pnpm install --frozen-lockfile
 
-    - name: Check Cloudflare types
-      run: pnpm run typecheck
+    - name: Generate Cloudflare types
+      run: pnpm run cf-typegen
 
-    - name: Build Worker
-      run: pnpm run build
+    - name: Check generated Cloudflare types
+      run: git diff --exit-code -- .cloudflare/types/index.d.ts
 
   test:
     runs-on: ubuntu-latest

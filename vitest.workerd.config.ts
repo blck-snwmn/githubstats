@@ -12,7 +12,8 @@ const testFont = readFileSync(
   require.resolve("@fontsource/inter/files/inter-latin-400-normal.woff"),
 ).toString("base64");
 
-// Share Wrangler build aliases with Vite to test the production dependency graph.
+// The Workers Vitest plugin does not currently translate Wrangler module aliases
+// into Vite aliases, so mirror them to exercise the production dependency graph.
 const alias = Object.entries(wranglerConfig.alias ?? {})
   .filter((entry): entry is [string, string] => typeof entry[1] === "string")
   .map(([name, target]) => ({

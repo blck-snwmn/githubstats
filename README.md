@@ -45,10 +45,9 @@ pnpm run deploy
 
 ```bash
 # Quality checks
-pnpm run typecheck     # Generate Worker types and check TypeScript
 pnpm run lint          # Lint and TypeScript compiler diagnostics
 pnpm run lint:fix      # Lint
-pnpm run fmt           # Format
+pnpm run format:fix    # Format
 
 # Testing
 pnpm run test          # Run tests
@@ -62,7 +61,7 @@ pnpm run cf-typegen
 - **GitHub Username**: Set in `cloudflare.config.ts`
 - **GitHub Token**:
   - Dev: `.dev.vars` file
-  - Prod: Set the `GITHUB_TOKEN` Worker secret in the Cloudflare dashboard.
+  - Prod: `wrangler secret put GITHUB_TOKEN --name githubstats`
 - **Cache**: Enabled in `cloudflare.config.ts`; SVG responses use `Cache-Control: public, max-age=300, stale-while-revalidate=1209600`
 
 ## Tooling

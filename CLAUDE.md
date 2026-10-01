@@ -14,7 +14,6 @@ pnpm run cf-typegen    # Generate types after modifying cloudflare.config.ts
 pnpm run dev           # Start local server at http://localhost:8787
 
 # Quality checks (run before committing)
-pnpm run typecheck     # Generate Worker types and check TypeScript
 pnpm run lint          # Lint and TypeScript compiler diagnostics with oxlint
 pnpm run lint:fix      # Lint and auto-fix
 pnpm run fmt:check     # Format check with oxfmt
@@ -27,12 +26,11 @@ pnpm run test src/features/recent-repos/components/RecentReposStats.test.tsx  # 
 
 # Deployment
 pnpm run deploy        # Deploy to Cloudflare Workers
-pnpm run upload        # Upload a Worker version without promoting it to production
 ```
 
 ### Environment Setup
 - **Local**: Create `.dev.vars` with `GITHUB_TOKEN=your_token`
-- **Production**: Configure `GITHUB_TOKEN` as a Worker secret in the Cloudflare dashboard.
+- **Production**: `wrangler secret put GITHUB_TOKEN --name githubstats`
 - **Username**: Set in `cloudflare.config.ts` under `worker.env.GITHUB_USERNAME`
 
 ## Architecture

@@ -1,7 +1,6 @@
 import { defineWranglerConfig, type WranglerConfig } from "wrangler/experimental-config";
 
 export const wranglerConfig = {
-  minify: true,
   alias: {
     harfbuzzjs: "./src/shared/lib/harfbuzz-worker.ts",
   },
@@ -10,9 +9,12 @@ export const wranglerConfig = {
     "self.location.href": '"https://worker.invalid/"',
   },
   types: {
-    generate: true,
+    generate: false,
   },
   assetsDirectory: "./public",
 } satisfies WranglerConfig;
 
-export default defineWranglerConfig(wranglerConfig);
+export default defineWranglerConfig(({ mode }) => ({
+  ...wranglerConfig,
+  minify: mode === "production",
+}));
