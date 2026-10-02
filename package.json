@@ -22,7 +22,7 @@
 	},
 	"dependencies": {
 		"harfbuzzjs": "0.10.3",
-		"hono": "4.13.10",
+		"hono": "4.13.11",
 		"satori": "0.33.5"
 	},
 	"devDependencies": {
