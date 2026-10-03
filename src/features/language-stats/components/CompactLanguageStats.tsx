@@ -44,7 +44,7 @@ export const CompactLanguageStats = ({ languages }: CompactLanguageStatsProps) =
   const languageColors = topLanguages.map((lang) => getLanguageColor(lang.language));
 
   return (
-    <Card title="Primary Languages">
+    <Card title="Repositories by Language">
       <ProgressBar
         percentage={percentages}
         color={languageColors}

@@ -63,7 +63,7 @@ describe("generateLanguageStatsSVG Integration", () => {
     });
 
     // タイトルのテキストがパスとして含まれているはず
-    // "Primary Languages"というテキストがSVGパスとして描画される
+    // "Repositories by Language"というテキストがSVGパスとして描画される
     expect(svg.length).toBeGreaterThan(5000); // 複雑なSVGは大きい
   });
 
