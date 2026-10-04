@@ -192,8 +192,8 @@ importers:
         specifier: 4.1.11
         version: 4.1.11(vitest@4.1.11)
       cf:
-        specifier: 1.0.0-beta.9
-        version: 1.0.0-beta.9(@types/node@24.19.0)
+        specifier: 1.0.0-beta.10
+        version: 1.0.0-beta.10(@types/node@24.19.0)
       jsdom:
         specifier: 30.1.1
         version: 30.1.1
@@ -1499,8 +1499,8 @@ packages:
   camelize@1.0.1:
     resolution: {integrity: sha512-dU+Tx2fsypxTgtLoE36npi3UqcjSSMNYfkqgmoEhtZrraP5VWq0K7FkWVTYa8eMPtnU/G2txVsfdCJTn9uzpuQ==}
 
-  cf@1.0.0-beta.9:
-    resolution: {integrity: sha512-3vxJzj/aX+x3ufpaS377EVv1wfBWRPg2vkaw6jHFOgguMgTXWoREXy4FokQklX+M799+6wK+M9V155iSzR8sUQ==}
+  cf@1.0.0-beta.10:
+    resolution: {integrity: sha512-pv3zg8Y0sjgNuyKpDNsEBszTvSgRDzHccvHybJ6u4BjvesMZpS2T2twnOGvDo0PSnie/bCbA+hgzKWaDuIKtBw==}
     engines: {node: '>=22'}
     hasBin: true
 
@@ -2864,7 +2864,7 @@ snapshots:
 
   camelize@1.0.1: {}
 
-  cf@1.0.0-beta.9(@types/node@24.19.0):
+  cf@1.0.0-beta.10(@types/node@24.19.0):
     dependencies:
       '@cloudflare/build-output-utils': 0.8.4
       '@cloudflare/codemods': 0.3.0
