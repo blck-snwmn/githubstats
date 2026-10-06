@@ -192,8 +192,8 @@ importers:
         specifier: 4.1.11
         version: 4.1.11(vitest@4.1.11)
       cf:
-        specifier: 1.0.0-beta.11
-        version: 1.0.0-beta.11(@types/node@24.19.1)
+        specifier: 1.0.0-beta.12
+        version: 1.0.0-beta.12(@types/node@24.19.1)
       jsdom:
         specifier: 30.1.1
         version: 30.1.1
@@ -242,22 +242,22 @@ packages:
     resolution: {integrity: sha512-ctxtJ/eA+t+6q2++vj5j7FYX3nRu311q1wfYH3xjlLOsczhlhxAg2FWNUXhpGvAw3BWo1xBcvOV6/YLc2r5FJw==}
     hasBin: true
 
-  '@cloudflare/build-output-utils@0.8.4':
-    resolution: {integrity: sha512-IjFovj2NV5GXA2D4EZu243M5iiwcEEVeQwaOySfz6L+D9U6C5pVtO8WINQCVLc3zPW8Av9grQzBX2UvCbntnbw==}
+  '@cloudflare/build-output-utils@0.8.5':
+    resolution: {integrity: sha512-xnwcDCyBSErZeOj5eUy1gTrmVjwIY51TZ0Pz9W7mZqLGA3IkIckud7dNtFdGhKSXL2szfxBRbGM4R4qFE4SoPA==}
 
-  '@cloudflare/codemods@0.3.0':
-    resolution: {integrity: sha512-sS/tbKhZu0xQZfxd/4vi/N4Zlg/X6U0O1MJZmg656orES9REII8tF74SYq0GS+4NuQtdOYV59qdNkb5GIuebpw==}
+  '@cloudflare/codemods@0.4.0':
+    resolution: {integrity: sha512-qeRpKNXtvqhTtagx/5cLmDaFx/voBhWJ1S6SdFdBkE3OtgcPVz+Q8MtIG26zltW9Z0Icsu2FGBxV5RFmuHI/Bg==}
     hasBin: true
 
-  '@cloudflare/config@0.22.0':
-    resolution: {integrity: sha512-6FoqVlQicGs6DcUn5zbWUbcXomqtqIe+dFKwYJGKTJI/3W1dNQ2sKzxttNthiQG9RJhrENki4BNrpZtZuHwvXw==}
+  '@cloudflare/config@0.23.0':
+    resolution: {integrity: sha512-oE0S7X54esZmJHr9hhCoqODR+yTxxkSYWCLtRiItQdPs0gQuqYw9a13zChhK+8DmdCUJIFBsMAR6t+mfu8g+9w==}
 
   '@cloudflare/kv-asset-handler@0.5.0':
     resolution: {integrity: sha512-jxQYkj8dSIzc0cD6cMMNdOc1UVjqSqu8BZdor5s8cGjW2I8BjODt/kWPVdY+u9zj3ms75Q5qaZgnxUad83+eAg==}
     engines: {node: '>=22.0.0'}
 
-  '@cloudflare/runtime-types@0.1.6':
-    resolution: {integrity: sha512-sXsT4U4r9uSHzbN6fVio6mhtaBa4B0TwQHpeatD13e6LYnTG1I7tvjC8dYtfvoKSaazpxXdH49MiU+nqQaEDRA==}
+  '@cloudflare/runtime-types@0.1.7':
+    resolution: {integrity: sha512-avgC1wfTunbVea8HOq4ygiQ0WFQVNxcUHOQvH9TM47+0NTdsVTqB8rPQg6Tb5BfVkcWh/a0RAjk+Elr/h35mtQ==}
 
   '@cloudflare/unenv-preset@2.16.2':
     resolution: {integrity: sha512-JBP1+Z7ZSNG/d4mRP+y8VC5dka3tZVMLEZRvS+rzQ4DGV1EoxRFQckcJTTkXbHSQiTj0DtNI01Zwb/V2fX0mvQ==}
@@ -1529,8 +1529,8 @@ packages:
   camelize@1.0.1:
     resolution: {integrity: sha512-dU+Tx2fsypxTgtLoE36npi3UqcjSSMNYfkqgmoEhtZrraP5VWq0K7FkWVTYa8eMPtnU/G2txVsfdCJTn9uzpuQ==}
 
-  cf@1.0.0-beta.11:
-    resolution: {integrity: sha512-GqWsnqtqvkGRj+PE6dUPViuv2/WFwUWi7I0IsCN1tCmXcGayhxOtBpohQtQ1IhxQ2eUigrKKE7Ii/vt3vniarw==}
+  cf@1.0.0-beta.12:
+    resolution: {integrity: sha512-tyQ+Jpnw+4NDwDtl7ZNteXBm7N0TeJ6gYww79kkabpcYoCEXkUUpmt9BlDUKH8ub17tjAeiuyqa9NQzH0vp2Aw==}
     engines: {node: '>=22'}
     hasBin: true
 
@@ -2146,22 +2146,22 @@ snapshots:
     dependencies:
       css-tree: 3.2.1
 
-  '@cloudflare/build-output-utils@0.8.4':
+  '@cloudflare/build-output-utils@0.8.5':
     dependencies:
-      '@cloudflare/config': 0.22.0
+      '@cloudflare/config': 0.23.0
 
-  '@cloudflare/codemods@0.3.0': {}
+  '@cloudflare/codemods@0.4.0': {}
 
-  '@cloudflare/config@0.22.0':
+  '@cloudflare/config@0.23.0':
     dependencies:
       zod: 4.4.3
 
   '@cloudflare/kv-asset-handler@0.5.0': {}
 
-  '@cloudflare/runtime-types@0.1.6(@types/node@24.19.1)':
+  '@cloudflare/runtime-types@0.1.7(@types/node@24.19.1)':
     dependencies:
-      miniflare: 5.20260930.0-alpha(@types/node@24.19.1)
-      workerd: 1.20260930.2
+      miniflare: 5.20261001.0-alpha(@types/node@24.19.1)
+      workerd: 1.20261001.1
     transitivePeerDependencies:
       - '@types/node'
       - bufferutil
@@ -2925,12 +2925,12 @@ snapshots:
 
   camelize@1.0.1: {}
 
-  cf@1.0.0-beta.11(@types/node@24.19.1):
+  cf@1.0.0-beta.12(@types/node@24.19.1):
     dependencies:
-      '@cloudflare/build-output-utils': 0.8.4
-      '@cloudflare/codemods': 0.3.0
-      '@cloudflare/config': 0.22.0
-      '@cloudflare/runtime-types': 0.1.6(@types/node@24.19.1)
+      '@cloudflare/build-output-utils': 0.8.5
+      '@cloudflare/codemods': 0.4.0
+      '@cloudflare/config': 0.23.0
+      '@cloudflare/runtime-types': 0.1.7(@types/node@24.19.1)
       blake3-wasm: 2.1.5
       miniflare: 5.20260930.0-alpha(@types/node@24.19.1)
       minisearch: 7.2.0
