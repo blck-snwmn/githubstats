@@ -177,8 +177,8 @@ importers:
         version: 0.35.1
     devDependencies:
       '@cloudflare/vitest-plugin':
-        specifier: 1.3.7
-        version: 1.3.7(@types/node@24.19.1)(@vitest/runner@4.1.11)(@vitest/snapshot@4.1.11)(vitest@4.1.11)
+        specifier: 1.4.0
+        version: 1.4.0(@types/node@24.19.1)(vitest@4.1.11)
       '@fontsource/inter':
         specifier: 5.3.0
         version: 5.3.0
@@ -268,12 +268,10 @@ packages:
       workerd:
         optional: true
 
-  '@cloudflare/vitest-plugin@1.3.7':
-    resolution: {integrity: sha512-8ru/Il15FeilmN8R9Xe17JaKHAq+7wsg4pANdMJl+KEohRLPl6z1W8VSO6f+r7xm1n+AkkTQI+ZtTMaRZ3hl+Q==}
+  '@cloudflare/vitest-plugin@1.4.0':
+    resolution: {integrity: sha512-SgIhyhpVH+2MVSJxidG8gosqrpzF25IwKevQhPykwulTgAFe4s0Nkj71pNzqCkwV2+A4NKkHJP2ReyyRsoIxsg==}
     peerDependencies:
-      '@vitest/runner': ^4.1.0
-      '@vitest/snapshot': ^4.1.0
-      vitest: ^4.1.0
+      vitest: ^4.1.0 || ^5.0.0
 
   '@cloudflare/workerd-darwin-64@1.20261006.1':
     resolution: {integrity: sha512-lCX6avJO2It9AyDEYitjmOtJRVp/xmaW0TziyoLAnfxlzozyyRbSFfIIMMCiDx/sTP1++E4VLbV+7BHSD33f0Q==}
@@ -2409,6 +2407,9 @@ packages:
   zod@4.4.3:
     resolution: {integrity: sha512-ytENFjIJFl2UwYglde2jchW2Hwm4GJFLDiSXWdTrJQBIN9Fcyp7n4DhxJEiWNAJMV1/BqWfW/kkg71UDcHJyTQ==}
 
+  zod@4.6.5:
+    resolution: {integrity: sha512-v5l/aFXZQeai4awLbOpSoHecE9UiMrnfx75tEXLjNonXVARxQ5mOeipTjROUchszUNCqnE+hqAMujRsRHsut2Q==}
+
 snapshots:
 
   '@asamuzakjp/css-color@7.1.3':
@@ -2467,16 +2468,14 @@ snapshots:
     optionalDependencies:
       workerd: 1.20261006.1
 
-  '@cloudflare/vitest-plugin@1.3.7(@types/node@24.19.1)(@vitest/runner@4.1.11)(@vitest/snapshot@4.1.11)(vitest@4.1.11)':
+  '@cloudflare/vitest-plugin@1.4.0(@types/node@24.19.1)(vitest@4.1.11)':
     dependencies:
-      '@vitest/runner': 4.1.11
-      '@vitest/snapshot': 4.1.11
       cjs-module-lexer: 1.2.3
-      esbuild: 0.28.1
-      miniflare: 5.20261006.0-alpha(@types/node@24.19.1)
+      esbuild: 0.28.2
+      miniflare: 5.20261006.1-alpha(@types/node@24.19.1)
       vitest: 4.1.11(@types/node@24.19.1)(@vitest/ui@4.1.11)(jsdom@30.1.2)(vite@7.0.5(@types/node@24.19.1))
-      wrangler: 4.148.0(@types/node@24.19.1)
-      zod: 4.4.3
+      wrangler: 4.149.0(@types/node@24.19.1)
+      zod: 4.6.5
     transitivePeerDependencies:
       - '@cloudflare/workers-types'
       - '@types/node'
@@ -4110,3 +4109,5 @@ snapshots:
       youch-core: 0.3.3
 
   zod@4.4.3: {}
+
+  zod@4.6.5: {}
