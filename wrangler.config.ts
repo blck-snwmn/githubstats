@@ -8,6 +8,7 @@ export const wranglerConfig = {
     "process.versions.node": "undefined",
     "self.location.href": '"https://worker.invalid/"',
   },
+  rules: [{ type: "Data", globs: ["**/*.woff"], fallthrough: true }],
   types: {
     generate: false,
   },

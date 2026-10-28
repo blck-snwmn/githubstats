@@ -1,16 +1,10 @@
 import { cloudflareTest } from "@cloudflare/vitest-plugin";
-import { readFileSync } from "node:fs";
-import { createRequire } from "node:module";
 import { resolve } from "node:path";
 import { defineConfig } from "vitest/config";
+import { woffDataPlugin } from "./tests/woff-data-plugin";
 import { wranglerConfig } from "./wrangler.config";
 
 process.env.GITHUB_TOKEN ??= "test-token";
-
-const require = createRequire(import.meta.url);
-const testFont = readFileSync(
-  require.resolve("@fontsource/inter/files/inter-latin-400-normal.woff"),
-).toString("base64");
 
 // The Workers Vitest plugin does not currently translate Wrangler module aliases
 // into Vite aliases, so mirror them to exercise the production dependency graph.
@@ -27,12 +21,8 @@ export default defineConfig({
       experimental: {
         newConfig: true,
       },
-      miniflare: {
-        bindings: {
-          TEST_FONT_BASE64: testFont,
-        },
-      },
     }),
+    woffDataPlugin(),
   ],
   define: wranglerConfig.define,
   test: {

@@ -1,13 +1,5 @@
-let cachedFontData: ArrayBuffer | null = null;
+import inter400 from "@fontsource/inter/files/inter-latin-400-normal.woff";
 
 export async function getTestFontData(): Promise<ArrayBuffer> {
-  if (cachedFontData) {
-    return cachedFontData;
-  }
-
-  const response = await fetch(
-    "https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.8/files/inter-latin-400-normal.woff",
-  );
-  cachedFontData = await response.arrayBuffer();
-  return cachedFontData;
+  return inter400;
 }
