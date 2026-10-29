@@ -22,7 +22,7 @@
 	},
 	"dependencies": {
 		"@fontsource/inter": "5.3.0",
-		"harfbuzzjs": "0.10.3",
+		"harfbuzzjs": "1.6.4",
 		"hono": "4.13.13",
 		"satori": "0.35.1"
 	},
