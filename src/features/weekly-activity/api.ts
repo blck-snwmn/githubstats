@@ -1,6 +1,6 @@
 import type {
   WeeklyActivityQueryData,
-  WeeklyActivityRepositoryNode,
+  WeeklyCommitContributions,
   WeeklyRepositoryActivity,
 } from "../../services/github/types";
 import { executeGraphQLQuery } from "../../services/github/client";
@@ -21,7 +21,7 @@ export function getWeeklyActivityRange(now = new Date()): { since: string; until
 }
 
 export function buildWeeklyRepositoryActivities(
-  repositories: WeeklyActivityRepositoryNode[],
+  repositories: WeeklyCommitContributions[],
   since: string,
   limit = 5,
 ): WeeklyRepositoryActivity[] {
@@ -31,24 +31,21 @@ export function buildWeeklyRepositoryActivities(
   });
 
   return repositories
-    .filter((repo) => !repo.isFork)
+    .filter((repo) => !repo.repository.isFork)
     .map((repo) => {
       const countsByDay = new Map(dayKeys.map((dayKey) => [dayKey, 0]));
-      const history = repo.defaultBranchRef?.target.history;
 
-      if (repo.defaultBranchRef?.target.targetType === "Commit" && history) {
-        for (const commit of history.nodes) {
-          const dayKey = commit.committedDate.slice(0, 10);
-          const count = countsByDay.get(dayKey);
+      for (const contribution of repo.contributions.nodes) {
+        const dayKey = contribution.occurredAt.slice(0, 10);
+        const count = countsByDay.get(dayKey);
 
-          if (count !== undefined) {
-            countsByDay.set(dayKey, count + 1);
-          }
+        if (count !== undefined) {
+          countsByDay.set(dayKey, count + contribution.commitCount);
         }
       }
 
       return {
-        name: repo.name,
+        name: repo.repository.name,
         dailyCounts: dayKeys.map((dayKey) => countsByDay.get(dayKey) ?? 0),
       };
     })
@@ -65,7 +62,7 @@ export function buildWeeklyRepositoryActivities(
 export async function fetchWeeklyActivity(
   username: string,
   githubToken?: string,
-  repoLimit = 30,
+  repoLimit = 10,
 ): Promise<WeeklyRepositoryActivity[]> {
   if (!githubToken) {
     throw new Error("GitHub token is required for API access");
@@ -75,16 +72,16 @@ export async function fetchWeeklyActivity(
     const { since, until } = getWeeklyActivityRange();
     const data = await executeGraphQLQuery<WeeklyActivityQueryData>(
       WEEKLY_ACTIVITY_QUERY,
-      { username, repoLimit, since, until },
+      { username, repoLimit, from: since, to: until },
       githubToken,
     );
 
-    if (!data.user?.repositories) {
-      throw new Error("User not found or no repositories");
+    if (!data.user) {
+      throw new Error("User not found");
     }
 
     return buildWeeklyRepositoryActivities(
-      data.user.repositories.edges.map((edge) => edge.node),
+      data.user.contributionsCollection.commitContributionsByRepository,
       since,
     );
   } catch (error) {

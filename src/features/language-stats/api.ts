@@ -1,24 +1,24 @@
 // API functions for language stats feature
 
 import type { LanguageStats } from "../../types/language";
-import type { RepositorySearchItem, RepositorySearchResponse } from "../../services/github/types";
+import type { GitHubUser, RepositoryListItem } from "../../services/github/types";
 import { executeGitHubRestRequest } from "../../services/github/client";
 import { getTopLanguages } from "../../shared/utils/language-utils";
 
 const REPOSITORIES_PER_PAGE = 100;
-const MAX_SEARCH_RESULTS = 1000;
 
-function createRepositorySearchPath(username: string, page: number): string {
+// The repository list API is much faster than the search API, but only lists public repositories
+function createRepositoryListPath(username: string, page: number): string {
   const params = new URLSearchParams({
-    q: `user:${username} fork:false archived:false`,
+    type: "owner",
     per_page: REPOSITORIES_PER_PAGE.toString(),
     page: page.toString(),
   });
 
-  return `search/repositories?${params.toString()}`;
+  return `users/${encodeURIComponent(username)}/repos?${params.toString()}`;
 }
 
-function countPrimaryLanguages(repositories: RepositorySearchItem[]): LanguageStats {
+function countPrimaryLanguages(repositories: RepositoryListItem[]): LanguageStats {
   const languageCounts: LanguageStats = {};
 
   for (const repository of repositories) {
@@ -41,31 +41,25 @@ export async function fetchUserLanguageStats(
   }
 
   try {
-    const firstPage = await executeGitHubRestRequest<RepositorySearchResponse>(
-      createRepositorySearchPath(username, 1),
-      githubToken,
-    );
+    const [user, firstPage] = await Promise.all([
+      executeGitHubRestRequest<GitHubUser>(`users/${encodeURIComponent(username)}`, githubToken),
+      executeGitHubRestRequest<RepositoryListItem[]>(
+        createRepositoryListPath(username, 1),
+        githubToken,
+      ),
+    ]);
 
-    if (firstPage.total_count > MAX_SEARCH_RESULTS) {
-      throw new Error(`Repository search exceeds GitHub's ${MAX_SEARCH_RESULTS}-result limit`);
-    }
-
-    const pageCount = Math.ceil(firstPage.total_count / REPOSITORIES_PER_PAGE);
+    const pageCount = Math.ceil(user.public_repos / REPOSITORIES_PER_PAGE);
     const remainingPages = await Promise.all(
       Array.from({ length: Math.max(0, pageCount - 1) }, (_, index) =>
-        executeGitHubRestRequest<RepositorySearchResponse>(
-          createRepositorySearchPath(username, index + 2),
+        executeGitHubRestRequest<RepositoryListItem[]>(
+          createRepositoryListPath(username, index + 2),
           githubToken,
         ),
       ),
     );
-    const pages = [firstPage, ...remainingPages];
 
-    if (pages.some((page) => page.incomplete_results)) {
-      throw new Error("GitHub returned incomplete repository search results");
-    }
-
-    return countPrimaryLanguages(pages.flatMap((page) => page.items));
+    return countPrimaryLanguages([firstPage, ...remainingPages].flat());
   } catch (error) {
     console.error("Error fetching primary language stats:", error);
     throw error;

@@ -50,25 +50,18 @@ export const RECENT_REPOSITORIES_QUERY = `
 `;
 
 export const WEEKLY_ACTIVITY_QUERY = `
-  query($username: String!, $repoLimit: Int!, $since: GitTimestamp!, $until: GitTimestamp!) {
+  query($username: String!, $repoLimit: Int!, $from: DateTime!, $to: DateTime!) {
     user(login: $username) {
-      repositories(first: $repoLimit, ownerAffiliations: OWNER, orderBy: {field: PUSHED_AT, direction: DESC}) {
-        edges {
-          node {
+      contributionsCollection(from: $from, to: $to) {
+        commitContributionsByRepository(maxRepositories: $repoLimit) {
+          repository {
             name
             isFork
-            defaultBranchRef {
-              target {
-                targetType: __typename
-                ... on Commit {
-                  history(first: 100, since: $since, until: $until) {
-                    totalCount
-                    nodes {
-                      committedDate
-                    }
-                  }
-                }
-              }
+          }
+          contributions(first: 7) {
+            nodes {
+              occurredAt
+              commitCount
             }
           }
         }

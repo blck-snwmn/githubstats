@@ -19,16 +19,14 @@ export interface GraphQLResponse<T> {
   data?: T;
 }
 
-export interface RepositorySearchItem {
+export interface GitHubUser {
+  public_repos: number;
+}
+
+export interface RepositoryListItem {
   archived: boolean;
   fork: boolean;
   language: string | null;
-}
-
-export interface RepositorySearchResponse {
-  total_count: number;
-  incomplete_results: boolean;
-  items: RepositorySearchItem[];
 }
 
 export interface RecentRepositoriesData {
@@ -60,30 +58,25 @@ export interface RecentRepositoriesQueryData {
   };
 }
 
-export interface WeeklyActivityRepositoryNode {
-  name: string;
-  isFork: boolean;
-  defaultBranchRef: {
-    target: {
-      targetType: string;
-      history?: {
-        totalCount: number;
-        nodes: Array<{
-          committedDate: string;
-        }>;
-      };
+export interface WeeklyCommitContributions {
+  repository: {
+    name: string;
+    isFork: boolean;
+  };
+  contributions: {
+    nodes: Array<{
+      occurredAt: string;
+      commitCount: number;
+    }>;
+  };
+}
+export interface WeeklyActivityQueryData {
+  user: {
+    contributionsCollection: {
+      commitContributionsByRepository: WeeklyCommitContributions[];
     };
   } | null;
 }
-
-export interface WeeklyActivityQueryData {
-  user: {
-    repositories: {
-      edges: Array<{ node: WeeklyActivityRepositoryNode }>;
-    };
-  };
-}
-
 export interface WeeklyRepositoryActivity {
   name: string;
   dailyCounts: number[];
