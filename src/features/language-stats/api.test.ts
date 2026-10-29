@@ -1,25 +1,28 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { fetchUserLanguageStats } from "./api";
 
-interface SearchItem {
+interface RepositoryItem {
   archived: boolean;
   fork: boolean;
   language: string | null;
 }
 
-function createSearchResponse(
-  items: SearchItem[],
-  totalCount = items.length,
-  incompleteResults = false,
-): Response {
-  return new Response(
-    JSON.stringify({
-      total_count: totalCount,
-      incomplete_results: incompleteResults,
-      items,
-    }),
-    { status: 200, headers: { "Content-Type": "application/json" } },
-  );
+function createListResponse(items: RepositoryItem[]): Response {
+  return new Response(JSON.stringify(items), {
+    status: 200,
+    headers: { "Content-Type": "application/json" },
+  });
+}
+
+function createUserResponse(publicRepos: number): Response {
+  return new Response(JSON.stringify({ public_repos: publicRepos }), {
+    status: 200,
+    headers: { "Content-Type": "application/json" },
+  });
+}
+
+function repository(language: string | null): RepositoryItem {
+  return { archived: false, fork: false, language };
 }
 
 describe("fetchUserLanguageStats", () => {
@@ -34,69 +37,75 @@ describe("fetchUserLanguageStats", () => {
   });
 
   it("counts primary languages and ignores repositories without a language", async () => {
-    const fetchMock = vi.fn().mockResolvedValue(
-      createSearchResponse([
-        { archived: false, fork: false, language: "TypeScript" },
-        { archived: false, fork: false, language: "TypeScript" },
-        { archived: false, fork: false, language: "Go" },
-        { archived: false, fork: false, language: null },
-        { archived: true, fork: false, language: "Python" },
-        { archived: false, fork: true, language: "Rust" },
-      ]),
-    );
+    const fetchMock = vi.fn().mockImplementation((input: string) => {
+      if (new URL(input).pathname === "/users/octocat") {
+        return Promise.resolve(createUserResponse(6));
+      }
+
+      return Promise.resolve(
+        createListResponse([
+          repository("TypeScript"),
+          repository("TypeScript"),
+          repository("Go"),
+          repository(null),
+          { archived: true, fork: false, language: "Python" },
+          { archived: false, fork: true, language: "Rust" },
+        ]),
+      );
+    });
     vi.stubGlobal("fetch", fetchMock);
 
     await expect(fetchUserLanguageStats("octocat", "token")).resolves.toEqual({
       TypeScript: 2,
       Go: 1,
     });
+    expect(fetchMock).toHaveBeenCalledTimes(2);
 
-    const firstCall = fetchMock.mock.calls[0];
-    expect(firstCall).toBeDefined();
-    const [url, init] = firstCall;
+    const listCall = fetchMock.mock.calls.find(
+      ([url]) => new URL(String(url)).pathname === "/users/octocat/repos",
+    );
+    if (!listCall) {
+      throw new Error("Repository list was not requested");
+    }
+    const [url, init] = listCall;
     const requestUrl = new URL(String(url));
-    expect(requestUrl.pathname).toBe("/search/repositories");
-    expect(requestUrl.searchParams.get("q")).toBe("user:octocat fork:false archived:false");
+    expect(requestUrl.searchParams.get("type")).toBe("owner");
     expect(requestUrl.searchParams.get("per_page")).toBe("100");
     expect(requestUrl.searchParams.get("page")).toBe("1");
     expect(new Headers(init.headers).get("Authorization")).toBe("Bearer token");
   });
 
-  it("fetches remaining result pages", async () => {
+  it("fetches remaining pages based on the public repository count", async () => {
     const fetchMock = vi.fn().mockImplementation((input: string) => {
-      const page = new URL(input).searchParams.get("page");
+      const requestUrl = new URL(input);
 
-      if (page === "1") {
+      if (requestUrl.pathname === "/users/octocat") {
+        return Promise.resolve(createUserResponse(101));
+      }
+
+      if (requestUrl.searchParams.get("page") === "1") {
         return Promise.resolve(
-          createSearchResponse([{ archived: false, fork: false, language: "TypeScript" }], 101),
+          createListResponse(Array.from({ length: 100 }, () => repository("TypeScript"))),
         );
       }
 
-      return Promise.resolve(
-        createSearchResponse([{ archived: false, fork: false, language: "Go" }], 101),
-      );
+      return Promise.resolve(createListResponse([repository("Go")]));
     });
     vi.stubGlobal("fetch", fetchMock);
 
     await expect(fetchUserLanguageStats("octocat", "token")).resolves.toEqual({
-      TypeScript: 1,
+      TypeScript: 100,
       Go: 1,
     });
-    expect(fetchMock).toHaveBeenCalledTimes(2);
-  });
-
-  it("rejects incomplete search results", async () => {
-    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(createSearchResponse([], 0, true)));
-
-    await expect(fetchUserLanguageStats("octocat", "token")).rejects.toThrow(
-      "GitHub returned incomplete repository search results",
-    );
+    expect(fetchMock).toHaveBeenCalledTimes(3);
   });
 
   it("reports GitHub API errors", async () => {
     vi.stubGlobal(
       "fetch",
-      vi.fn().mockResolvedValue(new Response("rate limited", { status: 403 })),
+      vi
+        .fn()
+        .mockImplementation(() => Promise.resolve(new Response("rate limited", { status: 403 }))),
     );
 
     await expect(fetchUserLanguageStats("octocat", "token")).rejects.toThrow(

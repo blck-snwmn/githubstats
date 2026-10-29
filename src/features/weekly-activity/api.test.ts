@@ -1,23 +1,19 @@
 import { describe, expect, it } from "vitest";
 import { buildWeeklyRepositoryActivities, getWeeklyActivityRange } from "./api";
-import type { WeeklyActivityRepositoryNode } from "../../services/github/types";
+import type { WeeklyCommitContributions } from "../../services/github/types";
 
 function repo(
   name: string,
-  committedDates: string[],
+  commitCountsByDay: Record<string, number>,
   isFork = false,
-): WeeklyActivityRepositoryNode {
+): WeeklyCommitContributions {
   return {
-    name,
-    isFork,
-    defaultBranchRef: {
-      target: {
-        targetType: "Commit",
-        history: {
-          totalCount: committedDates.length,
-          nodes: committedDates.map((committedDate) => ({ committedDate })),
-        },
-      },
+    repository: { name, isFork },
+    contributions: {
+      nodes: Object.entries(commitCountsByDay).map(([day, commitCount]) => ({
+        occurredAt: `${day}T07:00:00Z`,
+        commitCount,
+      })),
     },
   };
 }
@@ -32,11 +28,11 @@ describe("weekly activity api", () => {
     });
   });
 
-  it("builds daily counts and sorts repositories by weekly activity", () => {
+  it("builds daily counts, ignores days outside the range, and sorts repositories by weekly activity", () => {
     const activities = buildWeeklyRepositoryActivities(
       [
-        repo("small-repo", ["2026-06-15T09:00:00Z"]),
-        repo("busy-repo", ["2026-06-12T09:00:00Z", "2026-06-12T10:00:00Z", "2026-06-17T11:00:00Z"]),
+        repo("small-repo", { "2026-06-15": 1 }),
+        repo("busy-repo", { "2026-06-12": 2, "2026-06-17": 1, "2026-06-10": 4 }),
       ],
       "2026-06-11T00:00:00.000Z",
     );
@@ -56,10 +52,10 @@ describe("weekly activity api", () => {
   it("filters forks, repos with no commits, and applies the display limit", () => {
     const activities = buildWeeklyRepositoryActivities(
       [
-        repo("one", ["2026-06-11T09:00:00Z"]),
-        repo("two", ["2026-06-12T09:00:00Z"]),
-        repo("forked", ["2026-06-13T09:00:00Z"], true),
-        repo("empty", []),
+        repo("one", { "2026-06-11": 1 }),
+        repo("two", { "2026-06-12": 1 }),
+        repo("forked", { "2026-06-13": 1 }, true),
+        repo("empty", {}),
       ],
       "2026-06-11T00:00:00.000Z",
       1,
