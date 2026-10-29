@@ -1,7 +1,9 @@
 import { defineConfig } from 'vitest/config';
 import { resolve } from 'node:path';
+import { woffDataPlugin } from './tests/woff-data-plugin';
 
 export default defineConfig({
+	plugins: [woffDataPlugin()],
 	test: {
 		environment: 'jsdom',
 		globals: true,
