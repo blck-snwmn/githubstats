@@ -30,14 +30,14 @@
 		"@cloudflare/vitest-plugin": "1.4.12",
 		"@testing-library/react": "16.3.3",
 		"@types/node": "24.19.2",
-		"@vitest/ui": "5.0.5",
+		"@vitest/ui": "5.1.0",
 		"cf": "1.0.0-beta.28",
 		"jsdom": "30.1.3",
 		"oxfmt": "0.76.0",
 		"oxlint": "1.91.0",
 		"oxlint-tsgolint": "7.0.2006",
 		"typescript": "7.0.2",
-		"vitest": "5.0.5",
+		"vitest": "5.1.0",
 		"wrangler": "4.152.0"
 	}
 }
